@@ -12,14 +12,16 @@ export default function SignIn() {
   return (
     <AuthWrapperOne
       title={
-        <>
-          Welcome back! Please{' '}
-          <span className="relative inline-block">
-            Sign in to
-            <UnderlineShape className="absolute -bottom-2 start-0 h-2.5 w-24 text-blue md:w-28 xl:-bottom-1.5 xl:w-36" />
-          </span>{' '}
-          continue.
-        </>
+        <div style={{
+color: "#25282B",
+fontFamily: "Lexend-Bold",
+fontSize: "38px",
+fontWeight: 700,
+fontStyle: "Bold",
+textAlign: "center"
+        }}>
+          Hello újra itt! Ne felejts el kijelentkezni ha végeztél!
+        </div>
       }
       description="By signing up, you will gain access to exclusive content, special
       offers, and be the first to hear about exciting news and updates."
