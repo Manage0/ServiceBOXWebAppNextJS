@@ -3,7 +3,6 @@ import { Title } from 'rizzui';
 import cn from '@core/utils/class-names';
 import PageHeader from '@/app/shared/page-header';
 import MetricCardsWithIcon from '@/app/shared/support/dashboard/stat-cards';
-import MetricCardWithBarChart from '@/app/shared/analytics-dashboard/stat-cards';
 import { FileStatGrid } from '@/app/shared/file/dashboard/file-stats';
 import ParticipantsList from './participants-list';
 import TransactionsList from './transactions-list';
@@ -77,10 +76,6 @@ export default function CardsPage() {
           <div className="grid grid-cols-1 gap-5 @xl:grid-cols-2 @6xl:grid-cols-4 3xl:gap-8">
             <FileStatGrid />
           </div>
-        </SectionBlock>
-
-        <SectionBlock title={'MetricCard + BarChart'}>
-          <MetricCardWithBarChart className="grid-cols-1 @xl:grid-cols-2 @6xl:grid-cols-4 4xl:gap-8" />
         </SectionBlock>
 
         <SectionBlock title={'WidgetCard + List + Chart'}>

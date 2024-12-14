@@ -7,12 +7,10 @@ import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@core/ui/form';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
-import { recentlyProducts, recommendationProducts } from '@/data/shop-products';
 import CartProduct from '@/app/shared/ecommerce/cart/cart-product';
 import { useCart } from '@/store/quick-cart/cart.context';
 import usePrice from '@core/hooks/use-price';
 import { Empty, EmptyProductBoxIcon, Title, Text, Input, Button } from 'rizzui';
-import ProductCarousel from '@/app/shared/product-carousel';
 
 type FormValues = {
   couponCode: string;
@@ -143,12 +141,6 @@ export default function CartPageWrapper() {
           <CartCalculations />
         </div>
       </div>
-
-      <ProductCarousel
-        title={'Recommendations'}
-        data={recommendationProducts}
-      />
-      <ProductCarousel title={'Recently Viewed'} data={recentlyProducts} />
     </div>
   );
 }

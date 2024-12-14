@@ -2,7 +2,6 @@ import FilesIcon from '@core/components/icons/files';
 import TruckIcon from '@core/components/icons/truck';
 import ScheduleIcon from '@core/components/icons/schedule';
 import ShopIcon from '@core/components/icons/shop';
-import AnalyticsCircularIcon from '@core/components/icons/analytics-circular';
 import WalkmanIcon from '@core/components/icons/walkman';
 import UserPlusIcon from '@core/components/icons/user-plus';
 import UserLockIcon from '@core/components/icons/user-lock';
@@ -54,7 +53,6 @@ export const lithiumMenuIcons = {
   FilesIcon,
   TruckIcon,
   ShopIcon,
-  AnalyticsCircularIcon,
   WalkmanIcon,
   UserPlusIcon,
   UserLockIcon,

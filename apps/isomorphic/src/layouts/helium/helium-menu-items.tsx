@@ -119,11 +119,6 @@ export const menuItems = [
     icon: <PiShoppingCart />,
   },
   {
-    name: 'Analytics',
-    href: routes.analytics,
-    icon: <PiChartBar />,
-  },
-  {
     name: 'Support',
     href: routes.support.dashboard,
     icon: <PiHeadset />,
@@ -502,24 +497,8 @@ export const menuItems = [
     icon: <PiUserPlus />,
     dropdownItems: [
       {
-        name: 'Modern Sign up',
-        href: routes.auth.signUp1,
-      },
-      {
-        name: 'Vintage Sign up',
-        href: routes.auth.signUp2,
-      },
-      {
         name: 'Trendy Sign up',
         href: routes.auth.signUp3,
-      },
-      {
-        name: 'Elegant Sign up',
-        href: routes.auth.signUp4,
-      },
-      {
-        name: 'Classic Sign up',
-        href: routes.auth.signUp5,
       },
     ],
   },
@@ -529,24 +508,8 @@ export const menuItems = [
     icon: <PiShieldCheck />,
     dropdownItems: [
       {
-        name: 'Modern Sign in',
-        href: routes.auth.signIn1,
-      },
-      {
-        name: 'Vintage Sign in',
-        href: routes.auth.signIn2,
-      },
-      {
         name: 'Trendy Sign in',
         href: routes.auth.signIn3,
-      },
-      {
-        name: 'Elegant Sign in',
-        href: routes.auth.signIn4,
-      },
-      {
-        name: 'Classic Sign in',
-        href: routes.auth.signIn5,
       },
     ],
   },
@@ -556,24 +519,8 @@ export const menuItems = [
     icon: <PiLockKey />,
     dropdownItems: [
       {
-        name: 'Modern Forgot password',
-        href: routes.auth.forgotPassword1,
-      },
-      {
-        name: 'Vintage Forgot password',
-        href: routes.auth.forgotPassword2,
-      },
-      {
         name: 'Trendy Forgot password',
         href: routes.auth.forgotPassword3,
-      },
-      {
-        name: 'Elegant Forgot password',
-        href: routes.auth.forgotPassword4,
-      },
-      {
-        name: 'Classic Forgot password',
-        href: routes.auth.forgotPassword5,
       },
     ],
   },
@@ -583,24 +530,8 @@ export const menuItems = [
     icon: <PiChatCenteredDots />,
     dropdownItems: [
       {
-        name: 'Modern OTP page',
-        href: routes.auth.otp1,
-      },
-      {
-        name: 'Vintage OTP page',
-        href: routes.auth.otp2,
-      },
-      {
         name: 'Trendy OTP page',
         href: routes.auth.otp3,
-      },
-      {
-        name: 'Elegant OTP page',
-        href: routes.auth.otp4,
-      },
-      {
-        name: 'Classic OTP page',
-        href: routes.auth.otp5,
       },
     ],
   },

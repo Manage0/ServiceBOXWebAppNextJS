@@ -772,10 +772,6 @@ export const iconsData = [
     name: "ApartmentIcon",
   },
   {
-    file: "analytics-circular.tsx",
-    name: "AnalyticsCircularIcon",
-  },
-  {
     file: "ali-express.tsx",
     name: "AliExpressIcon",
   },

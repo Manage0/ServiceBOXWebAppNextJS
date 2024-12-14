@@ -13,7 +13,6 @@ export const config = {
     '/',
     '/executive',
     '/financial',
-    '/analytics',
     '/logistics/:path*',
     '/ecommerce/:path*',
     '/support/:path*',
