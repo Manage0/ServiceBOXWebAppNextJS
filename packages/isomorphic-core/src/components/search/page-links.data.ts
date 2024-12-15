@@ -126,10 +126,6 @@ export const pageLinks = [
     href: routes.logistics.shipmentDetails(DUMMY_ID),
   },
   {
-    name: "Tracking",
-    href: routes.logistics.tracking(DUMMY_ID),
-  },
-  {
     name: "File Manager",
     href: routes.file.manager,
   },
@@ -141,10 +137,6 @@ export const pageLinks = [
   {
     name: "Cards",
     href: routes.widgets.cards,
-  },
-  {
-    name: "Icons",
-    href: routes.widgets.icons,
   },
   {
     name: "Charts",
@@ -170,14 +162,6 @@ export const pageLinks = [
   {
     name: "Notification Preference",
     href: routes.forms.notificationPreference,
-  },
-  {
-    name: "Personal Information",
-    href: routes.forms.personalInformation,
-  },
-  {
-    name: "Newsletter",
-    href: routes.forms.newsletter,
   },
   // {
   //   name: 'Multi Step',

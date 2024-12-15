@@ -198,10 +198,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
             name: 'Edit Shipment',
             href: routes.logistics.editShipment(DUMMY_ID),
           },
-          {
-            name: 'Tracking',
-            href: routes.logistics.tracking(DUMMY_ID),
-          },
         ],
       },
       {
@@ -226,11 +222,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
         name: 'Cards',
         href: routes.widgets.cards,
         icon: 'DicesIcon',
-      },
-      {
-        name: 'Icons',
-        href: routes.widgets.icons,
-        icon: 'GreenLeafIcon',
       },
       {
         name: 'Charts',
@@ -262,16 +253,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
         name: 'Notification Preference',
         href: routes.forms.notificationPreference,
         icon: 'NotificationSettingsIcon',
-      },
-      {
-        name: 'Personal Information',
-        href: routes.forms.personalInformation,
-        icon: 'UserInfoIcon',
-      },
-      {
-        name: 'Newsletter',
-        href: routes.forms.newsletter,
-        icon: 'NewsletterAnnouncement',
       },
       {
         name: 'Multi Step',
@@ -344,16 +325,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
         href: routes.searchAndFilter.realEstate,
       },
       {
-        name: 'Find Flight',
-        icon: 'FlightIcon',
-        href: routes.searchAndFilter.flight,
-      },
-      {
-        name: 'Point of Sell',
-        href: routes.pos.index,
-        icon: 'PointOfSellIcon',
-      },
-      {
         name: 'NFT',
         icon: 'NftIcon',
         href: routes.searchAndFilter.nft,
@@ -392,11 +363,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
         name: 'Maintenance',
         href: routes.maintenance,
         icon: 'SettingsWarningIcon',
-      },
-      {
-        name: 'Job Feeds',
-        href: routes.jobBoard.jobFeed,
-        icon: 'ScheduleIcon',
       },
       {
         name: 'Blank',

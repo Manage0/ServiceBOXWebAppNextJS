@@ -263,16 +263,7 @@ export const carbonMenuItems: MenuItemsType[] = [
             name: 'Edit Shipment',
             href: routes.logistics.editShipment(DUMMY_ID),
           },
-          {
-            name: 'Tracking',
-            href: routes.logistics.tracking(DUMMY_ID),
-          },
         ],
-      },
-      {
-        name: 'Job Feeds',
-        href: routes.jobBoard.jobFeed,
-        icon: PiShapesDuotone,
       },
       {
         name: 'Appointment',
@@ -290,11 +281,6 @@ export const carbonMenuItems: MenuItemsType[] = [
         name: 'Roles & Permissions',
         href: routes.rolesPermissions,
         icon: PiFolderLockDuotone,
-      },
-      {
-        name: 'Point of Sell',
-        href: routes.pos.index,
-        icon: PiCreditCardDuotone,
       },
       {
         name: 'Invoice Builder',
@@ -322,11 +308,6 @@ export const carbonMenuItems: MenuItemsType[] = [
         badge: '',
       },
       {
-        name: 'Flight Booking',
-        href: routes.searchAndFilter.flight,
-        icon: PiAirplaneTiltDuotone,
-      },
-      {
         name: 'NFT',
         href: routes.searchAndFilter.nft,
         icon: PiPokerChipDuotone,
@@ -344,11 +325,6 @@ export const carbonMenuItems: MenuItemsType[] = [
         name: 'Cards',
         href: routes.widgets.cards,
         icon: PiSquaresFourDuotone,
-      },
-      {
-        name: 'Icons',
-        href: routes.widgets.icons,
-        icon: PiFeatherDuotone,
       },
       {
         name: 'Charts',
@@ -378,16 +354,6 @@ export const carbonMenuItems: MenuItemsType[] = [
         href: routes.forms.notificationPreference,
         icon: PiBellSimpleRingingDuotone,
         badge: '',
-      },
-      {
-        name: 'Personal Information',
-        href: routes.forms.personalInformation,
-        icon: PiUserCircleDuotone,
-      },
-      {
-        name: 'Newsletter',
-        href: routes.forms.newsletter,
-        icon: PiEnvelopeSimpleOpenDuotone,
       },
       {
         name: 'Multi Step',

@@ -248,16 +248,7 @@ export const menuItems = [
         name: 'Edit Shipment',
         href: routes.logistics.editShipment(DUMMY_ID),
       },
-      {
-        name: 'Tracking',
-        href: routes.logistics.tracking(DUMMY_ID),
-      },
     ],
-  },
-  {
-    name: 'Job Feeds',
-    href: routes.jobBoard.jobFeed,
-    icon: PiShapesDuotone,
   },
   {
     name: 'Appointment',
@@ -273,11 +264,6 @@ export const menuItems = [
     name: 'Roles & Permissions',
     href: routes.rolesPermissions,
     icon: PiFolderLockDuotone,
-  },
-  {
-    name: 'Point of Sale',
-    href: routes.pos.index,
-    icon: PiCreditCardDuotone,
   },
   {
     name: 'Invoice Builder',
@@ -299,11 +285,6 @@ export const menuItems = [
     icon: PiHouseLineDuotone,
   },
   {
-    name: 'Flight Booking',
-    href: routes.searchAndFilter.flight,
-    icon: PiAirplaneTiltDuotone,
-  },
-  {
     name: 'NFT',
     href: routes.searchAndFilter.nft,
     icon: PiCoinDuotone,
@@ -318,11 +299,6 @@ export const menuItems = [
     name: 'Cards',
     href: routes.widgets.cards,
     icon: PiSquaresFourDuotone,
-  },
-  {
-    name: 'Icons',
-    href: routes.widgets.icons,
-    icon: PiFeatherDuotone,
   },
   {
     name: 'Charts',
@@ -354,16 +330,6 @@ export const menuItems = [
     name: 'Notification Preference',
     href: routes.forms.notificationPreference,
     icon: PiBellSimpleRingingDuotone,
-  },
-  {
-    name: 'Personal Information',
-    href: routes.forms.personalInformation,
-    icon: PiUserDuotone,
-  },
-  {
-    name: 'Newsletter',
-    href: routes.forms.newsletter,
-    icon: PiEnvelopeSimpleOpenDuotone,
   },
   {
     name: 'Multi Step',

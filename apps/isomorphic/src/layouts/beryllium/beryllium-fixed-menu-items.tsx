@@ -256,10 +256,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
             name: 'Edit Shipment',
             href: routes.logistics.editShipment(DUMMY_ID),
           },
-          {
-            name: 'Tracking',
-            href: routes.logistics.tracking(DUMMY_ID),
-          },
         ],
       },
       {
@@ -275,11 +271,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         ],
       },
       {
-        name: 'Job Feeds',
-        href: routes.jobBoard.jobFeed,
-        icon: PiShapes,
-      },
-      {
         name: 'Appointment',
         href: routes.appointment.appointmentList,
         icon: PiCalendarDuotone,
@@ -288,11 +279,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         name: 'Roles & Permissions',
         href: routes.rolesPermissions,
         icon: PiFolderLock,
-      },
-      {
-        name: 'Point of Sell',
-        href: routes.pos.index,
-        icon: PiCreditCard,
       },
       {
         name: 'Invoice Builder',
@@ -320,11 +306,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         badge: '',
       },
       {
-        name: 'Flight Booking',
-        href: routes.searchAndFilter.flight,
-        icon: PiAirplaneTilt,
-      },
-      {
         name: 'NFT',
         href: routes.searchAndFilter.nft,
         icon: PiPokerChip,
@@ -342,11 +323,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         name: 'Cards',
         href: routes.widgets.cards,
         icon: PiSquaresFour,
-      },
-      {
-        name: 'Icons',
-        href: routes.widgets.icons,
-        icon: PiFeather,
       },
       {
         name: 'Charts',
@@ -375,16 +351,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         name: 'Notification Preference',
         href: routes.forms.notificationPreference,
         icon: PiBellSimpleRinging,
-      },
-      {
-        name: 'Personal Information',
-        href: routes.forms.personalInformation,
-        icon: PiUser,
-      },
-      {
-        name: 'Newsletter',
-        href: routes.forms.newsletter,
-        icon: PiEnvelopeSimpleOpen,
       },
       {
         name: 'Multi Step',

@@ -14,7 +14,6 @@ import MapMarkerWithPathIcon from '@core/components/icons/map-marker-with-path';
 import UserSettingsIcon from '@core/components/icons/user-settings';
 import NotificationSettingsIcon from '@core/components/icons/notification-settings';
 import UserInfoIcon from '@core/components/icons/user-info';
-import NewsletterAnnouncement from '@core/components/icons/newsletter-announcement';
 import MultiStepArrowIcon from '@core/components/icons/multi-step-arrow';
 import OnlinePaymentIcon from '@core/components/icons/online-payment';
 import ShoppingCartIcon from '@core/components/icons/shopping-cart';
@@ -37,10 +36,8 @@ import SettingsWarningIcon from '@core/components/icons/settings-warning';
 import PageBlankIcon from '@core/components/icons/page-blank';
 import CalenderIcon from '@core/components/icons/calendar';
 import FolderLockIcon from '@core/components/icons/folder-lock';
-import PointOfSellIcon from '@core/components/icons/point-of-sell';
 import RealEstateIcon from '@core/components/icons/real-estate';
 import NftIcon from '@core/components/icons/nft';
-import FlightIcon from '@core/components/icons/flight-icon';
 import BusinessIcon from '@core/components/icons/business';
 import SuitcaseIcon from '@core/components/icons/suitcase';
 import ProjectDashIcon from '@core/components/icons/project-dash';
@@ -61,7 +58,6 @@ export const lithiumMenuIcons = {
   UserSettingsIcon,
   NotificationSettingsIcon,
   UserInfoIcon,
-  NewsletterAnnouncement,
   MultiStepArrowIcon,
   OnlinePaymentIcon,
   ShoppingCartIcon,
@@ -84,10 +80,8 @@ export const lithiumMenuIcons = {
   PageBlankIcon,
   CalenderIcon,
   FolderLockIcon,
-  PointOfSellIcon,
   RealEstateIcon,
   NftIcon,
-  FlightIcon,
   BusinessIcon,
   ScheduleIcon,
   SuitcaseIcon,

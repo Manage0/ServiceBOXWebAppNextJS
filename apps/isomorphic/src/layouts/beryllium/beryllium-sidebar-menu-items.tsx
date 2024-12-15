@@ -79,11 +79,6 @@ export const berylliumSidebarMenuItems = [
     icon: <PiPackage />,
   },
   {
-    name: 'Job Feeds',
-    href: routes.jobBoard.jobFeed,
-    icon: <PiShapes />,
-  },
-  {
     name: 'E-Commerce',
     href: routes.eCommerce.dashboard,
     icon: <PiShoppingCart />,
@@ -230,10 +225,6 @@ export const berylliumSidebarMenuItems = [
         name: 'Edit Shipment',
         href: routes.logistics.editShipment(DUMMY_ID),
       },
-      {
-        name: 'Tracking',
-        href: routes.logistics.tracking(DUMMY_ID),
-      },
     ],
   },
   {
@@ -250,11 +241,6 @@ export const berylliumSidebarMenuItems = [
     name: 'Roles & Permissions',
     href: routes.rolesPermissions,
     icon: <PiFolderLock />,
-  },
-  {
-    name: 'Point of Sell',
-    href: routes.pos.index,
-    icon: <PiCreditCard />,
   },
   {
     name: 'Invoice Builder',
@@ -277,11 +263,6 @@ export const berylliumSidebarMenuItems = [
     icon: <PiHouseLine />,
   },
   {
-    name: 'Flight Booking',
-    href: routes.searchAndFilter.flight,
-    icon: <PiAirplaneTilt />,
-  },
-  {
     name: 'NFT',
     href: routes.searchAndFilter.nft,
     icon: <PiPokerChip />,
@@ -296,11 +277,6 @@ export const berylliumSidebarMenuItems = [
     name: 'Cards',
     href: routes.widgets.cards,
     icon: <PiSquaresFour />,
-  },
-  {
-    name: 'Icons',
-    href: routes.widgets.icons,
-    icon: <PiFeather />,
   },
   {
     name: 'Charts',
@@ -326,16 +302,6 @@ export const berylliumSidebarMenuItems = [
     name: 'Notification Preference',
     href: routes.forms.notificationPreference,
     icon: <PiBellSimpleRinging />,
-  },
-  {
-    name: 'Personal Information',
-    href: routes.forms.personalInformation,
-    icon: <PiUser />,
-  },
-  {
-    name: 'Newsletter',
-    href: routes.forms.newsletter,
-    icon: <PiEnvelopeSimpleOpen />,
   },
   {
     name: 'Multi Step',

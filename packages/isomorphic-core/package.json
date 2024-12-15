@@ -8,8 +8,7 @@
   "scripts": {
     "lint": "eslint .",
     "clean": "rm -rf node_modules .turbo dist",
-    "type-check": "tsc --noEmit",
-    "gen-icons": "node generate-icons-data.js"
+    "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^18.2.0"

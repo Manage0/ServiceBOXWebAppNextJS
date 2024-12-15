@@ -16,12 +16,10 @@ export const routes = {
     shop: '/ecommerce/shop',
     cart: '/ecommerce/cart',
     checkout: '/ecommerce/checkout',
-    trackingId: (id: string) => `/ecommerce/tracking/${id}`,
   },
   searchAndFilter: {
     realEstate: '/search/real-estate',
     nft: '/search/nft',
-    flight: '/search/flight',
   },
   support: {
     dashboard: '/support',
@@ -43,7 +41,6 @@ export const routes = {
     createShipment: '/logistics/shipments/create',
     editShipment: (id: string) => `/logistics/shipments/${id}/edit`,
     shipmentDetails: (id: string) => `/logistics/shipments/${id}`,
-    tracking: (id: string) => `/logistics/tracking/${id}`,
   },
   appointment: {
     dashboard: '/appointment',
@@ -52,16 +49,10 @@ export const routes = {
   project: {
     dashboard: '/project',
   },
-  jobBoard: {
-    jobFeed: '/job-board/feed',
-  },
   file: {
     manager: '/file-manager',
     upload: '/file-manager/upload',
     create: '/file-manager/create',
-  },
-  pos: {
-    index: '/point-of-sale',
   },
   rolesPermissions: '/roles-permissions',
   invoice: {
@@ -74,7 +65,6 @@ export const routes = {
   imageViewer: '/image-viewer',
   widgets: {
     cards: '/widgets/cards',
-    icons: '/widgets/icons',
     charts: '/widgets/charts',
     maps: '/widgets/maps',
     banners: '/widgets/banners',
@@ -97,8 +87,6 @@ export const routes = {
   forms: {
     profileSettings: '/forms/profile-settings',
     notificationPreference: '/forms/profile-settings/notification',
-    personalInformation: '/forms/profile-settings/profile',
-    newsletter: '/forms/newsletter',
   },
   emailTemplates: '/email-templates',
   profile: '/profile',

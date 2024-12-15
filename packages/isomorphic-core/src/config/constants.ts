@@ -1,5 +1,4 @@
 export const CART_KEY = 'isomorphic-cart';
-export const POS_CART_KEY = 'isomorphic-pos-cart';
 export const DUMMY_ID = 'FC6723757651DB74';
 export const CHECKOUT = 'isomorphic-checkout';
 export const CURRENCY_CODE = 'USD';
