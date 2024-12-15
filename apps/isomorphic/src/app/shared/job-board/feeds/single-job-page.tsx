@@ -53,7 +53,6 @@ export default function SingleJob({ data }: { data: JobType }) {
 
           <div className="flex flex-wrap gap-4">
             {socialInfos.map((info) => {
-              const Icon = info.icon;
               return (
                 <a
                   key={info.title}
@@ -66,7 +65,8 @@ export default function SingleJob({ data }: { data: JobType }) {
                     className="gap-x-2 rounded-[10px]"
                     variant="outline"
                   >
-                    {Icon && <Icon className="size-5" />} {info.title}
+                    {' '}
+                    {info.title}
                   </Button>
                 </a>
               );

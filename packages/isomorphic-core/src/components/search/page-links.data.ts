@@ -21,24 +21,8 @@ export const pageLinks = [
     href: routes.logistics.dashboard,
   },
   {
-    name: "File Manager",
-    href: routes.file.dashboard,
-  },
-  {
     name: "Appointment",
     href: routes.appointment.dashboard,
-  },
-  {
-    name: "Executive",
-    href: routes.executive.dashboard,
-  },
-  {
-    name: "Job Board",
-    href: routes.jobBoard.dashboard,
-  },
-  {
-    name: "Financial",
-    href: routes.financial.dashboard,
   },
   // label start
   {

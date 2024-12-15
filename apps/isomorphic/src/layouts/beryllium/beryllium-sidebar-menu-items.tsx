@@ -50,8 +50,6 @@ import {
   PiArrowsOut,
 } from 'react-icons/pi';
 import ProjectWriteIcon from '@core/components/icons/project-write';
-import CrmDashIcon from '@core/components/icons/crm-icon';
-import AffiliateIcon from '@core/components/icons/affiliate';
 
 // Note: do not add href in the label object, it is rendering as label
 export const berylliumSidebarMenuItems = [
@@ -61,9 +59,9 @@ export const berylliumSidebarMenuItems = [
   },
   // label end
   {
-    name: 'File Manager',
+    name: 'Project',
     href: '/',
-    icon: <PiFolder />,
+    icon: <ProjectWriteIcon />,
   },
   {
     name: 'Appointment',
@@ -71,40 +69,9 @@ export const berylliumSidebarMenuItems = [
     icon: <PiCalendarDuotone />,
   },
   {
-    name: 'Executive',
-    href: routes.executive.dashboard,
-    icon: <PiBriefcase />,
-  },
-  {
     name: 'Project',
     href: routes.project.dashboard,
     icon: <ProjectWriteIcon />,
-  },
-  {
-    name: 'CRM',
-    href: routes.crm.dashboard,
-    icon: <CrmDashIcon />,
-  },
-  {
-    name: 'Affiliate',
-    href: routes.affiliate.dashboard,
-    icon: <AffiliateIcon />,
-    badge: 'NEW',
-  },
-  {
-    name: 'Social Media',
-    href: routes.socialMedia.dashboard,
-    icon: <PiSparkleDuotone />,
-  },
-  {
-    name: 'Job Board',
-    href: routes.jobBoard.dashboard,
-    icon: <PiShapes />,
-  },
-  {
-    name: 'Financial',
-    href: routes.financial.dashboard,
-    icon: <PiCurrencyCircleDollar />,
   },
   {
     name: 'Logistics',
@@ -262,10 +229,6 @@ export const berylliumSidebarMenuItems = [
       {
         name: 'Edit Shipment',
         href: routes.logistics.editShipment(DUMMY_ID),
-      },
-      {
-        name: 'Customer Profile',
-        href: routes.logistics.customerProfile,
       },
       {
         name: 'Tracking',

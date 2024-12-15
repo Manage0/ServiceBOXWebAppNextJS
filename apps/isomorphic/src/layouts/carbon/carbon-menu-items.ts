@@ -56,8 +56,6 @@ import {
 } from 'react-icons/pi';
 import { atom } from 'jotai';
 import ProjectWriteIcon from '@core/components/icons/project-write';
-import CrmDashIcon from '@core/components/icons/crm-icon';
-import AffiliateIcon from '@core/components/icons/affiliate';
 
 export interface SubMenuItemType {
   name: string;
@@ -91,9 +89,9 @@ export const carbonMenuItems: MenuItemsType[] = [
     icon: PiBrowserDuotone,
     menuItems: [
       {
-        name: 'File Manager',
+        name: 'Project',
         href: '/',
-        icon: PiFolder,
+        icon: ProjectWriteIcon,
       },
       {
         name: 'Appointment',
@@ -101,40 +99,9 @@ export const carbonMenuItems: MenuItemsType[] = [
         icon: PiCalendarDuotone,
       },
       {
-        name: 'Executive',
-        href: routes.executive.dashboard,
-        icon: PiBriefcaseDuotone,
-      },
-      {
         name: 'Project',
         href: routes.project.dashboard,
         icon: ProjectWriteIcon,
-      },
-      {
-        name: 'CRM',
-        href: routes.crm.dashboard,
-        icon: CrmDashIcon,
-      },
-      {
-        name: 'Affiliate',
-        href: routes.affiliate.dashboard,
-        icon: AffiliateIcon,
-        badge: 'NEW',
-      },
-      {
-        name: 'Social Media',
-        href: routes.socialMedia.dashboard,
-        icon: PiSparkleDuotone,
-      },
-      {
-        name: 'Job Board',
-        href: routes.jobBoard.dashboard,
-        icon: PiShapesDuotone,
-      },
-      {
-        name: 'Financial',
-        href: routes.financial.dashboard,
-        icon: PiCurrencyCircleDollarDuotone,
       },
       {
         name: 'Logistics',
@@ -297,10 +264,6 @@ export const carbonMenuItems: MenuItemsType[] = [
             href: routes.logistics.editShipment(DUMMY_ID),
           },
           {
-            name: 'Customer Profile',
-            href: routes.logistics.customerProfile,
-          },
-          {
             name: 'Tracking',
             href: routes.logistics.tracking(DUMMY_ID),
           },
@@ -322,11 +285,6 @@ export const carbonMenuItems: MenuItemsType[] = [
           '"Organize, Access, and Share: Simplify your Digital World with us!"',
         href: routes.file.manager,
         icon: PiFileImageDuotone,
-      },
-      {
-        name: 'Event Calendar',
-        href: routes.eventCalendar,
-        icon: PiCalendarPlusDuotone,
       },
       {
         name: 'Roles & Permissions',

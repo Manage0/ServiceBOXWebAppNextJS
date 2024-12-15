@@ -52,8 +52,6 @@ import {
   PiArrowsOut,
 } from 'react-icons/pi';
 import ProjectWriteIcon from '@core/components/icons/project-write';
-import CrmDashIcon from '@core/components/icons/crm-icon';
-import AffiliateIcon from '@core/components/icons/affiliate';
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -63,9 +61,9 @@ export const menuItems = [
   },
   // label end
   {
-    name: 'File Manager',
+    name: 'Project',
     href: '/',
-    icon: <PiFolder />,
+    icon: <ProjectWriteIcon />,
   },
   {
     name: 'Appointment',
@@ -73,40 +71,9 @@ export const menuItems = [
     icon: <PiCalendarDuotone />,
   },
   {
-    name: 'Executive',
-    href: routes.executive.dashboard,
-    icon: <PiBriefcase />,
-  },
-  {
     name: 'Project',
     href: routes.project.dashboard,
     icon: <ProjectWriteIcon />,
-  },
-  {
-    name: 'CRM',
-    href: routes.crm.dashboard,
-    icon: <CrmDashIcon />,
-  },
-  {
-    name: 'Affiliate',
-    href: routes.affiliate.dashboard,
-    icon: <AffiliateIcon />,
-    badge: 'NEW',
-  },
-  {
-    name: 'Social Media',
-    href: routes.socialMedia.dashboard,
-    icon: <PiSparkleDuotone />,
-  },
-  {
-    name: 'Job Board',
-    href: routes.jobBoard.dashboard,
-    icon: <PiShapes />,
-  },
-  {
-    name: 'Financial',
-    href: routes.financial.dashboard,
-    icon: <PiCurrencyCircleDollarFill />,
   },
   {
     name: 'Logistics',
@@ -261,10 +228,6 @@ export const menuItems = [
         href: routes.logistics.editShipment(DUMMY_ID),
       },
       {
-        name: 'Customer Profile',
-        href: routes.logistics.customerProfile,
-      },
-      {
         name: 'Tracking',
         href: routes.logistics.tracking(DUMMY_ID),
       },
@@ -284,11 +247,6 @@ export const menuItems = [
     name: 'File Manager',
     href: routes.file.manager,
     icon: <PiFolder />,
-  },
-  {
-    name: 'Event Calendar',
-    href: routes.eventCalendar,
-    icon: <PiCalendarPlus />,
   },
   {
     name: 'Roles & Permissions',

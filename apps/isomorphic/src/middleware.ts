@@ -11,8 +11,6 @@ export const config = {
   // restricted routes
   matcher: [
     '/',
-    '/executive',
-    '/financial',
     '/logistics/:path*',
     '/ecommerce/:path*',
     '/support/:path*',

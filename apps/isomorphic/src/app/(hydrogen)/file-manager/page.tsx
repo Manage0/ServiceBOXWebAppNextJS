@@ -21,10 +21,6 @@ const pageHeader = {
       name: 'Home',
     },
     {
-      href: routes.file.dashboard,
-      name: 'File Manager',
-    },
-    {
       name: 'List',
     },
   ],

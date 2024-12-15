@@ -75,16 +75,6 @@ export type PosProduct = {
   size: number;
   discount?: number;
 };
-export interface CalendarEvent {
-  id?: string;
-  start: Date;
-  end: Date;
-  allDay?: boolean;
-  title: string;
-  description?: string;
-  location?: string;
-}
-
 export interface FlightingCardProps {
   id: number;
   image: string;

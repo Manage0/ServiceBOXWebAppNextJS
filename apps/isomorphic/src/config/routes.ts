@@ -40,7 +40,6 @@ export const routes = {
   logistics: {
     dashboard: '/logistics',
     shipmentList: '/logistics/shipments',
-    customerProfile: '/logistics/customer-profile',
     createShipment: '/logistics/shipments/create',
     editShipment: (id: string) => `/logistics/shipments/${id}/edit`,
     shipmentDetails: (id: string) => `/logistics/shipments/${id}`,
@@ -50,30 +49,13 @@ export const routes = {
     dashboard: '/appointment',
     appointmentList: '/appointment/list',
   },
-  crm: {
-    dashboard: '/crm',
-  },
-  affiliate: {
-    dashboard: 'https://isomorphic-dnd.vercel.app',
-  },
-  executive: {
-    dashboard: '/executive',
-  },
   project: {
     dashboard: '/project',
   },
-  socialMedia: {
-    dashboard: '/social-media',
-  },
   jobBoard: {
-    dashboard: '/job-board',
     jobFeed: '/job-board/feed',
   },
-  financial: {
-    dashboard: '/financial',
-  },
   file: {
-    dashboard: '/file',
     manager: '/file-manager',
     upload: '/file-manager/upload',
     create: '/file-manager/create',
@@ -81,7 +63,6 @@ export const routes = {
   pos: {
     index: '/point-of-sale',
   },
-  eventCalendar: '/event-calendar',
   rolesPermissions: '/roles-permissions',
   invoice: {
     home: '/invoice',

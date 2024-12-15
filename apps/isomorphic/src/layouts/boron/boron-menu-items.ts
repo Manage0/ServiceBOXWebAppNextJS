@@ -51,8 +51,6 @@ import {
 import { routes } from '@/config/routes';
 import { DUMMY_ID } from '@/config/constants';
 import ProjectWriteIcon from '@core/components/icons/project-write';
-import CrmDashIcon from '@core/components/icons/crm-icon';
-import AffiliateIcon from '@core/components/icons/affiliate';
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -62,30 +60,12 @@ export const menuItems = [
   },
   // label end
   {
-    name: 'File Manager',
+    name: 'Project',
     href: '/',
-    icon: PiFolder,
+    icon: ProjectWriteIcon,
     shortcut: {
       modifiers: 'alt',
       key: '1',
-    },
-  },
-  {
-    name: 'Executive',
-    href: routes.executive.dashboard,
-    icon: PiBriefcaseDuotone,
-    shortcut: {
-      modifiers: 'alt',
-      key: '2',
-    },
-  },
-  {
-    name: 'Financial',
-    href: routes.financial.dashboard,
-    icon: PiCurrencyCircleDollarDuotone,
-    shortcut: {
-      modifiers: 'alt',
-      key: '3',
     },
   },
   {
@@ -125,48 +105,12 @@ export const menuItems = [
     },
   },
   {
-    name: 'Job Board',
-    href: routes.jobBoard.dashboard,
-    icon: PiShapesDuotone,
-    shortcut: {
-      modifiers: 'alt',
-      key: '9',
-    },
-  },
-  {
     name: 'Project',
     href: routes.project.dashboard,
     icon: ProjectWriteIcon,
     shortcut: {
       modifiers: 'alt',
       key: '0',
-    },
-  },
-  {
-    name: 'Social Media',
-    href: routes.socialMedia.dashboard,
-    icon: PiSparkleDuotone,
-    shortcut: {
-      modifiers: 'alt',
-      key: 'q',
-    },
-  },
-  {
-    name: 'CRM',
-    href: routes.crm.dashboard,
-    icon: CrmDashIcon,
-    shortcut: {
-      modifiers: 'alt',
-      key: 'w',
-    },
-  },
-  {
-    name: 'Affiliate',
-    href: routes.affiliate.dashboard,
-    icon: AffiliateIcon,
-    shortcut: {
-      modifiers: 'alt',
-      key: 'e',
     },
   },
   // label start
@@ -305,10 +249,6 @@ export const menuItems = [
         href: routes.logistics.editShipment(DUMMY_ID),
       },
       {
-        name: 'Customer Profile',
-        href: routes.logistics.customerProfile,
-      },
-      {
         name: 'Tracking',
         href: routes.logistics.tracking(DUMMY_ID),
       },
@@ -328,11 +268,6 @@ export const menuItems = [
     name: 'File Manager',
     href: routes.file.manager,
     icon: PiFolder,
-  },
-  {
-    name: 'Event Calendar',
-    href: routes.eventCalendar,
-    icon: PiCalendarPlusDuotone,
   },
   {
     name: 'Roles & Permissions',

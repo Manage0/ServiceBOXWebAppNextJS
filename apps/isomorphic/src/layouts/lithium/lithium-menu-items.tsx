@@ -28,9 +28,9 @@ export const lithiumMenuItems: LithiumMenuItem = {
     type: 'link',
     dropdownItems: [
       {
-        name: 'File Manager',
+        name: 'Project',
         href: '/',
-        icon: 'FilesIcon',
+        icon: 'ProjectDashIcon',
       },
       {
         name: 'Appointment',
@@ -38,39 +38,9 @@ export const lithiumMenuItems: LithiumMenuItem = {
         icon: 'ScheduleIcon',
       },
       {
-        name: 'Executive',
-        href: routes.executive.dashboard,
-        icon: 'BusinessIcon',
-      },
-      {
         name: 'Project',
         href: routes.project.dashboard,
         icon: 'ProjectDashIcon',
-      },
-      {
-        name: 'Social Media',
-        href: routes.socialMedia.dashboard,
-        icon: 'SocialMediaDashIcon',
-      },
-      {
-        name: 'Job Board',
-        href: routes.jobBoard.dashboard,
-        icon: 'SuitcaseIcon',
-      },
-      {
-        name: 'Financial',
-        href: routes.financial.dashboard,
-        icon: 'FinancialStatisticsIcon',
-      },
-      {
-        name: 'CRM',
-        href: routes.crm.dashboard,
-        icon: 'CrmDashTwoIcon',
-      },
-      {
-        name: 'Affiliate',
-        href: routes.affiliate.dashboard,
-        icon: 'AffiliateColoredIcon',
       },
       {
         name: 'Logistics',
@@ -229,10 +199,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
             href: routes.logistics.editShipment(DUMMY_ID),
           },
           {
-            name: 'Customer Profile',
-            href: routes.logistics.customerProfile,
-          },
-          {
             name: 'Tracking',
             href: routes.logistics.tracking(DUMMY_ID),
           },
@@ -244,10 +210,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
           '"Organize, Access, and Share: Simplify your Digital World with us!"',
         icon: 'FileSettingsIcon',
         subMenuItems: [
-          {
-            name: 'Files',
-            href: routes.file.dashboard,
-          },
           {
             name: 'Manage Files',
             href: routes.file.manager,
@@ -395,11 +357,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
         name: 'NFT',
         icon: 'NftIcon',
         href: routes.searchAndFilter.nft,
-      },
-      {
-        name: 'Event Calendar',
-        href: routes.eventCalendar,
-        icon: 'CalenderIcon',
       },
       {
         name: 'Roles & Permissions',

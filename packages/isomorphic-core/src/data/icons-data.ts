@@ -196,10 +196,6 @@ export const iconsData = [
     name: "SquareBoxIcon",
   },
   {
-    file: "social-media-dash.tsx",
-    name: "SocialMediaDashIcon",
-  },
-  {
     file: "smoke-alarm.tsx",
     name: "SmokeAlarmIcon",
   },
@@ -532,10 +528,6 @@ export const iconsData = [
     name: "FireExtinguisherIcon",
   },
   {
-    file: "financial-statistics.tsx",
-    name: "FinancialStatisticsIcon",
-  },
-  {
     file: "files.tsx",
     name: "FilesIcon",
   },
@@ -618,14 +610,6 @@ export const iconsData = [
   {
     file: "cube-solid.tsx",
     name: "CubeSolidIcon",
-  },
-  {
-    file: "crm-icon.tsx",
-    name: "CrmDashIcon",
-  },
-  {
-    file: "crm-icon-two.tsx",
-    name: "CrmDashTwoIcon",
   },
   {
     file: "cookies.tsx",
@@ -782,14 +766,6 @@ export const iconsData = [
   {
     file: "air-conditioner.tsx",
     name: "AirConditionerIcon",
-  },
-  {
-    file: "affiliate.tsx",
-    name: "AffiliateIcon",
-  },
-  {
-    file: "affiliate-colored.tsx",
-    name: "AffiliateColoredIcon",
   },
   {
     file: "layout-icons/lithium-icon.tsx",

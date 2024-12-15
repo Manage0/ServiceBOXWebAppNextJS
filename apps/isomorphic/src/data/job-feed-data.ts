@@ -1,5 +1,4 @@
 import { IconType } from 'react-icons';
-import FacebookIcon from '@core/components/icons/facebook';
 import {
   PiMapPinLight,
   PiClockLight,
@@ -8,7 +7,6 @@ import {
   PiShoppingBagLight,
   PiBuildingsLight,
 } from 'react-icons/pi';
-import TwitterIcon from '@core/components/icons/twitter';
 
 export const jobFeedBannerLogo =
   'https://s3.amazonaws.com/redqteam.com/isomorphic-furyroad/public/food/job-feed-banner.webp';
@@ -817,12 +815,10 @@ export const jobFeedJobSpecialties = [
 export const socialInfos = [
   {
     title: 'Share',
-    icon: FacebookIcon,
     href: 'https://facebook.com',
   },
   {
     title: 'Tweet',
-    icon: TwitterIcon,
     href: 'https://.x.com',
   },
 ];

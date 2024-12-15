@@ -41,13 +41,9 @@ import PointOfSellIcon from '@core/components/icons/point-of-sell';
 import RealEstateIcon from '@core/components/icons/real-estate';
 import NftIcon from '@core/components/icons/nft';
 import FlightIcon from '@core/components/icons/flight-icon';
-import FinancialStatisticsIcon from '@core/components/icons/financial-statistics';
 import BusinessIcon from '@core/components/icons/business';
 import SuitcaseIcon from '@core/components/icons/suitcase';
 import ProjectDashIcon from '@core/components/icons/project-dash';
-import SocialMediaDashIcon from '@core/components/icons/social-media-dash';
-import CrmDashTwoIcon from '@core/components/icons/crm-icon-two';
-import AffiliateColoredIcon from '@core/components/icons/affiliate-colored';
 
 export const lithiumMenuIcons = {
   FilesIcon,
@@ -92,14 +88,10 @@ export const lithiumMenuIcons = {
   RealEstateIcon,
   NftIcon,
   FlightIcon,
-  FinancialStatisticsIcon,
   BusinessIcon,
   ScheduleIcon,
   SuitcaseIcon,
   ProjectDashIcon,
-  SocialMediaDashIcon,
-  CrmDashTwoIcon,
-  AffiliateColoredIcon,
 };
 
 export type LithiumMenuIconType = keyof typeof lithiumMenuIcons;

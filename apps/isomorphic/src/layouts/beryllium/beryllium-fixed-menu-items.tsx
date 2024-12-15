@@ -53,8 +53,6 @@ import {
 } from 'react-icons/pi';
 import { atom } from 'jotai';
 import ProjectWriteIcon from '@core/components/icons/project-write';
-import CrmDashIcon from '@core/components/icons/crm-icon';
-import AffiliateIcon from '@core/components/icons/affiliate';
 
 export interface SubMenuItemType {
   name: string;
@@ -88,9 +86,9 @@ export const berylliumMenuItems: MenuItemsType[] = [
     icon: PiHouse,
     menuItems: [
       {
-        name: 'File Manager',
+        name: 'Project Manager',
         href: '/',
-        icon: PiFolder,
+        icon: ProjectWriteIcon,
       },
       {
         name: 'Appointment',
@@ -98,40 +96,9 @@ export const berylliumMenuItems: MenuItemsType[] = [
         icon: PiCalendarDuotone,
       },
       {
-        name: 'Executive',
-        href: routes.executive.dashboard,
-        icon: PiBriefcase,
-      },
-      {
         name: 'Project',
         href: routes.project.dashboard,
         icon: ProjectWriteIcon,
-      },
-      {
-        name: 'CRM',
-        href: routes.crm.dashboard,
-        icon: CrmDashIcon,
-      },
-      {
-        name: 'Affiliate',
-        href: routes.affiliate.dashboard,
-        icon: AffiliateIcon,
-        badge: 'NEW',
-      },
-      {
-        name: 'Social Media',
-        href: routes.socialMedia.dashboard,
-        icon: PiSparkleDuotone,
-      },
-      {
-        name: 'Job Board',
-        href: routes.jobBoard.dashboard,
-        icon: PiShapes,
-      },
-      {
-        name: 'Financial',
-        href: routes.financial.dashboard,
-        icon: PiCurrencyCircleDollar,
       },
       {
         name: 'Logistics',
@@ -290,10 +257,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
             href: routes.logistics.editShipment(DUMMY_ID),
           },
           {
-            name: 'Customer Profile',
-            href: routes.logistics.customerProfile,
-          },
-          {
             name: 'Tracking',
             href: routes.logistics.tracking(DUMMY_ID),
           },
@@ -305,10 +268,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
           '"Organize, Access, and Share: Simplify your Digital World with us!"',
         icon: PiFileImage,
         subMenuItems: [
-          {
-            name: 'Files',
-            href: routes.file.dashboard,
-          },
           {
             name: 'Manage Files',
             href: routes.file.manager,
@@ -324,11 +283,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
         name: 'Appointment',
         href: routes.appointment.appointmentList,
         icon: PiCalendarDuotone,
-      },
-      {
-        name: 'Event Calendar',
-        href: routes.eventCalendar,
-        icon: PiCalendarPlus,
       },
       {
         name: 'Roles & Permissions',
