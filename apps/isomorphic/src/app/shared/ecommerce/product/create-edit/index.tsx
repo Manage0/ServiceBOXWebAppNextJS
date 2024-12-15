@@ -25,8 +25,6 @@ import {
   CreateProductInput,
   productFormSchema,
 } from '@/validators/create-product.schema';
-import { useLayout } from '@/layouts/use-layout';
-import { LAYOUT_OPTIONS } from '@/config/enums';
 
 const MAP_STEP_TO_COMPONENT = {
   [formParts.summary]: ProductSummary,
@@ -51,7 +49,6 @@ export default function CreateEditProduct({
   product,
   className,
 }: IndexProps) {
-  const { layout } = useLayout();
   const [isLoading, setLoading] = useState(false);
   const methods = useForm<CreateProductInput>({
     resolver: zodResolver(productFormSchema),
@@ -72,11 +69,7 @@ export default function CreateEditProduct({
 
   return (
     <div className="@container">
-      <FormNav
-        className={cn(
-          layout === LAYOUT_OPTIONS.BERYLLIUM && 'z-[999] 2xl:top-[72px]'
-        )}
-      />
+      <FormNav />
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}

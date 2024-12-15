@@ -3,15 +3,9 @@
 import cn from '@core/utils/class-names';
 import { PiArrowUpRightBold, PiArrowDownRightBold } from 'react-icons/pi';
 import SimpleBar from 'simplebar-react';
-import DropdownAction from '@core/components/charts/dropdown-action';
 import { Box, Flex, Text, Title } from 'rizzui';
-import { useState } from 'react';
 import { formatNumber } from '@core/utils/format-number';
-import {
-  StatType,
-  projectStatData,
-  projectStatViewOptions,
-} from '@/data/project-dashboard';
+import { StatType, projectStatData } from '@/data/project-dashboard';
 
 export type StatCardProps = {
   className?: string;
@@ -19,23 +13,13 @@ export type StatCardProps = {
 };
 
 export default function ProjectStats({ className }: { className?: string }) {
-  const [data, setData] = useState('');
   return (
     <Box className={cn('@container', className)}>
       <Flex justify="between" align="center" className="mb-6">
-        <Title
-          as="h1"
-          className="text-base font-semibold sm:text-lg xl:text-xl"
-        >
-          Overview
+        <Title as="h1" className="text-#333333 font-30 font-lexendBold">
+          Jó reggelt, Norbert!
         </Title>
-        <DropdownAction
-          variant="flat"
-          inPortal={false}
-          onChange={setData}
-          className="rounded-md border"
-          options={projectStatViewOptions}
-        />
+        {/**TODO gombok ide jönnek, legyenek linkek, amik a megfelelő oldalra visznek, az elegáns, amúgy use displayname */}
       </Flex>
       <SimpleBar>
         <Flex className="sm:gap-6 3xl:gap-8">

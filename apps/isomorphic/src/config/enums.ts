@@ -1,12 +1,3 @@
-export enum LAYOUT_OPTIONS {
-  HYDROGEN = 'hydrogen',
-  HELIUM = 'helium',
-  LITHIUM = 'lithium',
-  BERYLLIUM = 'beryllium',
-  BORON = 'boron',
-  CARBON = 'carbon',
-}
-
 export enum PaymentGateway {
   STRIPE = 'STRIPE',
   COD = 'CASH_ON_DELIVERY',

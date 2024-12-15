@@ -20,8 +20,6 @@ import {
   shipmentFormSchema,
   CreateShipmentInput,
 } from '@/validators/create-shipping.schema';
-import { useLayout } from '@/layouts/use-layout';
-import { LAYOUT_OPTIONS } from '@/config/enums';
 
 const MAP_STEP_TO_COMPONENT = {
   [FormParts.ShippingInfo]: FormShippingInfo,
@@ -42,7 +40,6 @@ export default function CreateEditShipment({
   shipment,
   className,
 }: IndexProps) {
-  const { layout } = useLayout();
   const [isLoading, setLoading] = useState(false);
 
   const methods = useForm({
@@ -65,9 +62,7 @@ export default function CreateEditShipment({
 
   return (
     <div className="@container">
-      <FormNav
-        className={cn(layout === LAYOUT_OPTIONS.BERYLLIUM && '2xl:top-[72px]')}
-      />
+      <FormNav />
       <FormProvider {...methods}>
         <form
           className={cn('mt-6', className)}

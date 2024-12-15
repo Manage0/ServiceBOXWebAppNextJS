@@ -1,21 +1,12 @@
 import { routes } from '@/config/routes';
 import { DUMMY_ID } from '@/config/constants';
 import {
-  PiCurrencyCircleDollarFill,
   PiShoppingCart,
   PiHeadset,
   PiPackage,
-  PiChartBar,
   PiCurrencyDollar,
-  PiSquaresFour,
   PiGridFour,
-  PiFeather,
-  PiChartLineUp,
-  PiMapPinLine,
   PiUserGear,
-  PiBellSimpleRinging,
-  PiUser,
-  PiEnvelopeSimpleOpen,
   PiSteps,
   PiCreditCard,
   PiTable,
@@ -32,38 +23,32 @@ import {
   PiShieldCheck,
   PiLockKey,
   PiChatCenteredDots,
-  PiCalendarPlus,
-  PiHouseLine,
-  PiAirplaneTilt,
-  PiPokerChip,
   PiFolder,
   PiListNumbers,
   PiCaretCircleUpDown,
-  PiBriefcase,
   PiCalendarDuotone,
-  PiShapes,
   PiNewspaperClippingDuotone,
-  PiTableDuotone,
-  PiShapesDuotone,
   PiCodesandboxLogoDuotone,
-  PiSparkleDuotone,
   PiArrowsOutLineHorizontalBold,
   PiPushPinDuotone,
   PiArrowsOut,
 } from 'react-icons/pi';
 import ProjectWriteIcon from '@core/components/icons/project-write';
+import Image from 'next/image';
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
-  // label start
   {
-    name: 'Overview',
-  },
-  // label end
-  {
-    name: 'Project',
+    name: 'Dashboard',
     href: '/',
-    icon: <ProjectWriteIcon />,
+    icon: (isActive: Boolean) => (
+      <Image
+        src={isActive ? '/DashboardIconBlack.svg' : '/DashboardIconWhite.svg'}
+        alt="Dashboard icon"
+        width={24}
+        height={24}
+      />
+    ),
   },
   {
     name: 'Appointment',
@@ -90,12 +75,6 @@ export const menuItems = [
     href: routes.support.dashboard,
     icon: <PiHeadset />,
   },
-
-  // label start
-  {
-    name: 'Apps Kit',
-  },
-  // label end
   {
     name: 'E-Commerce',
     href: '#',
@@ -264,11 +243,6 @@ export const menuItems = [
     name: 'Account Settings',
     href: routes.forms.profileSettings,
     icon: <PiUserGear />,
-  },
-  {
-    name: 'Notification Preference',
-    href: routes.forms.notificationPreference,
-    icon: <PiBellSimpleRinging />,
   },
   {
     name: 'Multi Step',

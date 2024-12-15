@@ -139,14 +139,6 @@ export const pageLinks = [
     href: routes.forms.profileSettings,
   },
   {
-    name: "Notification Preference",
-    href: routes.forms.notificationPreference,
-  },
-  // {
-  //   name: 'Multi Step',
-  //   href: routes.forms.multiStep,
-  // },
-  {
     name: "Payment checkout",
     href: routes.eCommerce.checkout,
   },

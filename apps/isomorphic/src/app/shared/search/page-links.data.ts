@@ -3,11 +3,7 @@ import { DUMMY_ID } from '@/config/constants';
 
 // Note: do not add href in the label object, it is rendering as label
 export const pageLinks = [
-  // label start
-  {
-    name: 'Home',
-  },
-  // label end
+  /**TODO itt töltsd ki az oldalakkal */
   {
     name: 'E-Commerce',
     href: routes.eCommerce.dashboard,
@@ -24,11 +20,6 @@ export const pageLinks = [
     name: 'Appointment',
     href: routes.appointment.dashboard,
   },
-  // label start
-  {
-    name: 'Apps',
-  },
-  // label end
   {
     name: 'Products',
     href: routes.eCommerce.products,
@@ -129,32 +120,14 @@ export const pageLinks = [
     name: 'File Manager',
     href: routes.file.manager,
   },
-  // label start
-  {
-    name: 'Forms',
-  },
-  // label end
   {
     name: 'Profile Settings',
     href: routes.forms.profileSettings,
   },
   {
-    name: 'Notification Preference',
-    href: routes.forms.notificationPreference,
-  },
-  // {
-  //   name: 'Multi Step',
-  //   href: routes.forms.multiStep,
-  // },
-  {
     name: 'Payment checkout',
     href: routes.eCommerce.checkout,
   },
-  // label start
-  {
-    name: 'Tables',
-  },
-  // label end
   {
     name: 'Basic',
     href: routes.tables.basic,
@@ -179,11 +152,6 @@ export const pageLinks = [
     name: 'Search',
     href: routes.tables.search,
   },
-  // label start
-  {
-    name: 'Pages',
-  },
-  // label end
   {
     name: 'Profile',
     href: routes.profile,
@@ -212,11 +180,6 @@ export const pageLinks = [
     name: 'Blank',
     href: routes.blank,
   },
-  // label start
-  {
-    name: 'Authentication',
-  },
-  // label end
   {
     name: 'Trendy Sign Up',
     href: routes.auth.signUp3,
