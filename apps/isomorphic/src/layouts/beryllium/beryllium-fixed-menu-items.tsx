@@ -294,49 +294,6 @@ export const berylliumMenuItems: MenuItemsType[] = [
     ],
   },
   {
-    id: '3',
-    name: 'Search',
-    title: 'Search & Filter',
-    icon: PiUserCircle,
-    menuItems: [
-      {
-        name: 'Real Estate',
-        href: routes.searchAndFilter.realEstate,
-        icon: PiHouseLine,
-        badge: '',
-      },
-      {
-        name: 'NFT',
-        href: routes.searchAndFilter.nft,
-        icon: PiPokerChip,
-        badge: '',
-      },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Widgets',
-    title: 'Widgets',
-    icon: PiPackage,
-    menuItems: [
-      {
-        name: 'Cards',
-        href: routes.widgets.cards,
-        icon: PiSquaresFour,
-      },
-      {
-        name: 'Charts',
-        href: routes.widgets.charts,
-        icon: PiChartLineUp,
-      },
-      {
-        name: 'Maps',
-        href: routes.widgets.maps,
-        icon: PiMapPinLine,
-      },
-    ],
-  },
-  {
     id: '5',
     name: 'Forms',
     title: 'Forms',

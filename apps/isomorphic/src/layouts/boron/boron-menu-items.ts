@@ -275,42 +275,6 @@ export const menuItems = [
     href: routes.imageViewer,
     icon: PiCodesandboxLogoDuotone,
   },
-  // label start
-  {
-    name: 'Search & Filters',
-  },
-  {
-    name: 'Real Estate',
-    href: routes.searchAndFilter.realEstate,
-    icon: PiHouseLineDuotone,
-  },
-  {
-    name: 'NFT',
-    href: routes.searchAndFilter.nft,
-    icon: PiCoinDuotone,
-  },
-  // label end
-  // label start
-  {
-    name: 'Widgets',
-  },
-  // label end
-  {
-    name: 'Cards',
-    href: routes.widgets.cards,
-    icon: PiSquaresFourDuotone,
-  },
-  {
-    name: 'Charts',
-    href: routes.widgets.charts,
-    icon: PiChartLineUpDuotone,
-  },
-
-  {
-    name: 'Maps',
-    href: routes.widgets.maps,
-    icon: PiMapPinLineDuotone,
-  },
   {
     name: 'Email Templates',
     href: routes.emailTemplates,

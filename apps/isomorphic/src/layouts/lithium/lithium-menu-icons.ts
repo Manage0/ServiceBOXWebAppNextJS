@@ -36,8 +36,6 @@ import SettingsWarningIcon from '@core/components/icons/settings-warning';
 import PageBlankIcon from '@core/components/icons/page-blank';
 import CalenderIcon from '@core/components/icons/calendar';
 import FolderLockIcon from '@core/components/icons/folder-lock';
-import RealEstateIcon from '@core/components/icons/real-estate';
-import NftIcon from '@core/components/icons/nft';
 import BusinessIcon from '@core/components/icons/business';
 import SuitcaseIcon from '@core/components/icons/suitcase';
 import ProjectDashIcon from '@core/components/icons/project-dash';
@@ -80,8 +78,6 @@ export const lithiumMenuIcons = {
   PageBlankIcon,
   CalenderIcon,
   FolderLockIcon,
-  RealEstateIcon,
-  NftIcon,
   BusinessIcon,
   ScheduleIcon,
   SuitcaseIcon,

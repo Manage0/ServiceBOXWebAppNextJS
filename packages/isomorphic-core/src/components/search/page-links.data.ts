@@ -131,27 +131,6 @@ export const pageLinks = [
   },
   // label start
   {
-    name: "Widgets",
-  },
-  // label end
-  {
-    name: "Cards",
-    href: routes.widgets.cards,
-  },
-  {
-    name: "Charts",
-    href: routes.widgets.charts,
-  },
-  // {
-  //   name: 'Banners',
-  //   href: routes.widgets.banners,
-  // },
-  {
-    name: "Maps",
-    href: routes.widgets.maps,
-  },
-  // label start
-  {
     name: "Forms",
   },
   // label end

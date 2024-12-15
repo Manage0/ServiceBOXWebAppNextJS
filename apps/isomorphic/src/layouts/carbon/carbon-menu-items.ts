@@ -296,49 +296,6 @@ export const carbonMenuItems: MenuItemsType[] = [
     ],
   },
   {
-    id: '3',
-    name: 'Search',
-    title: 'Search & Filter',
-    icon: PiUserCircleDuotone,
-    menuItems: [
-      {
-        name: 'Real Estate',
-        href: routes.searchAndFilter.realEstate,
-        icon: PiHouseLineDuotone,
-        badge: '',
-      },
-      {
-        name: 'NFT',
-        href: routes.searchAndFilter.nft,
-        icon: PiPokerChipDuotone,
-        badge: '',
-      },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Widgets',
-    title: 'Widgets',
-    icon: PiPackageDuotone,
-    menuItems: [
-      {
-        name: 'Cards',
-        href: routes.widgets.cards,
-        icon: PiSquaresFourDuotone,
-      },
-      {
-        name: 'Charts',
-        href: routes.widgets.charts,
-        icon: PiChartLineUpDuotone,
-      },
-      {
-        name: 'Maps',
-        href: routes.widgets.maps,
-        icon: PiMapPinLineDuotone,
-      },
-    ],
-  },
-  {
     id: '5',
     name: 'Forms',
     title: 'Forms',

@@ -214,32 +214,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
       },
     ],
   },
-  widgets: {
-    name: 'Widgets',
-    type: 'link',
-    dropdownItems: [
-      {
-        name: 'Cards',
-        href: routes.widgets.cards,
-        icon: 'DicesIcon',
-      },
-      {
-        name: 'Charts',
-        href: routes.widgets.charts,
-        icon: 'PieChartCurrencyIcon',
-      },
-      {
-        name: 'Maps',
-        href: routes.widgets.maps,
-        icon: 'MapMarkerWithPathIcon',
-      },
-      {
-        name: 'Image Viewer',
-        href: routes.imageViewer,
-        icon: 'NftIcon',
-      },
-    ],
-  },
   forms: {
     name: 'Forms',
     type: 'link',
@@ -319,16 +293,6 @@ export const lithiumMenuItems: LithiumMenuItem = {
     name: 'Pages',
     type: 'link',
     dropdownItems: [
-      {
-        name: 'Real Estate',
-        icon: 'RealEstateIcon',
-        href: routes.searchAndFilter.realEstate,
-      },
-      {
-        name: 'NFT',
-        icon: 'NftIcon',
-        href: routes.searchAndFilter.nft,
-      },
       {
         name: 'Roles & Permissions',
         href: routes.rolesPermissions,

@@ -257,46 +257,6 @@ export const menuItems = [
   },
   // label start
   {
-    name: 'Search & Filters',
-  },
-  {
-    name: 'Real Estate',
-    href: routes.searchAndFilter.realEstate,
-    icon: <PiHouseLine />,
-  },
-  {
-    name: 'NFT',
-    href: routes.searchAndFilter.nft,
-    icon: <PiPokerChip />,
-  },
-  // label end
-  // label start
-  {
-    name: 'Widgets',
-  },
-  // label end
-  {
-    name: 'Cards',
-    href: routes.widgets.cards,
-    icon: <PiSquaresFour />,
-  },
-  {
-    name: 'Charts',
-    href: routes.widgets.charts,
-    icon: <PiChartLineUp />,
-  },
-  // {
-  //   name: 'Banners',
-  //   href: routes.widgets.banners,
-  //   icon: <PiImage />,
-  // },
-  {
-    name: 'Maps',
-    href: routes.widgets.maps,
-    icon: <PiMapPinLine />,
-  },
-  // label start
-  {
     name: 'Forms',
   },
   // label end

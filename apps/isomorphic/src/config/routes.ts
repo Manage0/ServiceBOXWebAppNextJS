@@ -17,10 +17,6 @@ export const routes = {
     cart: '/ecommerce/cart',
     checkout: '/ecommerce/checkout',
   },
-  searchAndFilter: {
-    realEstate: '/search/real-estate',
-    nft: '/search/nft',
-  },
   support: {
     dashboard: '/support',
     inbox: '/support/inbox',
@@ -63,12 +59,6 @@ export const routes = {
     builder: '/invoice/builder',
   },
   imageViewer: '/image-viewer',
-  widgets: {
-    cards: '/widgets/cards',
-    charts: '/widgets/charts',
-    maps: '/widgets/maps',
-    banners: '/widgets/banners',
-  },
   tables: {
     basic: '/tables/basic',
     collapsible: '/tables/collapsible',
