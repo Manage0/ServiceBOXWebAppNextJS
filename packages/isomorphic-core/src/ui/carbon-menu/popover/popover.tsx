@@ -1,20 +1,12 @@
-import { useDirection } from '../../../hooks/use-direction';
-import React, { useCallback, useId, useState } from 'react';
-import {
-  PopoverWidth,
-  usePopover,
-} from './use-popover';
-import {
-  FloatingPlacement,
-  FloatingPosition,
-  FloatingSide,
-} from './types';
-import { useClickOutside } from './use-click-outside';
-import { PopoverContextProvider } from './popover-context';
-import { PopoverTrigger } from './popover-trigger';
-import { PopoverContent } from './popover-content';
+import React, { useCallback, useId, useState } from "react";
+import { PopoverWidth, usePopover } from "./use-popover";
+import { FloatingPlacement, FloatingPosition, FloatingSide } from "./types";
+import { useClickOutside } from "./use-click-outside";
+import { PopoverContextProvider } from "./popover-context";
+import { PopoverTrigger } from "./popover-trigger";
+import { PopoverContent } from "./popover-content";
 
-export interface PortalProps extends React.ComponentPropsWithoutRef<'div'> {
+export interface PortalProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   target?: HTMLElement | string;
 }
@@ -38,7 +30,7 @@ interface PopoverProps {
   onOpen?: () => void;
   middlewares?: PopoverMiddlewares;
   withinPortal?: boolean;
-  portalProps?: Omit<PortalProps, 'children'>;
+  portalProps?: Omit<PortalProps, "children">;
   disabled?: boolean;
   keepMounted?: boolean;
   className?: string;
@@ -63,8 +55,8 @@ interface PopoverProps {
 export default function Popover({
   classNames,
   variant,
-  as = 'div',
-  position = 'bottom-start',
+  as = "div",
+  position = "bottom-start",
   offset = 8,
   positionDependencies = [],
   middlewares = {
@@ -76,7 +68,7 @@ export default function Popover({
   withinPortal = true,
   trapFocus = false,
   withRoles = true,
-  clickOutsideEvents = ['mousedown', 'touchstart'],
+  clickOutsideEvents = ["mousedown", "touchstart"],
   onPositionChange,
   onClose,
   onOpen,
@@ -96,33 +88,14 @@ export default function Popover({
 }: PopoverProps) {
   const [referenceNode, setReferenceNode] = useState<HTMLElement | null>(null);
   const [floatingNode, setFloatingNode] = useState<HTMLElement | null>(null);
-  const { direction } = useDirection();
   const uid = useId();
 
   /**
    * Get the floating position based on the text direction.
-   * @param {string} dir - Text direction ('rtl' or 'ltr').
    * @param {FloatingPosition} position - Original floating position.
    * @returns {FloatingPosition} - Adjusted floating position.
    */
-  function getFloatingPosition(
-    dir: 'rtl' | 'ltr',
-    position: FloatingPosition
-  ): FloatingPosition {
-    if (
-      dir === 'rtl' &&
-      (position.includes('right') || position.includes('left'))
-    ) {
-      const [side, placement] = position.split('-') as [
-        FloatingSide,
-        FloatingPlacement,
-      ];
-      const flippedPosition = side === 'right' ? 'left' : 'right';
-      return placement === undefined
-        ? flippedPosition
-        : `${flippedPosition}-${placement}`;
-    }
-
+  function getFloatingPosition(position: FloatingPosition): FloatingPosition {
     return position;
   }
 
@@ -131,7 +104,6 @@ export default function Popover({
     width,
     position: getFloatingPosition(
       // @ts-ignore
-      direction,
       position!
     ),
     offset: offset!,
@@ -208,4 +180,4 @@ export default function Popover({
 
 Popover.Trigger = PopoverTrigger;
 Popover.Content = PopoverContent;
-Popover.displayName = 'Popover';
+Popover.displayName = "Popover";

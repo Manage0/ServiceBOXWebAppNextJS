@@ -124,9 +124,13 @@ export function HeliumSidebarMenu() {
                       )}
                       <span className="truncate">{item.name}</span>
                     </div>
-                    {item?.badge?.length ? (
-                      <StatusBadge status={item?.badge} />
-                    ) : null}
+                    <PiCaretDownBold
+                      strokeWidth={3}
+                      className={cn(
+                        'h-3.5 w-3.5 -rotate-90 text-gray-500 transition-transform duration-200 rtl:rotate-90',
+                        isActive ? 'text-[#25282B]' : 'text-white'
+                      )}
+                    />
                   </Link>
                 )}
               </>

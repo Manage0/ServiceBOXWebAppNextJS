@@ -13,7 +13,7 @@ export interface InitialState {
 
 export type ContentWrapperRounded = 'sm' | 'md' | 'lg' | 'xl' | 'none';
 export type ContentWrapperShadow = 'sm' | 'md' | 'lg' | 'xl' | 'none';
-export type NavMenuDirection = 'ltr' | 'rtl';
+export type NavMenuDirection = 'ltr';
 
 export type ContentUiProps = {
   shadow: ContentWrapperShadow;

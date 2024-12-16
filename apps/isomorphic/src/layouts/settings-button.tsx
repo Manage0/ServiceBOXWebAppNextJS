@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 // import { useTheme } from "next-themes";
 import dynamic from 'next/dynamic';
-import { useDirection } from '@core/hooks/use-direction';
 import CogSolidIcon from '@core/components/icons/cog-solid';
 import { ActionIcon } from 'rizzui';
 import cn from '@core/utils/class-names';
@@ -27,17 +26,10 @@ export default function SettingsButton({
 }) {
   const COLOR_PRESETS = usePresets();
   const { openDrawer, closeDrawer } = useDrawer();
-  const { direction } = useDirection();
   const { colorPresets } = useColorPresets();
   // const { theme } = useTheme();
 
   useApplyColorPreset<any>(colorPresets ?? COLOR_PRESETS[0].colors);
-
-  // to set html dir attribute on direction change
-  useEffect(() => {
-    document.documentElement.dir = direction ?? 'ltr';
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [direction]);
 
   return (
     <ActionIcon

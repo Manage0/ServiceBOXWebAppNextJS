@@ -39,7 +39,7 @@ export default function ThemeSwitcher() {
     }
   }, [theme, colorPresetName]);
 
-  return (
+  /*return (
     <DrawerBlock title="Appearance">
       <RadioGroup
         value={theme ?? siteConfig.mode}
@@ -67,5 +67,7 @@ export default function ThemeSwitcher() {
         ))}
       </RadioGroup>
     </DrawerBlock>
-  );
+  );*/
+
+  return <div></div>;
 }

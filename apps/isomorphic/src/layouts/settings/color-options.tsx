@@ -16,7 +16,7 @@ export default function ColorOptions() {
   const { setColorPresets } = useColorPresets();
   const { colorPresetName, setColorPresetName } = useColorPresetName();
 
-  return (
+  /*return (
     <DrawerBlock title="Colors">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {COLOR_PRESETS.map((preset) => (
@@ -67,5 +67,6 @@ export default function ColorOptions() {
         ))}
       </div>
     </DrawerBlock>
-  );
+  );*/
+  return <div></div>;
 }
