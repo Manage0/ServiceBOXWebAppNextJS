@@ -14,11 +14,9 @@ const pageHeader = {
   title: 'Support Snippets',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {
-      href: routes.support.dashboard,
       name: 'Support',
     },
     {

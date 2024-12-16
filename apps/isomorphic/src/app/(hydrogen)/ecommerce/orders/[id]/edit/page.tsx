@@ -29,7 +29,6 @@ const pageHeader = {
   title: 'Edit Order',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'E-Commerce',
     },
     {

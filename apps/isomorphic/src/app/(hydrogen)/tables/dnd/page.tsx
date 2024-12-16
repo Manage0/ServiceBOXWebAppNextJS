@@ -13,7 +13,6 @@ const pageHeader = {
   title: 'Table Drag & Drop',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

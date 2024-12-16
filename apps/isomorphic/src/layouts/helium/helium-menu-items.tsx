@@ -67,16 +67,6 @@ export const menuItems = [
   },
   {
     name: 'E-Commerce',
-    href: routes.eCommerce.dashboard,
-    icon: <PiShoppingCart />,
-  },
-  {
-    name: 'Support',
-    href: routes.support.dashboard,
-    icon: <PiHeadset />,
-  },
-  {
-    name: 'E-Commerce',
     href: '#',
     icon: <PiShoppingCart />,
     dropdownItems: [

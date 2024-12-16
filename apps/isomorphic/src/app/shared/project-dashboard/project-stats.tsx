@@ -1,11 +1,16 @@
 'use client';
 
 import cn from '@core/utils/class-names';
-import { PiArrowUpRightBold, PiArrowDownRightBold } from 'react-icons/pi';
+import {
+  PiArrowUpRightBold,
+  PiArrowDownRightBold,
+  PiPlusBold,
+} from 'react-icons/pi';
 import SimpleBar from 'simplebar-react';
-import { Box, Flex, Text, Title } from 'rizzui';
+import { Box, Button, Flex, Text, Title } from 'rizzui';
 import { formatNumber } from '@core/utils/format-number';
 import { StatType, projectStatData } from '@/data/project-dashboard';
+import Link from 'next/link';
 
 export type StatCardProps = {
   className?: string;
@@ -19,6 +24,36 @@ export default function ProjectStats({ className }: { className?: string }) {
         <Title as="h1" className="text-#333333 font-30 font-lexendBold">
           Jó reggelt, Norbert!
         </Title>
+        <Box className="flex flex-col gap-5 @lg:flex-row">
+          <Link
+            href={'/' /*routes.eCommerce.createProduct*/}
+            className="w-full @lg:w-auto"
+          >
+            <Button as="span" className="w-full @lg:w-auto">
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+              Új munkalap
+            </Button>
+          </Link>
+          <Link
+            href={'/' /*routes.eCommerce.createProduct*/}
+            className="w-full @lg:w-auto"
+          >
+            <Button as="span" className="w-full @lg:w-auto">
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+              Új termék
+            </Button>
+          </Link>
+          <Link
+            href={'/' /*routes.eCommerce.createProduct*/}
+            className="w-full @lg:w-auto"
+          >
+            <Button as="span" className="w-full @lg:w-auto">
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+              Új partner
+            </Button>
+          </Link>
+        </Box>
+
         {/**TODO gombok ide jönnek, legyenek linkek, amik a megfelelő oldalra visznek, az elegáns, amúgy use displayname */}
       </Flex>
       <SimpleBar>

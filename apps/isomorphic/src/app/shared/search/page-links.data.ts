@@ -6,11 +6,7 @@ export const pageLinks = [
   /**TODO itt töltsd ki az oldalakkal */
   {
     name: 'E-Commerce',
-    href: routes.eCommerce.dashboard,
-  },
-  {
-    name: 'Support',
-    href: routes.support.dashboard,
+     
   },
   {
     name: 'Logistics',

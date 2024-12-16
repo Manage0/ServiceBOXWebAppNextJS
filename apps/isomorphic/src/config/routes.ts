@@ -18,7 +18,6 @@ export const routes = {
     checkout: '/ecommerce/checkout',
   },
   support: {
-    dashboard: '/support',
     inbox: '/support/inbox',
     supportCategory: (category: string) => `/support/inbox/${category}`,
     messageDetails: (id: string) => `/support/inbox/${id}`,

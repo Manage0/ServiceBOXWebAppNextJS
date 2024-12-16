@@ -12,11 +12,9 @@ const pageHeader = {
   title: 'Support Templates',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {
-      href: routes.support.dashboard,
       name: 'Support',
     },
     {

@@ -13,7 +13,6 @@ const pageHeader = {
   title: 'Sticky Table',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

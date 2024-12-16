@@ -13,7 +13,6 @@ const pageHeader = {
   title: 'Table Pinning',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

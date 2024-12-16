@@ -9,7 +9,6 @@ export default function OrderDetailsPage({ params }: any) {
     title: `Order #${params.id}`,
     breadcrumb: [
       {
-        href: routes.eCommerce.dashboard,
         name: 'E-Commerce',
       },
       {
@@ -28,7 +27,7 @@ export default function OrderDetailsPage({ params }: any) {
           href={routes.eCommerce.editOrder(params.id)}
           className="mt-4 w-full @lg:mt-0 @lg:w-auto"
         >
-          <Button as="span" className="w-full @lg:w-auto ">
+          <Button as="span" className="w-full @lg:w-auto">
             Edit Order
           </Button>
         </Link>

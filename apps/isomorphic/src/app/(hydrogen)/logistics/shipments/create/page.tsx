@@ -12,7 +12,6 @@ const pageHeader = {
   title: 'Create Shipment',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Dashboard',
     },
     {

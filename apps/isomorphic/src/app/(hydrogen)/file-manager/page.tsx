@@ -15,7 +15,6 @@ const pageHeader = {
   title: 'File Manager',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

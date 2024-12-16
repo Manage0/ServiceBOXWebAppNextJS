@@ -14,7 +14,6 @@ const pageHeader = {
   title: 'Reviews',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'E-Commerce',
     },
     {

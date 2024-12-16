@@ -26,7 +26,6 @@ const pageHeader = {
   title: 'Edit Shipment',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Dashboard',
     },
     {

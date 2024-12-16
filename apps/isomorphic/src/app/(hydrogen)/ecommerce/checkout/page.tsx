@@ -14,7 +14,6 @@ const pageHeader = {
       name: 'Home',
     },
     {
-      href: routes.eCommerce.dashboard,
       name: 'E-Commerce',
     },
     {

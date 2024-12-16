@@ -12,7 +12,6 @@ const pageHeader = {
   title: 'Collapsible Table',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

@@ -26,7 +26,6 @@ const pageHeader = {
   title: 'Edit Category',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

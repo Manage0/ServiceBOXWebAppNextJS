@@ -12,7 +12,6 @@ const pageHeader = {
   title: 'Enhanced Table',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

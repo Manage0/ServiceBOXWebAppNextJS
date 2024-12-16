@@ -1,7 +1,5 @@
 export const routes = {
   eCommerce: {
-    dashboard: '/ecommerce',
-    products: '/ecommerce/products',
     createProduct: '/ecommerce/products/create',
     productDetails: (slug: string) => `/ecommerce/products/${slug}`,
     ediProduct: (slug: string) => `/ecommerce/products/${slug}/edit`,
@@ -18,7 +16,6 @@ export const routes = {
     checkout: '/ecommerce/checkout',
   },
   support: {
-    dashboard: '/support',
     inbox: '/support/inbox',
     supportCategory: (category: string) => `/support/inbox/${category}`,
     messageDetails: (id: string) => `/support/inbox/${id}`,

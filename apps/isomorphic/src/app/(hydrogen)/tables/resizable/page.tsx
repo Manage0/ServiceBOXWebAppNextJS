@@ -12,7 +12,6 @@ const pageHeader = {
   title: 'Resizable Table',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {

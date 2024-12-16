@@ -7,15 +7,6 @@ export const pageLinks = [
   {
     name: "Home",
   },
-  // label end
-  {
-    name: "E-Commerce",
-    href: routes.eCommerce.dashboard,
-  },
-  {
-    name: "Support",
-    href: routes.support.dashboard,
-  },
   {
     name: "Logistics",
     href: routes.logistics.dashboard,

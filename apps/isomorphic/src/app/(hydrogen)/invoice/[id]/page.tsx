@@ -14,7 +14,6 @@ const pageHeader = {
   title: 'Invoice Details',
   breadcrumb: [
     {
-      href: routes.eCommerce.dashboard,
       name: 'Home',
     },
     {
