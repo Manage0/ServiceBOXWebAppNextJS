@@ -35,46 +35,40 @@ export const invoiceListColumns = [
   columnHelper.accessor('name', {
     id: 'name',
     size: 250,
-    header: 'Customer',
+    header: 'MUNKALAPSZÁM / MUNKATÁRS',
     enableSorting: false,
     cell: ({ row }) => (
       <AvatarCard
         src={row.original.avatar}
-        name={row.original.name}
-        description={`INV-${row.original.id}`}
+        name={`PPRK-${row.original.id}`}
+        description={row.original.name}
       />
     ),
   }),
   columnHelper.display({
     id: 'email',
     size: 280,
-    header: 'Email',
+    header: 'VEVŐ',
     cell: ({ row }) => row.original.email.toLowerCase(),
-  }),
-  columnHelper.accessor('createdAt', {
-    id: 'createdAt',
-    size: 200,
-    header: 'Created',
-    cell: ({ row }) => <DateCell date={new Date(row.original.createdAt)} />,
-  }),
-  columnHelper.accessor('dueDate', {
-    id: 'dueDate',
-    size: 200,
-    header: 'Due Date',
-    cell: ({ row }) => <DateCell date={new Date(row.original.dueDate)} />,
   }),
   columnHelper.accessor('amount', {
     id: 'amount',
     size: 200,
-    header: 'Amount',
+    header: 'ÖSSZEG',
     cell: ({ row }) => (
       <Text className="text-sm font-medium">${row.original.amount}</Text>
     ),
   }),
+  columnHelper.accessor('dueDate', {
+    id: 'dueDate',
+    size: 200,
+    header: 'LÉTREHOZÁS DÁTUMA',
+    cell: ({ row }) => <DateCell date={new Date(row.original.dueDate)} />,
+  }),
   columnHelper.accessor('status', {
     id: 'status',
     size: 150,
-    header: 'Status',
+    header: 'STÁTUSZ',
     enableSorting: false,
     cell: ({ row }) => getStatusBadge(row.original.status),
   }),

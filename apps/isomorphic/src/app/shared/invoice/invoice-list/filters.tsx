@@ -12,14 +12,12 @@ import cn from '@core/utils/class-names';
 import { getDateRangeStateValues } from '@core/utils/get-formatted-date';
 import { type Table as ReactTableType } from '@tanstack/react-table';
 import { useState } from 'react';
-import {
-  PiFunnel,
-  PiMagnifyingGlassBold,
-  PiTrashDuotone,
-} from 'react-icons/pi';
+import { PiMagnifyingGlass, PiTrashDuotone } from 'react-icons/pi';
 import { useMedia } from 'react-use';
 import { Button, Flex, Input } from 'rizzui';
 import ToggleColumns from '@core/components/table-utils/toggle-columns';
+import DropdownAction from '@core/components/charts/dropdown-action';
+import Image from 'next/image';
 
 interface TableToolbarProps<T extends Record<string, any>> {
   table: ReactTableType<T>;
@@ -31,19 +29,36 @@ export default function Filters<TData extends Record<string, any>>({
   const [openDrawer, setOpenDrawer] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
   const isLarge = useMedia('(min-width: 1920px)', false);
+  const [state, setState] = useState('Partner');
 
   return (
     <Flex align="center" justify="between" className="mb-4 gap-0">
-      <Flex align="center" className="w-auto flex-wrap">
+      <Flex align="center" className="flex-wrap">
         <Input
           type="search"
-          placeholder="Search by customer name..."
+          placeholder="Keresés a rendelések között"
           value={table.getState().globalFilter ?? ''}
           onClear={() => table.setGlobalFilter('')}
           onChange={(e) => table.setGlobalFilter(e.target.value)}
           inputClassName="h-9"
           clearable={true}
-          prefix={<PiMagnifyingGlassBold className="h-4 w-4" />}
+          prefix={<PiMagnifyingGlass className="h-4 w-4" />}
+        />
+        <DropdownAction
+          className="ml-4 w-[35%] rounded-md border"
+          options={[
+            {
+              label: 'Partner',
+              value: 'Partner',
+            },
+            {
+              label: 'Unixino',
+              value: 'Unixino',
+            },
+          ]}
+          onChange={setState}
+          dropdownClassName="!z-0"
+          prefixIconClassName="hidden"
         />
         {isLarge && showFilters && <FilterElements table={table} />}
       </Flex>
@@ -62,8 +77,14 @@ export default function Filters<TData extends Record<string, any>>({
             isLarge && showFilters && 'border-dashed border-gray-700'
           )}
         >
-          <PiFunnel className="me-1.5 size-[18px]" strokeWidth={1.7} />
-          {isLarge && showFilters ? 'Hide' : 'Filters'}
+          <Image
+            src={'/Filter.svg'}
+            alt="Users icon"
+            width={18}
+            height={18}
+            className="me-1.5"
+          />
+          {'Szűrők'}
         </Button>
 
         {!isLarge && (

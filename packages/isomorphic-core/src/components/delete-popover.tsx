@@ -1,6 +1,7 @@
 import { Title, Text, ActionIcon, Button, Popover } from "rizzui";
 import TrashIcon from "@core/components/icons/trash";
 import { PiTrashFill } from "react-icons/pi";
+import Image from "next/image";
 
 type DeletePopoverProps = {
   title: string;
@@ -8,7 +9,11 @@ type DeletePopoverProps = {
   onDelete?: () => void;
 };
 
-export default function DeletePopover({ title, description, onDelete }: DeletePopoverProps) {
+export default function DeletePopover({
+  title,
+  description,
+  onDelete,
+}: DeletePopoverProps) {
   return (
     <Popover placement="left">
       <Popover.Trigger>
@@ -18,7 +23,13 @@ export default function DeletePopover({ title, description, onDelete }: DeletePo
           aria-label={"Delete Item"}
           className="cursor-pointer"
         >
-          <TrashIcon className="size-4" />
+          <Image
+            src={"/Bin.svg"}
+            alt="Users icon"
+            width={15}
+            height={15}
+            className="size-4"
+          />
         </ActionIcon>
       </Popover.Trigger>
       <Popover.Content className="z-10">
@@ -30,7 +41,9 @@ export default function DeletePopover({ title, description, onDelete }: DeletePo
             >
               <PiTrashFill className="me-1 size-[17px]" /> {title}
             </Title>
-            <Text className="mb-2 leading-relaxed text-gray-500">{description}</Text>
+            <Text className="mb-2 leading-relaxed text-gray-500">
+              {description}
+            </Text>
             <div className="flex items-center justify-end">
               <Button
                 size="sm"

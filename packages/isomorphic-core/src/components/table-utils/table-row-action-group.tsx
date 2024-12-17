@@ -4,6 +4,7 @@ import { ActionIcon, Flex, Tooltip } from "rizzui";
 import Link from "next/link";
 import cn from "@core/utils/class-names";
 import DeletePopover from "../delete-popover";
+import Image from "next/image";
 
 export default function TableRowActionGroup({
   onDelete,
@@ -27,12 +28,7 @@ export default function TableRowActionGroup({
       gap="3"
       className={cn("pe-3", className)}
     >
-      <Tooltip
-        size="sm"
-        content="Edit Item"
-        placement="top"
-        color="invert"
-      >
+      <Tooltip size="sm" content="Edit Item" placement="top" color="invert">
         <Link href={editUrl}>
           <ActionIcon
             as="span"
@@ -40,16 +36,35 @@ export default function TableRowActionGroup({
             variant="outline"
             aria-label="Edit Item"
           >
-            <PencilIcon className="size-4" />
+            <Image
+              src={"/Messages.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
           </ActionIcon>
         </Link>
       </Tooltip>
-      <Tooltip
-        size="sm"
-        content="View Item"
-        placement="top"
-        color="invert"
-      >
+      <Tooltip size="sm" content="Edit Item" placement="top" color="invert">
+        <Link href={editUrl}>
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            aria-label="Edit Item"
+          >
+            <Image
+              src={"/Edit.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
+          </ActionIcon>
+        </Link>
+      </Tooltip>
+      <Tooltip size="sm" content="View Item" placement="top" color="invert">
         <Link href={viewUrl}>
           <ActionIcon
             as="span"
@@ -57,7 +72,13 @@ export default function TableRowActionGroup({
             variant="outline"
             aria-label="View item"
           >
-            <EyeIcon className="size-4" />
+            <Image
+              src={"/View.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
           </ActionIcon>
         </Link>
       </Tooltip>

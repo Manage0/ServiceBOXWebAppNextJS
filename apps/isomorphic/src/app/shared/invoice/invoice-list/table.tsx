@@ -8,7 +8,6 @@ import { invoiceListColumns } from './columns';
 import TablePagination from '@core/components/table/pagination';
 
 import TableFooter from '@core/components/table/footer';
-import { exportToCSV } from '@core/utils/export-to-csv';
 export type InvoiceTableDataType = (typeof invoiceData)[number];
 
 export default function InvoiceTable() {
@@ -38,14 +37,6 @@ export default function InvoiceTable() {
     .getSelectedRowModel()
     .rows.map((row) => row.original);
 
-  function handleExportData() {
-    exportToCSV(
-      selectedData,
-      'ID,Name,Email,DueDate,Status,Amount,CreatedAt',
-      `invoice_data_${selectedData.length}`
-    );
-  }
-
   return (
     <>
       <Filters table={table} />
@@ -57,7 +48,7 @@ export default function InvoiceTable() {
           rowClassName: 'last:border-0',
         }}
       />
-      <TableFooter table={table} onExport={handleExportData} />
+      <TableFooter table={table} />
       <TablePagination table={table} className="py-4" />
     </>
   );
