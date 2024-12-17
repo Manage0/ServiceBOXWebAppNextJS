@@ -17,14 +17,6 @@ export const pageLinks = [
     href: routes.appointment.dashboard,
   },
   {
-    name: 'Products',
-    href: routes.eCommerce.products,
-  },
-  {
-    name: 'Product Details',
-    href: routes.eCommerce.productDetails(DUMMY_ID),
-  },
-  {
     name: 'Create Product',
     href: routes.eCommerce.createProduct,
   },

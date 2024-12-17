@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import WishlistButton from '../wishlist-button';
-import { generateSlug } from '../../utils/generate-slug';
-import { Title, Text } from 'rizzui';
-import { Product } from '../../types';
-import { toCurrency } from '../../utils/to-currency';
+import Link from "next/link";
+import Image from "next/image";
+import WishlistButton from "../wishlist-button";
+import { generateSlug } from "../../utils/generate-slug";
+import { Title, Text } from "rizzui";
+import { Product } from "../../types";
+import { toCurrency } from "../../utils/to-currency";
 
 interface ProductProps {
   product: Product;
@@ -48,11 +48,7 @@ export default function ProductMinimalCard({
 
       <div className="pt-3.5">
         <div className="pb-1 font-medium text-red-dark">Just In</div>
-        <Link
-          href={routes.eCommerce.productDetails(
-            String(slug ?? generateSlug(title))
-          )}
-        >
+        <Link href={"/"}>
           <Title
             as="h6"
             className="mb-0.5 truncate font-semibold transition-colors hover:text-primary"
@@ -66,7 +62,7 @@ export default function ProductMinimalCard({
 
         {colors?.length ? (
           <div className="text-sm text-gray-500">
-            {colors?.length} {colors?.length > 1 ? 'Colors' : 'Color'}
+            {colors?.length} {colors?.length > 1 ? "Colors" : "Color"}
           </div>
         ) : null}
 

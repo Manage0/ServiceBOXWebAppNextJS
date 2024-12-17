@@ -120,7 +120,7 @@ export const productsListColumns = [
           placement="top"
           color="invert"
         >
-          <Link href={routes.eCommerce.productDetails(row.original.id)}>
+          <Link href={'/'}>
             <ActionIcon
               as="span"
               size="sm"

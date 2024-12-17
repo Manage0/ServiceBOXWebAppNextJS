@@ -19,15 +19,6 @@ export const pageLinks = [
   {
     name: "Apps",
   },
-  // label end
-  {
-    name: "Products",
-    href: routes.eCommerce.products,
-  },
-  {
-    name: "Product Details",
-    href: routes.eCommerce.productDetails(DUMMY_ID),
-  },
   {
     name: "Create Product",
     href: routes.eCommerce.createProduct,

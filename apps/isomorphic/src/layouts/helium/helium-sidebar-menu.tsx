@@ -5,7 +5,6 @@ import { Title, Collapse } from 'rizzui';
 import cn from '@core/utils/class-names';
 import { PiCaretDownBold } from 'react-icons/pi';
 import { menuItems } from '@/layouts/helium/helium-menu-items';
-import StatusBadge from '@core/components/get-status-badge';
 
 export function HeliumSidebarMenu() {
   const pathname = usePathname();
@@ -90,9 +89,6 @@ export function HeliumSidebarMenu() {
                               {dropdownItem?.name}
                             </span>
                           </div>
-                          {dropdownItem?.badge?.length ? (
-                            <StatusBadge status={dropdownItem?.badge} />
-                          ) : null}
                         </Link>
                       );
                     })}

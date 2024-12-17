@@ -17,7 +17,6 @@ const pageHeader = {
       name: 'E-Commerce',
     },
     {
-      href: routes.eCommerce.products,
       name: 'Products',
     },
     {

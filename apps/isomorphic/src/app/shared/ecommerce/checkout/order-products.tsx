@@ -72,13 +72,7 @@ export default function OrderProducts({
                   as="h3"
                   className="mb-1 text-sm font-medium text-gray-700"
                 >
-                  <Link
-                    href={routes.eCommerce.productDetails(
-                      generateSlug(item.name)
-                    )}
-                  >
-                    {item.name}
-                  </Link>
+                  <Link href={'/'}>{item.name}</Link>
                 </Title>
                 <div className="text-gray-500">
                   {toCurrency(item.price)} x {item.quantity}

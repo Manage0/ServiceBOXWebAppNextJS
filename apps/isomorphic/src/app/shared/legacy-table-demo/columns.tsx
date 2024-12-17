@@ -249,7 +249,7 @@ export const getColumns = ({
           placement="top"
           color="invert"
         >
-          <Link href={routes.eCommerce.productDetails(row.id)}>
+          <Link href={'/'}>
             <ActionIcon size="sm" variant="outline" aria-label={'View Product'}>
               <EyeIcon className="h-4 w-4" />
             </ActionIcon>

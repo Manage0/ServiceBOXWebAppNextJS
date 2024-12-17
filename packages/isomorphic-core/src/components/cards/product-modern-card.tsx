@@ -1,13 +1,13 @@
-'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Title, Text } from 'rizzui';
-import cn from '../../utils/class-names';
-import WishlistButton from '../wishlist-button';
-import { generateSlug } from '../../utils/generate-slug';
-import ColorSwatch from '../../utils/color-swatch';
-import { Product } from '../../types';
-import { toCurrency } from '../../utils/to-currency';
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { Title, Text } from "rizzui";
+import cn from "../../utils/class-names";
+import WishlistButton from "../wishlist-button";
+import { generateSlug } from "../../utils/generate-slug";
+import ColorSwatch from "../../utils/color-swatch";
+import { Product } from "../../types";
+import { toCurrency } from "../../utils/to-currency";
 
 interface ProductProps {
   product: Product;
@@ -47,11 +47,7 @@ export default function ProductModernCard({
       </div>
 
       <div className="pt-3">
-        <Link
-          href={routes.eCommerce.productDetails(
-            String(slug ?? generateSlug(title))
-          )}
-        >
+        <Link href={"/"}>
           <Title
             as="h6"
             className="mb-1 truncate font-semibold transition-colors hover:text-primary"

@@ -33,7 +33,6 @@ import {
   PiPushPinDuotone,
   PiArrowsOut,
 } from 'react-icons/pi';
-import ProjectWriteIcon from '@core/components/icons/project-write';
 import Image from 'next/image';
 
 // Note: do not add href in the label object, it is rendering as label
@@ -56,11 +55,6 @@ export const menuItems = [
     icon: <PiCalendarDuotone />,
   },
   {
-    name: 'Project',
-    href: routes.project.dashboard,
-    icon: <ProjectWriteIcon />,
-  },
-  {
     name: 'Logistics',
     href: routes.logistics.dashboard,
     icon: <PiPackage />,
@@ -70,15 +64,6 @@ export const menuItems = [
     href: '#',
     icon: <PiShoppingCart />,
     dropdownItems: [
-      {
-        name: 'Products',
-        href: routes.eCommerce.products,
-        badge: '',
-      },
-      {
-        name: 'Product Details',
-        href: routes.eCommerce.productDetails(DUMMY_ID),
-      },
       {
         name: 'Create Product',
         href: routes.eCommerce.createProduct,

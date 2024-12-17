@@ -27,11 +27,7 @@ export default function CartProduct({ product }: { product: CartItem }) {
             as="h3"
             className="truncate text-base font-medium transition-colors hover:text-primary 3xl:text-lg"
           >
-            <Link
-              href={routes.eCommerce.productDetails(product?.slug as string)}
-            >
-              {product.name}
-            </Link>
+            <Link href={'/'}>{product.name}</Link>
           </Title>
           <span className="inline-block text-sm font-semibold text-gray-1000 sm:font-medium md:text-base 3xl:text-lg">
             {toCurrency(product.price)}

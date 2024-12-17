@@ -1,7 +1,6 @@
 export const routes = {
   eCommerce: {
     createProduct: '/ecommerce/products/create',
-    productDetails: (slug: string) => `/ecommerce/products/${slug}`,
     ediProduct: (slug: string) => `/ecommerce/products/${slug}/edit`,
     categories: '/ecommerce/categories',
     createCategory: '/ecommerce/categories/create',
@@ -38,9 +37,6 @@ export const routes = {
   appointment: {
     dashboard: '/appointment',
     appointmentList: '/appointment/list',
-  },
-  project: {
-    dashboard: '/project',
   },
   file: {
     manager: '/file-manager',
