@@ -1,4 +1,4 @@
-import ShipmentListTable from '@/app/shared/logistics/shipment/list/table';
+import ShipmentListTable from '@/app/shared/coworkers/shipment/list/table';
 import ShipmentPageHeader from '@/app/(hydrogen)/logistics/shipments/page-header';
 import { metaObject } from '@/config/site.config';
 

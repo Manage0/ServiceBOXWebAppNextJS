@@ -28,7 +28,6 @@ export const routes = {
     editTemplate: (id: string) => `/support/templates/${id}/edit`,
   },
   logistics: {
-    dashboard: '/logistics',
     shipmentList: '/logistics/shipments',
     createShipment: '/logistics/shipments/create',
     editShipment: (id: string) => `/logistics/shipments/${id}/edit`,

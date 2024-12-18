@@ -10,7 +10,7 @@ import {
   packagingTypes,
   shippingMethods,
   courierCompanies,
-} from '@/app/shared/logistics/shipment/create-edit/select-options';
+} from '@/app/shared/coworkers/shipment/create-edit/select-options';
 import UploadZone from '@core/ui/file-upload/upload-zone';
 
 export default function FormShippingInfo() {

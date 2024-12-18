@@ -6,15 +6,15 @@ import { Element } from 'react-scroll';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm, FormProvider } from 'react-hook-form';
 import FormFooter from '@core/components/form-footer';
-import FormSenderInfo from '@/app/shared/logistics/shipment/create-edit/form-sender-info';
-import FormPackageInfo from '@/app/shared/logistics/shipment/create-edit/form-package-info';
-import FormShippingInfo from '@/app/shared/logistics/shipment/create-edit/form-shipping-info';
-import FormRecipientInfo from '@/app/shared/logistics/shipment/create-edit/form-recipient-info';
-import FormPaymentMethodInfo from '@/app/shared/logistics/shipment/create-edit/form-payment-method-info';
+import FormSenderInfo from '@/app/shared/coworkers/shipment/create-edit/form-sender-info';
+import FormPackageInfo from '@/app/shared/coworkers/shipment/create-edit/form-package-info';
+import FormShippingInfo from '@/app/shared/coworkers/shipment/create-edit/form-shipping-info';
+import FormRecipientInfo from '@/app/shared/coworkers/shipment/create-edit/form-recipient-info';
+import FormPaymentMethodInfo from '@/app/shared/coworkers/shipment/create-edit/form-payment-method-info';
 import FormNav, {
   FormParts,
-} from '@/app/shared/logistics/shipment/create-edit/form-nav';
-import { defaultValues } from '@/app/shared/logistics/shipment/create-edit/form-utils';
+} from '@/app/shared/coworkers/shipment/create-edit/form-nav';
+import { defaultValues } from '@/app/shared/coworkers/shipment/create-edit/form-utils';
 import cn from '@core/utils/class-names';
 import {
   shipmentFormSchema,

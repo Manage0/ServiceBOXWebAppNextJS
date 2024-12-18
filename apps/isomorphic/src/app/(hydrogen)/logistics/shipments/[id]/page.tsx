@@ -2,11 +2,11 @@ import { PiPrinterBold, PiDownloadSimpleBold } from 'react-icons/pi';
 import { routes } from '@/config/routes';
 import { Button } from 'rizzui';
 import PageHeader from '@/app/shared/page-header';
-import Addresses from '@/app/shared/logistics/shipment/details/addresses';
-import InvoiceDetails from '@/app/shared/logistics/shipment/details/invoice-details';
-import DeliveryDetails from '@/app/shared/logistics/shipment/details/delivery-details';
-import TrackingHistory from '@/app/shared/logistics/shipment/details/tracking-history';
-import ShippingDetails from '@/app/shared/logistics/shipment/details/shipping-details';
+import Addresses from '@/app/shared/coworkers/shipment/details/addresses';
+import InvoiceDetails from '@/app/shared/coworkers/shipment/details/invoice-details';
+import DeliveryDetails from '@/app/shared/coworkers/shipment/details/delivery-details';
+import TrackingHistory from '@/app/shared/coworkers/shipment/details/tracking-history';
+import ShippingDetails from '@/app/shared/coworkers/shipment/details/shipping-details';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {

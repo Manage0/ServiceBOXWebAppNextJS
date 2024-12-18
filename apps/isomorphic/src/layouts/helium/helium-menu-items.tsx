@@ -75,7 +75,7 @@ export const menuItems = [
   },
   {
     name: 'Termékek',
-    href: '#',
+    href: '/products',
     icon: (isActive: Boolean) => (
       <Image
         src={isActive ? '/ProductsBlack.svg' : '/ProductsWhite.svg'}

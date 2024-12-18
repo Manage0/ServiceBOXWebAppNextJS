@@ -1,25 +1,25 @@
 'use client';
 
-import { invoiceData } from '@/data/invoice-data';
 import Table from '@core/components/table';
 import { useTanStackTable } from '@core/components/table/custom/use-TanStack-Table';
 import Filters from './filters';
-import { invoiceListColumns } from './columns';
 import TablePagination from '@core/components/table/pagination';
 
 import TableFooter from '@core/components/table/footer';
-export type InvoiceTableDataType = (typeof invoiceData)[number];
+import { productsData } from '@/data/products-data';
+import { productsColumns } from './ProductsColumns';
+export type ProductsTableDataType = (typeof productsData)[number];
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
 };
 
-export default function InvoiceTable({
+export default function ProductsTable({
   searchbarPlaceholder,
 }: SearchableTableProps) {
-  const { table, setData } = useTanStackTable<InvoiceTableDataType>({
-    tableData: invoiceData,
-    columnConfig: invoiceListColumns,
+  const { table, setData } = useTanStackTable<ProductsTableDataType>({
+    tableData: productsData,
+    columnConfig: productsColumns,
     options: {
       initialState: {
         pagination: {
@@ -47,16 +47,16 @@ export default function InvoiceTable({
     <>
       <Filters
         table={table}
+        searchbarPlaceholder={searchbarPlaceholder}
         dropdownProps={{
           options: [
-            { label: 'Partner', value: 'Partner' },
-            { label: 'Unixino', value: 'Unixino' },
+            { label: 'Kategória', value: 'Kategória' },
+            { label: 'Fiskálnyomtató', value: 'Fiskálnyomtató' },
           ],
           onChange: (value) => {
             console.log('Selected value:', value);
           },
         }}
-        searchbarPlaceholder={searchbarPlaceholder}
       />
       <Table
         table={table}

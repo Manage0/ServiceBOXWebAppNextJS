@@ -22,18 +22,27 @@ import Image from 'next/image';
 interface TableToolbarProps<T extends Record<string, any>> {
   table: ReactTableType<T>;
   searchbarPlaceholder?: string;
-  hasPartners?: true;
+  dropdownProps?: DropdownProps;
 }
+
+type Option = {
+  label: string;
+  value: string;
+};
+
+type DropdownProps = {
+  options: Option[];
+  onChange: (value: string) => void;
+};
 
 export default function Filters<TData extends Record<string, any>>({
   table,
   searchbarPlaceholder,
-  hasPartners,
+  dropdownProps,
 }: TableToolbarProps<TData>) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
   const isLarge = useMedia('(min-width: 1920px)', false);
-  const [state, setState] = useState('Partner');
 
   return (
     <Flex align="center" justify="between" className="mb-4 gap-0">
@@ -48,20 +57,11 @@ export default function Filters<TData extends Record<string, any>>({
           clearable={true}
           prefix={<PiMagnifyingGlass className="h-4 w-4" />}
         />
-        {hasPartners && (
+        {dropdownProps && (
           <DropdownAction
             className="ml-4 w-[30%] rounded-md border"
-            options={[
-              {
-                label: 'Partner',
-                value: 'Partner',
-              },
-              {
-                label: 'Unixino',
-                value: 'Unixino',
-              },
-            ]}
-            onChange={setState}
+            options={dropdownProps.options}
+            onChange={dropdownProps.onChange}
             dropdownClassName="!z-0"
             prefixIconClassName="hidden"
           />

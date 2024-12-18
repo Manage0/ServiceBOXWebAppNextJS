@@ -8,6 +8,7 @@ const statusColors = {
   danger: ["text-red-dark", "bg-red-dark", "bg-red-100"],
   default: ["text-gray-600", "bg-gray-600", "bg-gray-100"],
   offline: ["text-gray-600", "bg-[#c46851]", "bg-gray-100"],
+  vázlat: ["text-[#b2b2b2]", "bg-[#b2b2b2]", "bg-white"],
 };
 
 const allStatus = {
@@ -28,6 +29,8 @@ const allStatus = {
   delayed: statusColors.default,
   draft: statusColors.default,
   refunded: statusColors.default,
+  vázlat: statusColors.vázlat,
+  aktív: statusColors.success,
 };
 
 export type StatusTypes = keyof typeof allStatus;

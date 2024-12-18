@@ -20,7 +20,7 @@ export const productsData = [
     sku: '52442',
     stock: 30,
     price: '410.00',
-    status: 'Pending',
+    status: 'Vázlat',
     rating: [4, 5, 3, 2],
   },
   {
@@ -32,7 +32,7 @@ export const productsData = [
     sku: '98424',
     stock: 0,
     price: '340.00',
-    status: 'Draft',
+    status: 'Aktív',
     rating: [4, 5],
   },
   {
@@ -44,7 +44,7 @@ export const productsData = [
     sku: '78192',
     stock: 50,
     price: '948.00',
-    status: 'Draft',
+    status: 'Aktív',
     rating: [4, 5, 2, 5, 3],
   },
   {
@@ -56,7 +56,7 @@ export const productsData = [
     sku: '86229',
     stock: 0,
     price: '853.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [3, 2],
   },
   {
@@ -68,7 +68,7 @@ export const productsData = [
     sku: '89762',
     stock: 18,
     price: '881.00',
-    status: 'Publish',
+    status: 'Aktív',
     rating: [3, 4, 5],
   },
   {
@@ -80,7 +80,7 @@ export const productsData = [
     sku: '21065',
     stock: 9,
     price: '124.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [5, 5, 4, 3, 2],
   },
   {
@@ -92,7 +92,7 @@ export const productsData = [
     sku: '41063',
     stock: 0,
     price: '890.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [5, 2],
   },
   {
@@ -104,7 +104,7 @@ export const productsData = [
     sku: '13240',
     stock: 9,
     price: '980.00',
-    status: 'Publish',
+    status: 'Aktív',
     rating: [4, 2],
   },
   {
@@ -116,7 +116,7 @@ export const productsData = [
     sku: '26214',
     stock: 0,
     price: '289.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [2, 5, 4],
   },
   {
@@ -128,7 +128,7 @@ export const productsData = [
     sku: '14317',
     stock: 24,
     price: '587.00',
-    status: 'Draft',
+    status: 'Aktív',
     rating: [4, 3, 2, 5],
   },
   {
@@ -140,7 +140,7 @@ export const productsData = [
     sku: '21944',
     stock: 9,
     price: '581.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [3, 2, 4, 5],
   },
   {
@@ -152,7 +152,7 @@ export const productsData = [
     sku: '93411',
     stock: 18,
     price: '946.00',
-    status: 'Pending',
+    status: 'Aktív',
     rating: [2, 5, 5],
   },
   {
@@ -164,7 +164,7 @@ export const productsData = [
     sku: '61422',
     stock: 24,
     price: '448.00',
-    status: 'Pending',
+    status: 'Vázlat',
     rating: [2, 5, 4, 5],
   },
   {
@@ -176,7 +176,7 @@ export const productsData = [
     sku: '30532',
     stock: 0,
     price: '676.00',
-    status: 'Draft',
+    status: 'Vázlat',
     rating: [5, 3, 4],
   },
   {
@@ -188,7 +188,7 @@ export const productsData = [
     sku: '47948',
     stock: 9,
     price: '524.00',
-    status: 'Draft',
+    status: 'Vázlat',
     rating: [5, 5, 4, 3],
   },
   {
@@ -200,7 +200,7 @@ export const productsData = [
     sku: '52342',
     stock: 0,
     price: '400.00',
-    status: 'publish',
+    status: 'Aktív',
     rating: [4, 5, 3, 2],
   },
   {
@@ -212,7 +212,7 @@ export const productsData = [
     sku: '98414',
     stock: 0,
     price: '342.00',
-    status: 'Draft',
+    status: 'Vázlat',
     rating: [4, 5],
   },
   {
@@ -224,7 +224,7 @@ export const productsData = [
     sku: '78592',
     stock: 0,
     price: '948.00',
-    status: 'Publish',
+    status: 'Aktív',
     rating: [4, 5, 8, 5, 3],
   },
 ];

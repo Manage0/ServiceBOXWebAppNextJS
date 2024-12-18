@@ -2,7 +2,7 @@ import { routes } from '@/config/routes';
 import PageHeader from '@/app/shared/page-header';
 import { metaObject } from '@/config/site.config';
 import ImportButton from '@/app/shared/import-button';
-import CreateEditShipment from '@/app/shared/logistics/shipment/create-edit';
+import CreateEditShipment from '@/app/shared/coworkers/shipment/create-edit';
 
 export const metadata = {
   ...metaObject('Create Shipment'),

@@ -8,7 +8,7 @@ import {
   paidBy,
   countries,
   paymentMethods,
-} from '@/app/shared/logistics/shipment/create-edit/select-options';
+} from '@/app/shared/coworkers/shipment/create-edit/select-options';
 
 interface FormPaymentMethodInfoProps {
   className?: string;

@@ -1,6 +1,7 @@
-import CoworkersDashboard from '@/app/shared/coworkers/dashboard';
 import { metaObject } from '@/config/site.config';
 import CoworkersPageHeader from './page-header';
+import ProductsPageHeader from './page-header';
+import ProductsDashboard from '@/app/shared/products/dashboard/ProductsDashboard';
 
 export const metadata = {
   ...metaObject('Coworkers'),
@@ -9,9 +10,9 @@ export const metadata = {
 export default function LogisticsPage() {
   return (
     <>
-      <CoworkersPageHeader />
+      <ProductsPageHeader />
       <div className="flex flex-col gap-10">
-        <CoworkersDashboard />
+        <ProductsDashboard />
       </div>
     </>
   );
