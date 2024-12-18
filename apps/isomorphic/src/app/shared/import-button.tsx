@@ -5,6 +5,7 @@ import { Button } from 'rizzui';
 import cn from '@core/utils/class-names';
 import { PiArrowLineDownBold } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
+import Image from 'next/image';
 const FileUpload = dynamic(() => import('@/app/shared/file-upload'), {
   ssr: false,
 });
@@ -41,7 +42,13 @@ export default function ImportButton({
       }
       className={cn('w-full @lg:w-auto', className)}
     >
-      <PiArrowLineDownBold className="me-1.5 h-[17px] w-[17px]" />
+      <Image
+        src={'/Download.svg'}
+        alt="Users icon"
+        width={17}
+        height={17}
+        className="me-1.5"
+      />
       {buttonLabel}
     </Button>
   );

@@ -1,25 +1,25 @@
 'use client';
 
-import { invoiceData } from '@/data/invoice-data';
 import Table from '@core/components/table';
 import { useTanStackTable } from '@core/components/table/custom/use-TanStack-Table';
 import Filters from './filters';
-import { invoiceListColumns } from './columns';
 import TablePagination from '@core/components/table/pagination';
 
 import TableFooter from '@core/components/table/footer';
-export type InvoiceTableDataType = (typeof invoiceData)[number];
+import { coworkersColumns } from './cowrokersColumns';
+import { coworkersData } from '@/data/coworkers-data';
+export type CoworkersTableDataType = (typeof coworkersData)[number];
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
 };
 
-export default function InvoiceTable({
+export default function CoworkersTable({
   searchbarPlaceholder,
 }: SearchableTableProps) {
-  const { table, setData } = useTanStackTable<InvoiceTableDataType>({
-    tableData: invoiceData,
-    columnConfig: invoiceListColumns,
+  const { table, setData } = useTanStackTable<CoworkersTableDataType>({
+    tableData: coworkersData,
+    columnConfig: coworkersColumns,
     options: {
       initialState: {
         pagination: {
@@ -45,11 +45,7 @@ export default function InvoiceTable({
 
   return (
     <>
-      <Filters
-        table={table}
-        hasPartners={true}
-        searchbarPlaceholder={searchbarPlaceholder}
-      />
+      <Filters table={table} searchbarPlaceholder={searchbarPlaceholder} />
       <Table
         table={table}
         variant="modern"

@@ -10,6 +10,7 @@ interface AvatarCardProps {
   avatarProps?: AvatarProps;
   description?: React.ReactNode;
   badge?: string;
+  hasAvatar?: true;
 }
 
 export default function AvatarCard({
@@ -20,29 +21,31 @@ export default function AvatarCard({
   avatarProps,
   badge,
   nameClassName,
+  hasAvatar,
 }: AvatarCardProps) {
   return (
     <figure
       className={cn("flex items-center justify-between gap-3", className)}
     >
-      {/*<Avatar
-        name={name}
-        src={src}
-        {...avatarProps}
-      />*/}
-      <figcaption className="grid gap-0.5">
-        <Text
-          className={cn(
-            "font-lexend text-sm font-medium text-gray-900 dark:text-gray-700",
-            nameClassName
-          )}
-        >
-          {name}
-        </Text>
-        {description && (
-          <Text className="text-[13px] text-gray-500">{description}</Text>
+      <figcaption className="flex justify-between">
+        {hasAvatar && (
+          <Avatar name={name} src={src} {...avatarProps} className="mr-2" />
         )}
+        <div className="flex flex-col">
+          <Text
+            className={cn(
+              "font-lexend text-sm font-medium text-gray-900 dark:text-gray-700",
+              nameClassName
+            )}
+          >
+            {name}
+          </Text>
+          {description && (
+            <Text className="text-[13px] text-gray-500">{description}</Text>
+          )}
+        </div>
       </figcaption>
+
       {badge && <Badge text={badge} />}
       {/**make a type for it TODO de a munkalaphoz és azt használd!!! */}
     </figure>

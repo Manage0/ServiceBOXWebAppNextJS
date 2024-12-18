@@ -37,19 +37,18 @@ export default function TablePagination<TData extends Record<string, any>>({
     >
       <Flex align="center" className="w-auto shrink-0">
         <Text className="hidden font-normal text-gray-600 @md:block">
-          Sor oldalanként
+          Sor oldalanként:
         </Text>
         <Select
-          size="sm"
-          variant="flat"
           options={options}
-          className="w-12"
+          size="md"
+          className="w-15"
           value={table.getState().pagination.pageSize}
           onChange={(v: SelectOption) => {
             table.setPageSize(Number(v.value));
           }}
           suffixClassName="[&>svg]:size-3"
-          selectClassName="font-semibold text-xs ring-0 shadow-sm h-7"
+          selectClassName="font-semibold text-xs ring-0 shadow-sm h-9"
           optionClassName="font-medium text-xs px-2 justify-center"
         />
       </Flex>

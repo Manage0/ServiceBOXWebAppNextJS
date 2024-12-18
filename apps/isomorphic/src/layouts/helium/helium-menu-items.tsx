@@ -63,7 +63,7 @@ export const menuItems = [
   },
   {
     name: 'Munkatársak',
-    href: routes.logistics.dashboard,
+    href: routes.coworkers.dashboard,
     icon: (isActive: Boolean) => (
       <Image
         src={isActive ? '/UserBlack.svg' : '/UserWhite.svg'}

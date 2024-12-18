@@ -8,10 +8,11 @@ import { Checkbox, Text } from 'rizzui';
 import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
 import { InvoiceTableDataType } from './table';
+import { CoworkersTableDataType } from './coworkersTable';
 
-const columnHelper = createColumnHelper<InvoiceTableDataType>();
+const columnHelper = createColumnHelper<CoworkersTableDataType>();
 
-export const invoiceListColumns = [
+export const coworkersColumns = [
   columnHelper.display({
     id: 'select',
     size: 50,
@@ -34,46 +35,39 @@ export const invoiceListColumns = [
   }),
   columnHelper.accessor('name', {
     id: 'name',
-    size: 250,
-    header: 'MUNKALAPSZÁM / MUNKATÁRS',
+    size: 300,
+    header: 'FELHASZNÁLÓ',
     enableSorting: false,
     cell: ({ row }) => {
       return (
         <AvatarCard
+          hasAvatar={true}
           src={row.original.avatar}
-          name={`PPRK-${row.original.id}`}
-          description={row.original.name}
-          badge={row.original.badge}
+          name={row.original.name}
+          description={row.original.email}
+          //badge={row.original.badge}
         />
       );
     },
   }),
   columnHelper.display({
     id: 'email',
-    size: 280,
-    header: 'VEVŐ',
-    cell: ({ row }) => row.original.email.toLowerCase(),
-  }),
-  columnHelper.accessor('amount', {
-    id: 'amount',
     size: 150,
-    header: 'ÖSSZEG',
-    cell: ({ row }) => (
-      <Text className="text-sm font-medium">${row.original.amount}</Text>
-    ),
+    header: 'JOGKÖR',
+    cell: ({ row }) => row.original.role, //TODO make type for it
   }),
   columnHelper.accessor('dueDate', {
     id: 'dueDate',
     size: 200,
-    header: 'LÉTREHOZÁS DÁTUMA',
+    header: 'UTOLSÓ BELÉPÉS',
     cell: ({ row }) => <DateCell date={new Date(row.original.dueDate)} />,
   }),
   columnHelper.accessor('status', {
     id: 'status',
-    size: 150,
+    size: 70,
     header: 'STÁTUSZ',
     enableSorting: false,
-    cell: ({ row }) => getStatusBadge(row.original.status),
+    cell: ({ row }) => getStatusBadge(row.original.status, true),
   }),
   columnHelper.display({
     id: 'actions',
@@ -86,8 +80,6 @@ export const invoiceListColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
-        messageUrl={routes.invoice.edit(row.original.id)}
-        viewUrl={routes.invoice.details(row.original.id)}
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}

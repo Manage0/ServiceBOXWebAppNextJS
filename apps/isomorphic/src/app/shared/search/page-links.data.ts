@@ -9,10 +9,6 @@ export const pageLinks = [
      
   },
   {
-    name: 'Logistics',
-    href: routes.logistics.dashboard,
-  },
-  {
     name: 'Appointment',
     href: routes.appointment.dashboard,
   },

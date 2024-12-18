@@ -37,7 +37,7 @@ export default function TablePagination({
         )
       ) : (
         <div className="hidden items-center sm:flex">
-          Sor oldalanként:{" "}
+          Sor oldalanként:{""}
           <Select
             options={paginationLimitOptions}
             onChange={setPageSize}
