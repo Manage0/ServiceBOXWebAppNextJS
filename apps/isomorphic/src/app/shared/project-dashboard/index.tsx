@@ -6,6 +6,7 @@ import ProjectSummary from './project-summary';
 import TableLayout from '@/app/(hydrogen)/tables/table-layout';
 import InvoiceTable from '../invoice/invoice-list/table';
 import { invoiceData } from '@/data/invoice-data';
+import PageHeader from '../page-header';
 
 export default function ProjectDashboard() {
   return (
@@ -18,7 +19,7 @@ export default function ProjectDashboard() {
         fileName={undefined}
         header={undefined}
       >
-        <InvoiceTable />
+        <InvoiceTable searchbarPlaceholder={'Keresés a rendelések között...'} />
       </TableLayout>
       <Box className="grid grid-flow-row grid-cols-1 gap-6 @3xl/pd:grid-cols-12 3xl:gap-8">
         <OverallProgress className="@3xl/pd:col-span-6 @7xl/pd:col-span-4" />

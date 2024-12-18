@@ -10,7 +10,13 @@ import TablePagination from '@core/components/table/pagination';
 import TableFooter from '@core/components/table/footer';
 export type InvoiceTableDataType = (typeof invoiceData)[number];
 
-export default function InvoiceTable() {
+export type SearchableTableProps = {
+  searchbarPlaceholder: string;
+};
+
+export default function InvoiceTable({
+  searchbarPlaceholder,
+}: SearchableTableProps) {
   const { table, setData } = useTanStackTable<InvoiceTableDataType>({
     tableData: invoiceData,
     columnConfig: invoiceListColumns,
@@ -39,7 +45,7 @@ export default function InvoiceTable() {
 
   return (
     <>
-      <Filters table={table} />
+      <Filters table={table} searchbarPlaceholder={searchbarPlaceholder} />
       <Table
         table={table}
         variant="modern"

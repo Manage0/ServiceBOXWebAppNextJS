@@ -1,5 +1,6 @@
 import { Text, Avatar, AvatarProps } from "rizzui";
 import cn from "../utils/class-names";
+import Badge from "./Badge";
 
 interface AvatarCardProps {
   src: string;
@@ -8,6 +9,7 @@ interface AvatarCardProps {
   nameClassName?: string;
   avatarProps?: AvatarProps;
   description?: React.ReactNode;
+  badge?: string;
 }
 
 export default function AvatarCard({
@@ -16,10 +18,13 @@ export default function AvatarCard({
   className,
   description,
   avatarProps,
+  badge,
   nameClassName,
 }: AvatarCardProps) {
   return (
-    <figure className={cn("flex items-center gap-3", className)}>
+    <figure
+      className={cn("flex items-center justify-between gap-3", className)}
+    >
       {/*<Avatar
         name={name}
         src={src}
@@ -38,6 +43,8 @@ export default function AvatarCard({
           <Text className="text-[13px] text-gray-500">{description}</Text>
         )}
       </figcaption>
+      {badge && <Badge text={badge} />}
+      {/**make a type for it TODO de a munkalaphoz és azt használd!!! */}
     </figure>
   );
 }

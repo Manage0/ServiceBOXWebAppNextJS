@@ -21,10 +21,12 @@ import Image from 'next/image';
 
 interface TableToolbarProps<T extends Record<string, any>> {
   table: ReactTableType<T>;
+  searchbarPlaceholder?: string;
 }
 
 export default function Filters<TData extends Record<string, any>>({
   table,
+  searchbarPlaceholder,
 }: TableToolbarProps<TData>) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
@@ -36,16 +38,16 @@ export default function Filters<TData extends Record<string, any>>({
       <Flex align="center" className="flex-wrap">
         <Input
           type="search"
-          placeholder="Keresés a rendelések között"
+          placeholder={searchbarPlaceholder}
           value={table.getState().globalFilter ?? ''}
           onClear={() => table.setGlobalFilter('')}
           onChange={(e) => table.setGlobalFilter(e.target.value)}
-          inputClassName="h-9"
+          inputClassName="h-9 min-w-[280px]"
           clearable={true}
           prefix={<PiMagnifyingGlass className="h-4 w-4" />}
         />
         <DropdownAction
-          className="ml-4 w-[35%] rounded-md border"
+          className="ml-4 w-[30%] rounded-md border"
           options={[
             {
               label: 'Partner',

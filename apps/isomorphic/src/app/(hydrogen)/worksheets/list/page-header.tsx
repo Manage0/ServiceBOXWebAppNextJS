@@ -11,14 +11,16 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import CreateUpdateAppointmentForm from '@/app/shared/appointment/appointment-list/appointment-form';
 
 const pageHeader = {
-  title: 'Appointment List',
+  title: 'Munkalap',
   breadcrumb: [
     {
-      href: routes.appointment.dashboard,
-      name: 'Dashboard',
+      name: 'Home',
     },
     {
-      name: 'Appointment List',
+      name: 'Munkalap',
+    },
+    {
+      name: 'Lista',
     },
   ],
 };
@@ -39,14 +41,9 @@ export default function AppointmentListPageHeader({ className }: HeaderProps) {
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
       <div className="mt-4 flex flex-col items-center gap-3 @sm:flex-row @lg:mt-0">
-        <ExportButton
-          data={appointmentData}
-          fileName="appointment_data"
-          header="ID,Patient,Doctor,Service Type,Date,Status,Payment,Duration"
-        />
         <Button className="w-full @lg:w-auto" onClick={handleCreateModal}>
           <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-          Create Appointment
+          Új munkalap
         </Button>
       </div>
     </PageHeader>

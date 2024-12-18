@@ -37,13 +37,16 @@ export const invoiceListColumns = [
     size: 250,
     header: 'MUNKALAPSZÁM / MUNKATÁRS',
     enableSorting: false,
-    cell: ({ row }) => (
-      <AvatarCard
-        src={row.original.avatar}
-        name={`PPRK-${row.original.id}`}
-        description={row.original.name}
-      />
-    ),
+    cell: ({ row }) => {
+      return (
+        <AvatarCard
+          src={row.original.avatar}
+          name={`PPRK-${row.original.id}`}
+          description={row.original.name}
+          badge={row.original.badge}
+        />
+      );
+    },
   }),
   columnHelper.display({
     id: 'email',

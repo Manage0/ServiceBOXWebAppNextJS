@@ -1,11 +1,14 @@
 import { type Table as ReactTableType } from "@tanstack/react-table";
-import { ActionIcon, Box, Flex, Grid, Select, SelectOption, Text } from "rizzui";
 import {
-  PiCaretLeftBold,
-  PiCaretRightBold,
-  PiCaretDoubleLeftBold,
-  PiCaretDoubleRightBold,
-} from "react-icons/pi";
+  ActionIcon,
+  Box,
+  Flex,
+  Grid,
+  Select,
+  SelectOption,
+  Text,
+} from "rizzui";
+import { PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi";
 import cn from "@core/utils/class-names";
 
 const options = [
@@ -32,11 +35,10 @@ export default function TablePagination<TData extends Record<string, any>>({
       justify="between"
       className={cn("@container", className)}
     >
-      <Flex
-        align="center"
-        className="w-auto shrink-0"
-      >
-        <Text className="hidden font-normal text-gray-600 @md:block">Rows per page</Text>
+      <Flex align="center" className="w-auto shrink-0">
+        <Text className="hidden font-normal text-gray-600 @md:block">
+          Sor oldalanként
+        </Text>
         <Select
           size="sm"
           variant="flat"
@@ -59,63 +61,48 @@ export default function TablePagination<TData extends Record<string, any>>({
           </Text>
         </Box>
       )}
-      <Flex
-        justify="end"
-        align="center"
-      >
-        <Text className="hidden font-normal text-gray-600 @3xl:block">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount().toLocaleString()}
-        </Text>
-        <Grid
-          gap="2"
-          columns="4"
-        >
-          <ActionIcon
-            size="sm"
-            rounded="lg"
-            variant="outline"
-            aria-label="Go to first page"
-            onClick={() => table.firstPage()}
+      <Flex justify="end" align="center">
+        <div className="flex items-center justify-center gap-2">
+          {/* Előző oldal */}
+          <button
+            onClick={() =>
+              table.setPageIndex(table.getState().pagination.pageIndex - 1)
+            }
             disabled={!table.getCanPreviousPage()}
-            className="text-gray-900 shadow-sm disabled:text-gray-400 disabled:shadow-none"
+            className="flex h-8 w-8 items-center justify-center rounded-md text-gray-600 disabled:text-gray-400"
           >
-            <PiCaretDoubleLeftBold className="size-3.5" />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            rounded="lg"
-            variant="outline"
-            aria-label="Go to previous page"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="text-gray-900 shadow-sm disabled:text-gray-400 disabled:shadow-none"
-          >
-            <PiCaretLeftBold className="size-3.5" />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            rounded="lg"
-            variant="outline"
-            aria-label="Go to next page"
-            onClick={() => table.nextPage()}
+            <PiCaretLeftBold className="h-4 w-4" />
+          </button>
+
+          {/* Oldalszámok */}
+          {[...Array(table.getPageCount())].map((_, index) => {
+            const page = index + 1;
+            return (
+              <div
+                key={page}
+                //onClick={() => table.setPageIndex(page)}
+                className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
+                  table.getState().pagination.pageIndex + 1 === page
+                    ? "bg-teal-600 text-white"
+                    : "text-gray-700 " //hover:bg-gray-100"
+                }`}
+              >
+                {page}
+              </div>
+            );
+          })}
+
+          {/* Következő oldal */}
+          <button
+            onClick={() =>
+              table.setPageIndex(table.getState().pagination.pageIndex + 1)
+            }
             disabled={!table.getCanNextPage()}
-            className="text-gray-900 shadow-sm disabled:text-gray-400 disabled:shadow-none"
+            className="flex h-8 w-8 items-center justify-center rounded-md text-gray-600 disabled:text-gray-400"
           >
-            <PiCaretRightBold className="size-3.5" />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            rounded="lg"
-            variant="outline"
-            aria-label="Go to last page"
-            onClick={() => table.lastPage()}
-            disabled={!table.getCanNextPage()}
-            className="text-gray-900 shadow-sm disabled:text-gray-400 disabled:shadow-none"
-          >
-            <PiCaretDoubleRightBold className="size-3.5" />
-          </ActionIcon>
-        </Grid>
+            <PiCaretRightBold className="h-4 w-4" />
+          </button>
+        </div>
       </Flex>
     </Flex>
   );
