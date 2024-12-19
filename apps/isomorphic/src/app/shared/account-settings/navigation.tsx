@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button, Text } from 'rizzui';
 import cn from '@core/utils/class-names';
 import { useScrollableSlider } from '@core/hooks/use-scrollable-slider';
-import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
+import { PiCaretLeftBold, PiCaretRightBold, PiPlusBold } from 'react-icons/pi';
 import { usePathname } from 'next/navigation';
 import { routes } from '@/config/routes';
 import PageHeader from '@/app/shared/page-header';
@@ -30,7 +30,7 @@ export default function ProfileSettingsNav() {
     },
     {
       label: 'Szerepkörök',
-      value: '#',
+      value: '/forms/profile-settings/roles',
     },
   ];
 
@@ -64,7 +64,19 @@ export default function ProfileSettingsNav() {
 
   return (
     <>
-      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
+      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
+        {pathname === '/forms/profile-settings/roles' && (
+          <Link
+            href={routes.logistics.createShipment}
+            className="w-full @lg:w-auto"
+          >
+            <Button as="span" className="w-full @lg:w-auto">
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+              Új szerepkör
+            </Button>
+          </Link>
+        )}
+      </PageHeader>
       <div
         className={cn(
           'sticky z-20 -mx-4 -mt-4 border-b border-muted bg-white px-4 py-0 font-medium text-gray-500 dark:bg-gray-50 sm:-mt-2 md:-mx-5 md:px-5 lg:-mx-8 lg:mt-0 lg:px-8 xl:-mx-6 xl:px-6 2xl:top-20 3xl:-mx-[33px] 3xl:px-[33px] 4xl:-mx-10 4xl:px-10'

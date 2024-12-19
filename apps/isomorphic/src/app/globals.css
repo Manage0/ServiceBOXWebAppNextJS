@@ -1350,3 +1350,19 @@ div[style='z-index: 1000001;'],
 [dir='rtl'] :is(.rizzui-checkbox-icon, .rizzui-switch-on-icon) {
   @apply -scale-x-100;
 }
+
+.custom-checkbox-grid .col-span-full {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem; /* Adjust the gap as needed */
+}
+
+.custom-checkbox .rizzui-checkbox-container span span {
+  background-color: teal !important;
+  border-color: teal !important;
+}
+
+.custom-checkbox .rizzui-checkbox-container span span span{
+  background-color: white !important;
+  border-color: white !important;
+}

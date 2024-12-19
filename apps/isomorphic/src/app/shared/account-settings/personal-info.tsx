@@ -141,8 +141,8 @@ export default function PersonalInfoView() {
             </div>
             <FormFooter
               // isLoading={isLoading}
-              altBtnText="Cancel"
-              submitBtnText="Save"
+              altBtnText="Mégsem"
+              submitBtnText="Mentés"
             />
           </>
         );
