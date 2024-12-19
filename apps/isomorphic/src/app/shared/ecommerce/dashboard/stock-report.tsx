@@ -1,6 +1,7 @@
 'use client';
 
 import { productsData } from '@/data/products-data';
+import { partnersData } from '@/data/partners-data';
 import { productsListColumns } from '@/app/shared/ecommerce/product/product-list/columns';
 import { useTanStackTable } from '@core/components/table/custom/use-TanStack-Table';
 import Table from '@core/components/table';
@@ -11,6 +12,8 @@ import { Input } from 'rizzui';
 import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
 export type ProductsDataType = (typeof productsData)[number];
+
+export type PartnersDataType = (typeof partnersData)[number];
 
 export default function StockReport({ className }: { className?: string }) {
   const { table, setData } = useTanStackTable<ProductsDataType>({
