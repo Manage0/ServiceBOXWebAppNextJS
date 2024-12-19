@@ -99,7 +99,7 @@ export const menuItems = [
   },
   {
     name: 'Beállítások',
-    href: '#',
+    href: '/forms/profile-settings',
     icon: (isActive: Boolean) => (
       <Image
         src={isActive ? '/SettingsBlack.svg' : '/SettingsWhite.svg'}

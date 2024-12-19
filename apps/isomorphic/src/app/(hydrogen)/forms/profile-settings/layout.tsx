@@ -3,7 +3,7 @@ import PageHeader from '@/app/shared/page-header';
 import ProfileSettingsNav from '@/app/shared/account-settings/navigation';
 
 const pageHeader = {
-  title: 'Account Settings',
+  title: 'Beállítások',
   breadcrumb: [
     {
       href: '/',
@@ -11,10 +11,10 @@ const pageHeader = {
     },
     {
       href: routes.forms.profileSettings,
-      name: 'Form',
+      name: 'Beállítások',
     },
     {
-      name: 'Account Settings',
+      name: 'Lista',
     },
   ],
 };

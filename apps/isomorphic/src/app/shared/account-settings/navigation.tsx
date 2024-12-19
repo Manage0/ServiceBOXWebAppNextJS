@@ -9,16 +9,24 @@ import { usePathname } from 'next/navigation';
 
 const menuItems = [
   {
-    label: 'My Details',
+    label: 'Adataim',
     value: '/forms/profile-settings',
   },
   {
-    label: 'Password',
+    label: 'Jelszó',
     value: '/forms/profile-settings/password',
   },
   {
-    label: 'Notifications',
+    label: 'Értesítések',
     value: '/forms/profile-settings/notification',
+  },
+  {
+    label: 'Cégadatok',
+    value: '/forms/profile-settings/company-info',
+  },
+  {
+    label: 'Szerepkörök',
+    value: '#',
   },
 ];
 

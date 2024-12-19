@@ -33,6 +33,9 @@ export default function PasswordSettingsView({
 
   return (
     <>
+      <div className="mt-5 font-bold">
+        !Active Directory használata esetén erre a menüre nincs szükség!
+      </div>
       <Form<PasswordFormTypes>
         validationSchema={passwordFormSchema}
         resetValues={reset}

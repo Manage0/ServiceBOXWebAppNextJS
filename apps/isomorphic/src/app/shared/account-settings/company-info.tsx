@@ -40,7 +40,7 @@ export const LabeledInput = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col gap-4">{children}</div>
 );
 
-export default function PersonalInfoView() {
+export default function CompanyInfoView() {
   const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
     toast.success(<Text as="b">Successfully added!</Text>);
     console.log('Profile settings data ->', {
@@ -68,16 +68,76 @@ export default function PersonalInfoView() {
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
                 <LabeledInput>
-                  <Label>Vezetéknév</Label>
+                  <Label>Cég neve</Label>
                   <Input
-                    placeholder="First Name"
+                    placeholder="Cég neve"
                     {...register('first_name')}
                     error={errors.first_name?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
-                  <Label>Keresztnév</Label>
+                  <Label>Partner külső ID</Label>
+                  <Input
+                    placeholder="Partner külső ID"
+                    {...register('last_name')}
+                    error={errors.last_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>Ország</Label>
+                  <Select
+                    options={[
+                      {
+                        label: 'Magyarország',
+                        value: 'HU',
+                      },
+                    ]}
+                    placeholder="Ország"
+                    {...register('first_name')}
+                    error={errors.first_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>Irányítószám</Label>
+                  <Input
+                    placeholder="Irányítószám"
+                    {...register('last_name')}
+                    error={errors.last_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>Település</Label>
+                  <Input
+                    placeholder="Település"
+                    {...register('first_name')}
+                    error={errors.first_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>Cím</Label>
+                  <Input
+                    placeholder="Cím"
+                    {...register('last_name')}
+                    error={errors.last_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>Adószám</Label>
+                  <Input
+                    placeholder="Adószám"
+                    {...register('first_name')}
+                    error={errors.first_name?.message}
+                    className="flex-grow"
+                  />
+                </LabeledInput>
+                <LabeledInput>
+                  <Label>EU Adószám</Label>
                   <Input
                     placeholder="Last Name"
                     {...register('last_name')}
@@ -86,57 +146,14 @@ export default function PersonalInfoView() {
                   />
                 </LabeledInput>
                 <LabeledInput>
-                  <Label>Profilkép</Label>
-                  <div className="flex flex-col gap-6 @container @3xl:col-span-2">
-                    <AvatarUpload
-                      name="avatar"
-                      setValue={setValue}
-                      getValues={getValues}
-                      error={errors?.avatar?.message as string}
-                    />
-                  </div>
+                  <Label>E-mail</Label>
+                  <Input
+                    placeholder="E-mail"
+                    {...register('first_name')}
+                    error={errors.first_name?.message}
+                    className="flex-grow"
+                  />
                 </LabeledInput>
-              </FormGroup>
-
-              <FormGroup
-                title="Email cím"
-                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-              >
-                <Input
-                  className="col-span-full"
-                  prefix={
-                    <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
-                  }
-                  type="email"
-                  placeholder="georgia.young@example.com"
-                  {...register('email')}
-                  error={errors.email?.message}
-                />
-              </FormGroup>
-              <FormGroup
-                title="Jogosultság"
-                className="mb-20 pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-              >
-                <Controller
-                  control={control}
-                  name="role"
-                  render={({ field: { value, onChange } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      placeholder="Select Role"
-                      options={roles}
-                      onChange={onChange}
-                      value={value}
-                      className="col-span-full"
-                      getOptionValue={(option) => option.value}
-                      displayValue={(selected) =>
-                        roles?.find((r) => r.value === selected)?.label ?? ''
-                      }
-                      error={errors?.role?.message as string}
-                    />
-                  )}
-                />
               </FormGroup>
             </div>
             <FormFooter

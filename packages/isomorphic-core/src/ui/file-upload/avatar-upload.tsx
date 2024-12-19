@@ -34,7 +34,9 @@ export default function AvatarUpload({
   const formValue = getValues(name);
 
   const { startUpload, routeConfig, isUploading } = useUploadThing("avatar", {
-    onClientUploadComplete: (res: ClientUploadedFileData<any>[] | undefined) => {
+    onClientUploadComplete: (
+      res: ClientUploadedFileData<any>[] | undefined
+    ) => {
       if (setValue) {
         const respondedUrls = res?.map((r) => ({
           name: r.name,
@@ -44,10 +46,7 @@ export default function AvatarUpload({
         setValue(name, respondedUrls?.[0]);
       }
       toast.success(
-        <Text
-          as="b"
-          className="font-semibold"
-        >
+        <Text as="b" className="font-semibold">
           Avatar updated
         </Text>
       );
@@ -81,9 +80,11 @@ export default function AvatarUpload({
   });
 
   return (
-    <div className={cn("grid gap-5", className)}>
+    <div className={cn("grid gap-4", className)}>
       <div
-        className={cn("relative grid h-40 w-40 place-content-center rounded-full border-[1.8px]")}
+        className={cn(
+          "relative grid h-[7rem] w-[7rem] place-content-center rounded-full border-[1.8px]"
+        )}
       >
         {formValue ? (
           <>
@@ -97,9 +98,15 @@ export default function AvatarUpload({
             </figure>
             <div
               {...getRootProps()}
-              className={cn("absolute inset-0 grid place-content-center rounded-full bg-black/70")}
+              className={cn(
+                "absolute inset-0 grid place-content-center rounded-full bg-black/70"
+              )}
             >
-              {isUploading ? <LoadingSpinner /> : <PiPencilSimple className="h-5 w-5 text-white" />}
+              {isUploading ? (
+                <LoadingSpinner />
+              ) : (
+                <PiPencilSimple className="h-5 w-5 text-white" />
+              )}
 
               <input {...getInputProps()} />
             </div>
@@ -107,18 +114,19 @@ export default function AvatarUpload({
         ) : (
           <div
             {...getRootProps()}
-            className={cn("absolute inset-0 z-10 grid cursor-pointer place-content-center")}
+            className={cn(
+              "absolute inset-0 z-10 grid cursor-pointer place-content-center"
+            )}
           >
             <input {...getInputProps()} />
             <UploadIcon className="mx-auto h-12 w-12" />
 
             {isUploading ? (
-              <Loader
-                variant="spinner"
-                className="justify-center"
-              />
+              <Loader variant="spinner" className="justify-center" />
             ) : (
-              <Text className="font-medium">Drop or select file</Text>
+              <Text className="text-[10px] align-middle text-center text-gray-500">
+                Húzd ide a fájlt, vagy kattints
+              </Text>
             )}
           </div>
         )}
