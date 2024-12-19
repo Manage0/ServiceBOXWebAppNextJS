@@ -1,5 +1,4 @@
 import { metaObject } from '@/config/site.config';
-import CoworkersPageHeader from './page-header';
 import ProductsPageHeader from './page-header';
 import ProductsDashboard from '@/app/shared/products/dashboard/ProductsDashboard';
 
