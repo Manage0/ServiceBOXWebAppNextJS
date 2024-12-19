@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function ProfileMenu({
   buttonClassName,
@@ -68,16 +69,12 @@ function ProfileMenuPopover({ children }: React.PropsWithChildren<{}>) {
 
 const menuItems = [
   {
-    name: 'My Profile',
+    name: 'Profilom',
     href: routes.profile,
   },
   {
-    name: 'Account Settings',
+    name: 'Beállítások',
     href: routes.forms.profileSettings,
-  },
-  {
-    name: 'Activity Log',
-    href: '#',
   },
 ];
 
@@ -113,7 +110,14 @@ function DropdownMenu() {
           variant="text"
           onClick={() => signOut()}
         >
-          Sign Out
+          <Image
+            src={'/Logout.svg'}
+            alt="Logout icon"
+            width={22}
+            height={22}
+            className="me-1.5"
+          />
+          Kijelentkezés
         </Button>
       </div>
     </div>
