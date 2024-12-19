@@ -139,7 +139,7 @@ export default function CompanyInfoView() {
                 <LabeledInput>
                   <Label>EU Adószám</Label>
                   <Input
-                    placeholder="Last Name"
+                    placeholder="EU Adószám"
                     {...register('last_name')}
                     error={errors.last_name?.message}
                     className="flex-grow"

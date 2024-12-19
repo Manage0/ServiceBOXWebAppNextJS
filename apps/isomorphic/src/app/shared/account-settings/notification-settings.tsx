@@ -53,7 +53,7 @@ export default function NotificationSettingsView() {
   );
 }
 
-const options = ['None', 'In-app', 'Email'];
+const options = ['Nincs', 'Alkalmazás', 'E-mail'];
 
 function ButtonGroup({ onChange }: { onChange: (option: string) => void }) {
   const [selected, setSelected] = useState<string>();
@@ -69,7 +69,7 @@ function ButtonGroup({ onChange }: { onChange: (option: string) => void }) {
           key={option}
           variant={selected === option ? 'solid' : 'outline'}
           onClick={() => handleOnClick(option)}
-          disabled={'In-app' === option}
+          disabled={'Alkalmazás' === option}
         >
           {option}
         </Button>
