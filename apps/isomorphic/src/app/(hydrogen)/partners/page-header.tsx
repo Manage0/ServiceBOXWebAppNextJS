@@ -1,12 +1,6 @@
-import Link from 'next/link';
-import { PiPlusBold } from 'react-icons/pi';
-import { routes } from '@/config/routes';
-import { Button } from 'rizzui';
-import { shipmentData } from '@/data/shipment-data';
 import PageHeader from '@/app/shared/page-header';
-import ExportButton from '@/app/shared/export-button';
 import ImportButton from '@/app/shared/import-button';
-import ProductImportBtn from '@/app/shared/product-import-btn';
+import PartnersImportBtn from './PartnerImportBtn';
 
 const pageHeader = {
   title: 'Partnerek',
@@ -35,15 +29,7 @@ export default function PartnersPageHeader({ className }: HeaderProps) {
           title="Upload File"
           className="me-[10px] mt-4 border-0 border-[1px] border-[#E3E3E3] bg-white text-[#484848] hover:border-[#E3E3E3] hover:bg-gray-100 hover:text-[#484848] @lg:mt-0"
         />
-        <Link
-          href={routes.logistics.createShipment}
-          className="w-full @lg:w-auto"
-        >
-          <Button as="span" className="w-full @lg:w-auto">
-            <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-            Új partner
-          </Button>
-        </Link>
+        <PartnersImportBtn />
       </div>
     </PageHeader>
   );

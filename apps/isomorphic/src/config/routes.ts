@@ -1,4 +1,7 @@
 export const routes = {
+  partners: {
+    add: '/partners/add',
+  },
   eCommerce: {
     createProduct: '/ecommerce/products/create',
     ediProduct: (slug: string) => `/ecommerce/products/${slug}/edit`,
@@ -27,7 +30,7 @@ export const routes = {
     viewTemplate: (id: string) => `/support/templates/${id}`,
     editTemplate: (id: string) => `/support/templates/${id}/edit`,
   },
-  coworkers:{
+  coworkers: {
     dashboard: '/coworkers',
   },
   logistics: {

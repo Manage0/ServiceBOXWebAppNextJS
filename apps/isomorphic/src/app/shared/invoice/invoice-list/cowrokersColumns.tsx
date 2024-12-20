@@ -80,6 +80,8 @@ export const coworkersColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
+        deletePopoverTitle="Munkatárs törlése"
+        deletePopoverDescription="Biztosan törölni szeretnéd a munkatársat?"
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}

@@ -10,7 +10,10 @@ export function HeliumSidebarMenu() {
   return (
     <div className="mt-4 pb-3 3xl:mt-6">
       {menuItems.map((item, index) => {
-        const isActive = pathname === (item?.href as string);
+        const isActive =
+          item.href === '/'
+            ? pathname === '/'
+            : pathname.startsWith(item?.href as string);
 
         return (
           <Link

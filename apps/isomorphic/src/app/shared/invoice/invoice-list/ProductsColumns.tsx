@@ -85,6 +85,8 @@ export const productsColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
+        deletePopoverTitle="Termék törlése"
+        deletePopoverDescription="Biztosan törölni szeretnéd a terméket?"
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}

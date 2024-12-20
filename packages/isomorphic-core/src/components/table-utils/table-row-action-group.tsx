@@ -10,13 +10,13 @@ export default function TableRowActionGroup({
   onDelete,
   editUrl,
   viewUrl,
-  messageUrl,
+  comment,
   deletePopoverTitle = "Delete the appointment",
   deletePopoverDescription = "Are you sure you want to delete this item?",
   className,
 }: {
   onDelete?: () => void;
-  messageUrl?: string;
+  comment?: string;
   editUrl?: string;
   viewUrl?: string;
   deletePopoverTitle?: string;
@@ -30,24 +30,22 @@ export default function TableRowActionGroup({
       gap="3"
       className={cn("pe-3", className)}
     >
-      {messageUrl && (
-        <Tooltip size="sm" content="Üzenet" placement="top" color="invert">
-          <Link href={messageUrl}>
-            <ActionIcon
-              as="span"
-              size="sm"
-              variant="outline"
-              aria-label="Edit Item"
-            >
-              <Image
-                src={"/Messages.svg"}
-                alt="Users icon"
-                width={15}
-                height={15}
-                className="size-4"
-              />
-            </ActionIcon>
-          </Link>
+      {comment && (
+        <Tooltip size="sm" content={comment} placement="top" color="invert">
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            aria-label="Edit Item"
+          >
+            <Image
+              src={"/Messages.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
+          </ActionIcon>
         </Tooltip>
       )}
       {editUrl && (

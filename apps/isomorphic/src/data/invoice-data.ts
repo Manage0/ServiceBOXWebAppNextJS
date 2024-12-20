@@ -7,6 +7,7 @@ export type Invoice = {
   dueDate: string;
   amount: string;
   status: string;
+  comment?: string;
   createdAt: Date;
 };
 
@@ -21,8 +22,9 @@ export const invoiceData = [
     dueDate: '2023-10-18T13:24:00.760Z',
     amount: '544.00',
     status: 'Paid',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     createdAt: '2023-01-14T20:37:08.482Z',
-    badge:"Új"
+    badge: 'Új',
   },
   {
     id: '86740',
@@ -47,7 +49,7 @@ export const invoiceData = [
     amount: '249.00',
     status: 'Pending',
     createdAt: '2022-11-30T06:51:47.972Z',
-    badge:"Új"
+    badge: 'Új',
   },
   {
     id: '97024',

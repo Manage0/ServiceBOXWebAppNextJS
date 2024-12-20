@@ -11,6 +11,7 @@ import { Box, Button, Flex, Text, Title } from 'rizzui';
 import { formatNumber } from '@core/utils/format-number';
 import { StatType, projectStatData } from '@/data/project-dashboard';
 import Link from 'next/link';
+import PartnersImportBtn from '@/app/(hydrogen)/partners/PartnerImportBtn';
 
 export type StatCardProps = {
   className?: string;
@@ -43,15 +44,7 @@ export default function ProjectStats({ className }: { className?: string }) {
               Új termék
             </Button>
           </Link>
-          <Link
-            href={'/' /*routes.eCommerce.createProduct*/}
-            className="w-full @lg:w-auto"
-          >
-            <Button as="span" className="w-full @lg:w-auto">
-              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-              Új partner
-            </Button>
-          </Link>
+          <PartnersImportBtn />
         </Box>
 
         {/**TODO gombok ide jönnek, legyenek linkek, amik a megfelelő oldalra visznek, az elegáns, amúgy use displayname */}

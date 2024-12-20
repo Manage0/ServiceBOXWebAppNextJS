@@ -86,8 +86,10 @@ export const invoiceListColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
-        messageUrl={routes.invoice.edit(row.original.id)}
+        comment={row.original.comment}
         viewUrl={routes.invoice.details(row.original.id)}
+        deletePopoverTitle="Munkalap törlése"
+        deletePopoverDescription="Biztosan törölni szeretnéd a munkalapot?"
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}
