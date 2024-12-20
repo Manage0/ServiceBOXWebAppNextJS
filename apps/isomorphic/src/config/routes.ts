@@ -2,6 +2,9 @@ export const routes = {
   partners: {
     add: '/partners/add',
   },
+  worksheets: {
+    create: '/worksheets/create',
+  },
   eCommerce: {
     createProduct: '/ecommerce/products/create',
     ediProduct: (slug: string) => `/ecommerce/products/${slug}/edit`,

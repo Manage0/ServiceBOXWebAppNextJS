@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, Button, Input, Textarea, ActionIcon } from 'rizzui';
+import { Text, Button, Input, Textarea, ActionIcon, Select } from 'rizzui';
 import { useFieldArray, Controller } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { calculateTotalPrice } from '@core/utils/calculate-total-price';
@@ -103,8 +103,10 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
 
   return (
     <FormBlockWrapper
-      title={'Item Details:'}
-      description={'Add one or multiple item'}
+      title={'Felhasznált anyagok, szolgáltatások:'}
+      description={
+        'Add hozzá a termékeket és szolgáltatásokat amit az elvégzett munka során felhasználtál'
+      }
       className="pt-7 @2xl:pt-9 @3xl:pt-11"
     >
       <div className="col-span-2 @container">
@@ -125,13 +127,31 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
               className="mb-8 grid grid-cols-1 items-start rounded-lg border border-muted p-4 shadow @md:p-5 @xl:p-6"
             >
               <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
-                <Input
-                  label="Item"
-                  placeholder="Enter item name"
-                  {...register(`items.${index}.item`)}
-                  defaultValue={field.item}
-                  error={errors?.items?.[index]?.item?.message}
-                  className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field: { name, onChange, value } }) => (
+                    <Select
+                      dropdownClassName="!z-10 h-auto"
+                      inPortal={false}
+                      options={[
+                        { value: 'item1', label: 'Termék 1' },
+                        { value: 'item2', label: 'Termék 2' },
+                      ]}
+                      value={value}
+                      onChange={onChange}
+                      name={name}
+                      label="Termék"
+                      error={errors?.status?.message}
+                      getOptionValue={(option) => option.value}
+                      /*getOptionDisplayValue={(option) =>
+                        renderOptionDisplayValue(option.value as string)
+                      }
+                      displayValue={(selected: string) =>
+                        renderOptionDisplayValue(selected)
+                      }*/
+                    />
+                  )}
                 />
                 <Controller
                   name={`items.${index}.quantity`}
@@ -145,33 +165,67 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     />
                   )}
                 />
-                <div className="flex items-start @xl:col-span-2 @2xl:col-span-1">
-                  <Input
-                    label="Price"
-                    type="number"
-                    prefix={'$'}
-                    placeholder="100"
-                    {...register(`items.${index}.price`)}
-                    defaultValue={field.price}
-                    error={errors?.items?.[index]?.price?.message}
-                    className="w-full"
-                  />
-
-                  <div className="ms-3 mt-9 flex items-start text-sm">
-                    <Text className="me-1 text-gray-500">Total:</Text>
-                    <Text as="b" className="font-medium">
-                      ${priceValue * quantityValue}
-                    </Text>
-                  </div>
-                </div>
-                <Textarea
-                  label="Description"
-                  placeholder="Enter item description"
-                  {...register(`items.${index}.description`)}
-                  defaultValue={field.description}
-                  error={errors?.items?.[index]?.description?.message}
-                  className="row-start-2 @md:col-span-2 @xl:col-span-3 @xl:row-start-2 @4xl:col-span-4"
-                  textareaClassName="h-20"
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field: { name, onChange, value } }) => (
+                    <Select
+                      dropdownClassName="!z-10 h-auto"
+                      inPortal={false}
+                      options={[
+                        { value: 'db', label: 'DB' },
+                        { value: 'köteg', label: 'Köteg' },
+                      ]}
+                      value={value}
+                      onChange={onChange}
+                      name={name}
+                      label="Menny. egység"
+                      error={errors?.status?.message}
+                      getOptionValue={(option) => option.value}
+                      /*getOptionDisplayValue={(option) =>
+                        renderOptionDisplayValue(option.value as string)
+                      }
+                      displayValue={(selected: string) =>
+                        renderOptionDisplayValue(selected)
+                      }*/
+                    />
+                  )}
+                />
+                <Input
+                  label="Ár"
+                  type="number"
+                  prefix={'$'}
+                  placeholder="100"
+                  {...register(`items.${index}.price`)}
+                  defaultValue={field.price}
+                  error={errors?.items?.[index]?.price?.message}
+                  className="w-full"
+                />
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field: { name, onChange, value } }) => (
+                    <Select
+                      dropdownClassName="!z-10 h-auto"
+                      inPortal={false}
+                      options={[
+                        { value: 'HUF', label: 'forint' },
+                        { value: 'EUR', label: 'euró' },
+                      ]}
+                      value={value}
+                      onChange={onChange}
+                      name={name}
+                      label="Pénznem"
+                      error={errors?.status?.message}
+                      getOptionValue={(option) => option.value}
+                      /*getOptionDisplayValue={(option) =>
+                        renderOptionDisplayValue(option.value as string)
+                      }
+                      displayValue={(selected: string) =>
+                        renderOptionDisplayValue(selected)
+                      }*/
+                    />
+                  )}
                 />
               </div>
               <Button
@@ -180,7 +234,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                 onClick={() => remove(index)}
                 className="-mx-2 -mb-1 ms-auto mt-5 h-auto px-2 py-1 font-semibold"
               >
-                <PiTrashBold className="me-1 h-[18px] w-[18px]" /> Remove
+                <PiTrashBold className="me-1 h-[18px] w-[18px]" /> Törlés
               </Button>
             </div>
           );
@@ -192,77 +246,45 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
               append({ item: '', description: '', quantity: 1, price: '' })
             }
             variant="flat"
-            className="-mt-2 mb-7 w-full @4xl:mb-0 @4xl:mt-0 @4xl:w-auto"
+            className="-mt-2 mb-7 w-full bg-custom-green text-white @4xl:mb-0 @4xl:mt-0 @4xl:w-auto"
           >
-            <PiPlusBold className="me-1.5 h-4 w-4" /> Add Item
+            <PiPlusBold className="me-1.5 h-4 w-4" /> Termék hozzáadása
           </Button>
 
-          <div className="grid w-full gap-2 @4xl:w-auto">
-            <div className="grid grid-cols-3 gap-3 @lg:gap-4">
-              <Input
-                type="number"
-                label="Shipping"
-                prefix={'$'}
-                placeholder="10"
-                {...register('shipping')}
-                error={errors.shipping?.message}
-              />
-              <Input
-                type="number"
-                label="Discount"
-                prefix={'$'}
-                placeholder="50"
-                {...register('discount')}
-                error={errors.discount?.message}
-              />
-              <Input
-                type="number"
-                label="Taxes"
-                suffix={'%'}
-                placeholder="15"
-                {...register('taxes')}
-                error={errors.taxes?.message}
-              />
-            </div>
-
-            <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
-              <Text className="flex items-center justify-between">
-                Subtotal:{' '}
-                <Text as="span" className="font-medium text-gray-700">
-                  ${calculateSubTotal()}
-                </Text>
+          <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
+            <Text className="flex items-center justify-between font-bold">
+              Nettó számla érték (ÁFA nélkül):{' '}
+              <Text as="span" className="font-medium text-gray-700">
+                {calculateSubTotal()} HUF
               </Text>
-              <Text className="flex items-center justify-between">
-                Shipping:{' '}
-                <Text as="span" className="font-medium text-red">
-                  {shippingCost ? `$${shippingCost}` : '--'}
-                </Text>
+            </Text>
+            <Text className="flex items-center justify-between font-bold">
+              27% összege:{' '}
+              <Text as="span" className="font-medium text-red">
+                {shippingCost ? `${shippingCost} HUF` : '--'}
               </Text>
-              <Text className="flex items-center justify-between">
-                Discount:{' '}
-                <Text as="span" className="font-medium text-gray-700">
-                  {discount ? `$${discount}` : '--'}
-                </Text>
+            </Text>
+            <Text className="flex items-center justify-between font-bold">
+              Kedvezmény:{' '}
+              <Text as="span" className="font-medium text-gray-700">
+                {discount ? `${discount} HUF` : '--'}
               </Text>
-              <Text className="flex items-center justify-between">
-                Taxes:{' '}
-                <Text as="span" className="font-medium text-red">
-                  {taxes ? `${taxes}%` : '--'}
-                </Text>
+            </Text>
+            <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
+              Összesen:{' '}
+              <Text
+                as="span"
+                className="font-lexend-bold text-right text-2xl font-bold leading-8 tracking-normal text-custom-green opacity-100"
+              >
+                $
+                {calculateTotalPrice(
+                  calculateSubTotal(),
+                  shippingCost,
+                  discount,
+                  taxes
+                ) ?? '--'}
               </Text>
-              <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
-                Total:{' '}
-                <Text as="span">
-                  $
-                  {calculateTotalPrice(
-                    calculateSubTotal(),
-                    shippingCost,
-                    discount,
-                    taxes
-                  ) ?? '--'}
-                </Text>
-              </Text>
-            </div>
+            </Text>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import { metaObject } from '@/config/site.config';
-import AppointmentListPageHeader from './page-header';
-import AppointmentListTable from '@/app/shared/appointment/appointment-list/list';
-import TableLayout from '../../tables/table-layout';
+import WorksheetPageHeader from './page-header';
+import TableLayout from '../tables/table-layout';
 import { invoiceData } from '@/data/invoice-data';
 import InvoiceTable from '@/app/shared/invoice/invoice-list/table';
 
@@ -12,7 +11,7 @@ export const metadata = {
 export default function AppointmentListPage() {
   return (
     <>
-      <AppointmentListPageHeader />
+      <WorksheetPageHeader />
       <div className="space-y-10 @container">
         <TableLayout
           title={undefined}

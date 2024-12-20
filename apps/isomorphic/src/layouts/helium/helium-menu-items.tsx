@@ -51,7 +51,7 @@ export const menuItems = [
   },
   {
     name: 'Munkalapok',
-    href: '/worksheets/list',
+    href: '/worksheets',
     icon: (isActive: Boolean) => (
       <Image
         src={isActive ? '/DocsBlack.svg' : '/DocsWhite.svg'}

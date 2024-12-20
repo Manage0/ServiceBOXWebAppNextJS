@@ -56,20 +56,20 @@ export type InvoiceFormTypes = z.infer<typeof invoiceFormSchema>;
 // invoice status options
 export const statusOptions = [
   {
-    value: 'Paid',
-    label: 'Paid',
+    value: 'paid',
+    label: 'Kész',
   },
   {
     value: 'pending',
-    label: 'Pending',
+    label: 'Folymatban',
   },
   {
     value: 'overdue',
-    label: 'Overdue',
+    label: 'Határidőn túli',
   },
   {
     value: 'draft',
-    label: 'Draft',
+    label: 'Vázlat',
   },
 ];
 
