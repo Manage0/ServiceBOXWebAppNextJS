@@ -82,7 +82,7 @@ export default function TablePagination<TData extends Record<string, any>>({
                 //onClick={() => table.setPageIndex(page)}
                 className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
                   table.getState().pagination.pageIndex + 1 === page
-                    ? "bg-teal-600 text-white"
+                    ? "bg-custom-green text-white"
                     : "text-gray-700 " //hover:bg-gray-100"
                 }`}
               >

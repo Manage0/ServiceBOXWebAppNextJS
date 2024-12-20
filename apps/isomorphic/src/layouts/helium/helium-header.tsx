@@ -5,14 +5,22 @@ import { ActionIcon, Badge } from 'rizzui';
 import SearchWidget from '@/app/shared/search/search';
 import NotificationDropdown from '@/layouts/notification-dropdown';
 import ProfileMenu from '@/layouts/profile-menu';
-import SettingsButton from '@/layouts/settings-button';
 import HamburgerButton from '@/layouts/hamburger-button';
 import Logo from '@core/components/logo';
-import { PiGearFill } from 'react-icons/pi';
 import Sidebar from './helium-sidebar';
 import Image from 'next/image';
+import { usePresets } from '@/config/color-presets';
+import {
+  useApplyColorPreset,
+  useColorPresets,
+} from '../settings/use-theme-color';
 
 function HeaderMenuRight() {
+  const COLOR_PRESETS = usePresets();
+  const { colorPresets } = useColorPresets();
+
+  useApplyColorPreset<any>(colorPresets ?? COLOR_PRESETS[0].colors);
+
   return (
     <div className="ms-auto grid shrink-0 grid-cols-3 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <NotificationDropdown>

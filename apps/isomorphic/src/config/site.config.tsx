@@ -9,8 +9,8 @@ enum MODE {
 }
 
 export const siteConfig = {
-  title: 'Isomorphic - React Typescript Admin Dashboard Template',
-  description: `Isomorphic the ultimate React TypeScript Admin Template. Streamline your admin dashboard development with our feature-rich, responsive, and highly customizable solution. Boost productivity and create stunning admin interfaces effortlessly.`,
+  title: 'ServiceBOX',
+  description: `ServiceBOX`,
   logo: logoImg,
   icon: logoIconImg,
   mode: MODE.LIGHT,

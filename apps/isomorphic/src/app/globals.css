@@ -1358,8 +1358,7 @@ div[style='z-index: 1000001;'],
 }
 
 .custom-checkbox .rizzui-checkbox-container span span {
-  background-color: teal !important;
-  border-color: teal !important;
+  @apply !bg-custom-green !important;
 }
 
 .custom-checkbox .rizzui-checkbox-container span span span{

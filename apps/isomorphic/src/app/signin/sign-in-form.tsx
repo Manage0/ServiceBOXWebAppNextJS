@@ -9,6 +9,11 @@ import { Checkbox, Password, Button, Input, Text } from 'rizzui';
 import { Form } from '@core/ui/form';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/validators/login.schema';
+import { usePresets } from '@/config/color-presets';
+import {
+  useApplyColorPreset,
+  useColorPresets,
+} from '@/layouts/settings/use-theme-color';
 
 const initialValues: LoginSchema = {
   email: 'admin@admin.com',
@@ -26,6 +31,11 @@ export default function SignInForm() {
       ...data,
     });
   };
+
+  const COLOR_PRESETS = usePresets();
+  const { colorPresets } = useColorPresets();
+
+  useApplyColorPreset<any>(colorPresets ?? COLOR_PRESETS[0].colors);
 
   return (
     <>
