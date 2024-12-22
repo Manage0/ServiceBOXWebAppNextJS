@@ -5,6 +5,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Badge, Title, Text } from 'rizzui';
 import Table from '@core/components/legacy-table';
 import { siteConfig } from '@/config/site.config';
+import { usePathname } from 'next/navigation';
 
 const invoiceItems = [
   {
@@ -105,26 +106,24 @@ function InvoiceDetailsListTable() {
 }
 
 export default function InvoiceDetails() {
+  const pathname = usePathname();
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
       <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
         <Image
-          src={siteConfig.logo}
-          alt={siteConfig.title}
+          src={'/BBOXLogo.png'}
+          alt={'BBOX logo'}
           className="dark:invert"
+          width={120}
+          height={40}
           priority
         />
+        <div className="font-lexend-bold text-center text-3xl font-bold tracking-normal text-[#25282B] opacity-100">
+          Munkalap
+        </div>
         <div className="mb-4 md:mb-0">
-          <Badge
-            variant="flat"
-            color="success"
-            rounded="md"
-            className="mb-3 md:mb-2"
-          >
-            Paid
-          </Badge>
-          <Title as="h6">INV - #246098</Title>
-          <Text className="mt-0.5 text-gray-500">Invoice Number</Text>
+          <Title as="h6">{pathname.split('/').pop()}</Title>
+          <Text className="mt-0.5 text-gray-500">Bizonylatszám</Text>
         </div>
       </div>
 
