@@ -1,11 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { QRCodeSVG } from 'qrcode.react';
 import { Badge, Title, Text } from 'rizzui';
 import Table from '@core/components/legacy-table';
-import { siteConfig } from '@/config/site.config';
+import { ReactBarcode } from 'react-jsbarcode';
 import { usePathname } from 'next/navigation';
+import InvoiceDates from './InvoiceDates';
+import RepairDetails from './RepairDetails';
+import React from 'react';
 
 const invoiceItems = [
   {
@@ -51,10 +53,10 @@ const columns = [
     width: 50,
   },
   {
-    title: 'Item',
+    title: 'Tétel',
     dataIndex: 'product',
     key: 'product',
-    width: 250,
+    width: 500,
     render: (product: any) => (
       <>
         <Title as="h6" className="mb-0.5 text-sm font-medium">
@@ -62,7 +64,7 @@ const columns = [
         </Title>
         <Text
           as="p"
-          className="max-w-[250px] overflow-hidden truncate text-sm text-gray-500"
+          className="max-w-[500px] overflow-hidden truncate text-sm text-gray-500"
         >
           {product.description}
         </Text>
@@ -71,37 +73,42 @@ const columns = [
   },
 
   {
-    title: 'Quantity',
+    title: 'Mennyiség',
     dataIndex: 'quantity',
     key: 'quantity',
-    width: 200,
+    width: 100,
   },
   {
-    title: 'Unit Price',
+    title: 'Egységár',
     dataIndex: 'unitPrice',
     key: 'unitPrice',
-    width: 200,
+    width: 100,
     render: (value: string) => <Text className="font-medium">${value}</Text>,
   },
   {
-    title: 'Total',
+    title: 'Összesen',
     dataIndex: 'total',
     key: 'total',
-    width: 200,
+    width: 150,
     render: (value: string) => <Text className="font-medium">${value}</Text>,
   },
 ];
 
 function InvoiceDetailsListTable() {
   return (
-    <Table
-      data={invoiceItems}
-      columns={columns}
-      variant="minimal"
-      rowKey={(record: any) => record.id}
-      scroll={{ x: 660 }}
-      className="mb-11"
-    />
+    <React.Fragment>
+      <h2 className="mb-8 ml-16 text-left font-lexend text-[18px] font-bold tracking-normal text-[#333333] opacity-100">
+        Felhasznált anyagok, szolgáltatások
+      </h2>
+      <Table
+        data={invoiceItems}
+        columns={columns}
+        variant="minimal"
+        rowKey={(record: any) => record.id}
+        scroll={{ x: 660 }}
+        className="mb-11"
+      />
+    </React.Fragment>
   );
 }
 
@@ -127,67 +134,146 @@ export default function InvoiceDetails() {
         </div>
       </div>
 
-      <div className="mb-12 grid gap-4 xs:grid-cols-2 sm:grid-cols-3 sm:grid-rows-1">
+      <div className="mb-12 grid gap-4 xs:grid-cols-2 sm:grid-cols-4 sm:grid-rows-1">
         <div className="">
           <Title as="h6" className="mb-3.5 font-semibold">
-            From
+            Kiállító
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            REDQ, INC
+            BBOX Solutions Kft.
           </Text>
-          <Text className="mb-1.5">Jerome Bell</Text>
-          <Text className="mb-1.5">
-            4140 Parker Rd. Allentown, <br /> New Mexico 31134
-          </Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">(302) 555-0107</Text>
-          <div>
-            <Text className="mb-2 text-sm font-semibold">Creation Date</Text>
-            <Text>Mar 22, 2013</Text>
-          </div>
+          <Text className="mb-1.5">Gyár u. 2</Text>
+          <Text className="mb-1.5">Budaörs</Text>
+          <Text className="mb-1.5">2024</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">HU24227436</Text>
         </div>
 
         <div className="mt-4 xs:mt-0">
           <Title as="h6" className="mb-3.5 font-semibold">
-            Bill To
+            Partner
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            TRANSPORT LLC
+            Paprikasoft Kft.
           </Text>
-          <Text className="mb-1.5">Albert Flores</Text>
-          <Text className="mb-1.5">
-            2715 Ash Dr. San Jose, <br />
-            South Dakota 83475
-          </Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">(671) 555-0110</Text>
-          <div>
-            <Text className="mb-2 text-sm font-semibold">Due Date</Text>
-            <Text>Mar 22, 2013</Text>
-          </div>
+          <Text className="mb-1.5">Aradi vértanúk útja 36.</Text>
+          <Text className="mb-1.5">Siófok</Text>
+          <Text className="mb-1.5">8600</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">HU16726478</Text>
         </div>
 
-        <div className="mt-4 flex sm:mt-6 md:mt-0 md:justify-end">
-          <QRCodeSVG
-            value="https://reactjs.org/"
-            className="h-28 w-28 lg:h-32 lg:w-32"
+        <div className="mt-4 xs:mt-0">
+          <Title as="h6" className="mb-3.5 font-semibold">
+            Telephely
+          </Title>
+          <Text className="mb-1.5 text-sm font-semibold uppercase">
+            Paprikasoft Siófok
+          </Text>
+          <Text className="mb-1.5">Bajcsy-Zsilinszky u. 212.</Text>
+          <Text className="mb-1.5">Siófok</Text>
+          <Text className="mb-1.5">8600</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">HU16726478</Text>
+        </div>
+
+        <div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
+          <ReactBarcode
+            value="ABC123"
+            options={{ format: 'code128', displayValue: false }}
           />
         </div>
       </div>
+      <InvoiceDates
+        dates={[
+          { label: 'Bizonylat kelte', value: '2024.10.02.' },
+          { label: 'Vállalási határidő', value: '2024.10.02.' },
+          { label: 'Elkészült', value: '2024.10.02.' },
+          { label: 'Átadva', value: '2024.10.02.' },
+        ]}
+      />
+      <RepairDetails
+        title="Javítás"
+        details={[
+          {
+            label: 'Eszköz neve',
+            value: 'A256 Pénztárgép Epson TM-T810F nyomtatóval',
+          },
+          { label: 'Eszköz azonosító', value: 'AZ3600622' },
+          { label: 'Munka megnevezése', value: '#02 Kassza cseréje' },
+          { label: 'Szerelő', value: 'Szabó Attila' },
+          { label: 'JIRA Ticket', value: 'INC-94' },
+          {
+            label: 'Hiba / Munka leírása',
+            value:
+              "HRS és Levi's kérése: #2 kassza cseréje utáni helyszíni ügyelet\n\nElvégzett munka leírása: Az előző napon a #2 kasszát cseréltük, másnapra kértek helyszíni felügyeletet, amíg elvégzik távolról a beállításokat.\nElőző munkalap: 17159",
+          },
+        ]}
+      />
+
+      <InvoiceDates
+        dates={[
+          { label: 'Indulás', value: '13:30' },
+          { label: 'Érkezés', value: '14:00' },
+          { label: 'Távozás', value: '17:50' },
+          { label: 'Visszaérkezés', value: '18:20' },
+        ]}
+      />
 
       <InvoiceDetailsListTable />
-
-      <div className="flex flex-col-reverse items-start justify-between border-t border-muted pb-4 pt-8 xs:flex-row">
-        <div className="mt-6 max-w-md pe-4 xs:mt-0">
-          <Title
-            as="h6"
-            className="mb-1 text-xs font-semibold uppercase xs:mb-2 xs:text-sm"
-          >
-            Notes
-          </Title>
-          <Text className="leading-[1.7]">
-            We appreciate your business. Should you need us to add VAT or extra
-            notes let us know!
-          </Text>
+      <div className="mb-8 mr-16 mt-6 pe-4 xs:mt-0">
+        <Title
+          as="h6"
+          className="mb-1 text-xs font-semibold xs:mb-2 xs:text-sm"
+        >
+          Megjegyzés
+        </Title>
+        <Text className="ml-16 leading-[1.7]">
+          Tájékoztatjuk Önt, hogy a jelen dokumentumban feltűntetett személyes
+          adatokat a BBOX Solutions Kft. mint adatkezelő, az Adatkezelési
+          tájékoztatójában foglaltak szerint megfelelően kezeli. A teljes
+          vételár kifizetéséig a felsorolt termékek a BBOX Solutions Kft.
+          tulajdonsát képezil. Kérjük igazolja vissza a munkát és aláírtan
+          lepecsételve részünkre a munkalapot.
+        </Text>
+      </div>
+      <div className="flex flex-col-reverse items-start justify-between border-t border-gray-300 pb-4 pt-8 xs:flex-row">
+        {/* Signature Section */}
+        <div className="flex flex-col items-start">
+          <div className="mb-4 flex h-32 w-64 items-center justify-center bg-gray-100">
+            <span>Signature Here</span>{' '}
+            {/* Replace with signature image if available */}
+          </div>
+          <div className="text-sm">
+            <p className="text-gray-600">Aláírva: 2024.11.02. - 16:44</p>
+            <p className="text-gray-600">
+              Aláíró neve: <span className="font-bold">Dávid Gábor</span>
+            </p>
+          </div>
         </div>
+
+        {/* Invoice Summary Section */}
+        <div className="w-full max-w-sm">
+          <div className="flex items-center justify-between border-b border-gray-300 pb-3.5 lg:pb-5">
+            <span className="text-sm text-gray-600">
+              Nettó számla érték (ÁFA nélkül):
+            </span>
+            <span className="text-sm font-semibold">177 100 HUF</span>
+          </div>
+          <div className="flex items-center justify-between border-b border-gray-300 py-3.5 lg:py-5">
+            <span className="text-sm text-gray-600">27% összege:</span>
+            <span className="text-sm font-semibold">47 817 HUF</span>
+          </div>
+          <div className="flex items-center justify-between border-b border-gray-300 py-3.5 lg:py-5">
+            <span className="text-sm text-gray-600">Kedvezmény:</span>
+            <span className="text-sm font-semibold">0%</span>
+          </div>
+          <div className="flex items-center justify-between pt-4 text-lg font-semibold text-gray-900 lg:pt-5">
+            <span>Összesen:</span>
+            <span className="text-emerald-600">224 917 HUF</span>
+          </div>
+        </div>
+      </div>
+
+      {/*<div className="flex flex-col-reverse items-start justify-between border-t border-muted pb-4 pt-8 xs:flex-row">
+        <div>SIGN HERE</div>
         <div className="w-full max-w-sm">
           <Text className="flex items-center justify-between border-b border-muted pb-3.5 lg:pb-5">
             Subtotal:{' '}
@@ -217,7 +303,7 @@ export default function InvoiceDetails() {
             Total: <Text as="span">$659.5</Text>
           </Text>
         </div>
-      </div>
+      </div>*/}
     </div>
   );
 }
