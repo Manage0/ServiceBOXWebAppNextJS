@@ -7,7 +7,9 @@ import { ReactBarcode } from 'react-jsbarcode';
 import { usePathname } from 'next/navigation';
 import InvoiceDates from './InvoiceDates';
 import RepairDetails from './RepairDetails';
-import React from 'react';
+import React, { useRef } from 'react';
+import SignatureCanvas from 'react-signature-canvas';
+import jsPDF from 'jspdf';
 
 const invoiceItems = [
   {
@@ -114,6 +116,19 @@ function InvoiceDetailsListTable() {
 
 export default function InvoiceDetails() {
   const pathname = usePathname();
+  const sigCanvasRef = useRef(null);
+  /*const savePDF = () => {
+    const sigCanvas = sigCanvasRef.current;
+    if (sigCanvas !== null && !sigCanvas.isEmpty()) {
+      const signatureDataUrl = sigCanvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.text('Signature Section', 10, 10);
+      pdf.addImage(signatureDataUrl, 'PNG', 10, 20, 180, 50); // Adjust position and size
+      pdf.save('signature.pdf');
+    } else {
+      alert('Please add a signature before saving.');
+    }
+  };*/
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
       <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
@@ -235,19 +250,54 @@ export default function InvoiceDetails() {
         </Text>
       </div>
       <div className="flex flex-col-reverse items-start justify-between border-t border-gray-300 pb-4 pt-8 xs:flex-row">
+        {/* API
+
+All API methods require a ref to the SignatureCanvas in order to use and are instance methods of the ref.
+
+<SignatureCanvas ref={(ref) => { this.sigCanvas = ref }} />
+
+    isEmpty() : boolean, self-explanatory
+    clear() : void, clears the canvas using the backgroundColor prop
+    fromDataURL(base64String, options) : void, writes a base64 image to canvas
+    toDataURL(mimetype, encoderOptions): base64string, returns the signature image as a data URL
+    fromData(pointGroupArray): void, draws signature image from an array of point groups
+    toData(): pointGroupArray, returns signature image as an array of point groups
+    off(): void, unbinds all event handlers
+    on(): void, rebinds all event handlers
+    getCanvas(): canvas, returns the underlying canvas ref. Allows you to modify the canvas however you want or call methods such as toDataURL()
+    getTrimmedCanvas(): canvas, creates a copy of the canvas and returns a trimmed version of it, with all whitespace removed.
+    getSignaturePad(): SignaturePad, returns the underlying SignaturePad reference.
+
+The API methods are mostly just wrappers around signature_pad's API. on() and off() will, in addition, bind/unbind the window resize event handler. getCanvas(), getTrimmedCanvas(), and getSignaturePad() are new. */}
         {/* Signature Section */}
-        <div className="flex flex-col items-start">
-          <div className="mb-4 flex h-32 w-64 items-center justify-center bg-gray-100">
-            <span>Signature Here</span>{' '}
-            {/* Replace with signature image if available */}
+        <div className="mr-20 flex w-full flex-col items-start">
+          <div className="mb-4 flex h-32 w-full items-center justify-center bg-gray-100">
+            <SignatureCanvas
+              ref={sigCanvasRef}
+              penColor="black"
+              canvasProps={{
+                width: 500,
+                height: 128,
+                className: 'sigCanvas',
+              }}
+            />
           </div>
-          <div className="text-sm">
+          <div className="flex w-full flex-row justify-between text-sm">
             <p className="text-gray-600">Aláírva: 2024.11.02. - 16:44</p>
             <p className="text-gray-600">
               Aláíró neve: <span className="font-bold">Dávid Gábor</span>
             </p>
           </div>
         </div>
+        {/**
+        <div>
+          <button
+            onClick={savePDF}
+            className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            Save as PDF
+          </button>
+        </div> */}
 
         {/* Invoice Summary Section */}
         <div className="w-full max-w-sm">
