@@ -10,9 +10,11 @@ const pageHeader = {
   breadcrumb: [
     {
       name: 'Home',
+      href: '/',
     },
     {
       name: 'Munkatársak',
+      href: '/coworkers',
     },
     {
       name: 'Lista',
@@ -20,11 +22,7 @@ const pageHeader = {
   ],
 };
 
-interface HeaderProps {
-  className?: string;
-}
-
-export default function CoworkersPageHeader({ className }: HeaderProps) {
+export default function CoworkersPageHeader() {
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
       <div className="mt-4 flex flex-col items-center gap-3 @sm:flex-row @lg:mt-0">

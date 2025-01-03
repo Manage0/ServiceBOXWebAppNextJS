@@ -8,6 +8,5 @@ coverage
 .next
 .cache
 .vercel
-.husky
 node_modules
 pgdata

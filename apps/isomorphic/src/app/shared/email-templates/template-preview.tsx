@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -21,14 +20,12 @@ export default function TemplatePreview({
   icon,
   title = 'Newsletter!',
   // name,
-  preview,
   className,
   description = 'Feel free to preview it by clicking the button below.',
 }: {
   icon: StaticImport;
   // name: string;
   title?: string;
-  preview: string;
   className?: string;
   description?: string;
 }) {
@@ -56,11 +53,6 @@ export default function TemplatePreview({
               {description}
             </p>
           </div>
-          <Link href={preview} target="_blank" className="block">
-            <Button as="span" size="lg" className="mx-auto w-full">
-              Preview
-            </Button>
-          </Link>
           {/* <EmailForm template="accountConfirmation" /> */}
         </div>
       </div>

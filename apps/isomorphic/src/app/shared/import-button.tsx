@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import { Button } from 'rizzui';
 import cn from '@core/utils/class-names';
-import { PiArrowLineDownBold } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import Image from 'next/image';
 const FileUpload = dynamic(() => import('@/app/shared/file-upload'), {
