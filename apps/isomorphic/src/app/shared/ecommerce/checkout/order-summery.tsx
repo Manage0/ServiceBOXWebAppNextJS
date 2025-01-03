@@ -42,15 +42,6 @@ export default function OrderSummery({
       <div className="rounded-lg border border-muted p-4 @xs:p-6 @5xl:rounded-none @5xl:border-none @5xl:px-0">
         <div className="flex justify-between rounded-tl-lg rounded-tr-lg border-b border-muted pb-4 @xs:pb-6">
           Ordered items
-          <Link href={routes.eCommerce.cart}>
-            <Button
-              as="span"
-              variant="text"
-              className="h-auto w-auto p-0 text-primary underline hover:text-gray-1000"
-            >
-              Edit Cart
-            </Button>
-          </Link>
         </div>
         <div className="pt-4 @xl:pt-6">
           <OrderProducts

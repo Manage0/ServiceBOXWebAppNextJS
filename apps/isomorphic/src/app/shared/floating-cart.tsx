@@ -35,7 +35,6 @@ export default function FloatingCart({ className }: FloatingCartProps) {
 
   // list of excluded pages
   const excludedPaths = [
-    routes.eCommerce.cart,
     routes.eCommerce.checkout,
     routes.eCommerce.orderDetails(DUMMY_ID),
   ];

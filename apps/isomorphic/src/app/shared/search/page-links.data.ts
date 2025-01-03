@@ -6,7 +6,6 @@ export const pageLinks = [
   /**TODO itt töltsd ki az oldalakkal */
   {
     name: 'E-Commerce',
-     
   },
   {
     name: 'Appointment',
@@ -55,10 +54,6 @@ export const pageLinks = [
   {
     name: 'Shop',
     href: routes.eCommerce.shop,
-  },
-  {
-    name: 'Cart',
-    href: routes.eCommerce.cart,
   },
   {
     name: 'Checkout & Payment',
