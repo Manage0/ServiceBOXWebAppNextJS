@@ -4,7 +4,6 @@ import { Button } from 'rizzui';
 import PageHeader from '@/app/shared/page-header';
 import Addresses from '@/app/shared/coworkers/shipment/details/addresses';
 import InvoiceDetails from '@/app/shared/coworkers/shipment/details/invoice-details';
-import DeliveryDetails from '@/app/shared/coworkers/shipment/details/delivery-details';
 import TrackingHistory from '@/app/shared/coworkers/shipment/details/tracking-history';
 import ShippingDetails from '@/app/shared/coworkers/shipment/details/shipping-details';
 import { metaObject } from '@/config/site.config';
@@ -47,7 +46,6 @@ export default function LogisticsListPage() {
 
       <div className="mt-2 flex flex-col gap-y-6 @container sm:gap-y-10">
         <InvoiceDetails />
-        <DeliveryDetails />
         <TrackingHistory />
         <ShippingDetails />
         <Addresses />

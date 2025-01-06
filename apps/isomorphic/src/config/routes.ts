@@ -79,7 +79,6 @@ export const routes = {
   emailTemplates: '/email-templates',
   profile: '/profile',
   welcome: '/welcome',
-  comingSoon: '/coming-soon',
   accessDenied: '/access-denied',
   notFound: '/not-found',
   maintenance: '/maintenance',

@@ -140,10 +140,6 @@ export const pageLinks = [
     href: routes.welcome,
   },
   {
-    name: 'Coming soon',
-    href: routes.comingSoon,
-  },
-  {
     name: 'Access Denied',
     href: routes.accessDenied,
   },

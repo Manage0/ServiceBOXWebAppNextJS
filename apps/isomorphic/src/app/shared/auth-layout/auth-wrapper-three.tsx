@@ -1,6 +1,6 @@
 'use client';
 
-import logoImg from '@public/logo-primary.svg';
+import logoImg from '@public/logo.svg';
 import Image from 'next/image';
 import { Button, Title } from 'rizzui';
 import cn from '@core/utils/class-names';
@@ -19,7 +19,7 @@ export default function AuthWrapperThree({
 }) {
   return (
     <>
-      <div className="bg-custom-green relative flex min-h-screen w-full flex-col justify-center p-4 md:p-12 lg:p-28">
+      <div className="relative flex min-h-screen w-full flex-col justify-center bg-custom-green p-4 md:p-12 lg:p-28">
         <div
           className={cn(
             'mx-auto w-full max-w-md rounded-xl bg-white px-4 py-9 dark:bg-gray-50 sm:px-6 md:max-w-xl md:px-10 md:py-12 lg:max-w-[700px] lg:px-16 xl:rounded-2xl 3xl:rounded-3xl',

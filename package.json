@@ -30,12 +30,10 @@
     "intl:build": "turbo build --filter=intl",
     "intl:start": "turbo start --filter=intl",
     "intl:clean": "turbo clean --filter=intl",
-    "gen-icons": "turbo gen-icons --filter=core",
-    "prepare": "husky"
+    "gen-icons": "turbo gen-icons --filter=core"
   },
   "devDependencies": {
     "eslint": "8.57.0",
-    "husky": "^9.1.6",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "turbo": "2.1.3",
