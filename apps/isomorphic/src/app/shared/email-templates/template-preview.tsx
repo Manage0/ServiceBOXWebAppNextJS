@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { SubmitHandler } from 'react-hook-form';
@@ -11,19 +10,16 @@ import {
   NewsLetterFormSchema,
   newsLetterFormSchema,
 } from '@/validators/newsletter.schema';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { sendAccountConfirmationEmail } from '@/server/actions/account-confirmation.action';
 import { sendOrderConfirmationEmail } from '@/server/actions/order-confirmation.action';
 import { messages } from '@/config/messages';
 
 export default function TemplatePreview({
-  icon,
   title = 'Newsletter!',
   // name,
   className,
   description = 'Feel free to preview it by clicking the button below.',
 }: {
-  icon: StaticImport;
   // name: string;
   title?: string;
   className?: string;
@@ -38,22 +34,13 @@ export default function TemplatePreview({
     >
       <div className="relative flex h-full w-full flex-col items-center justify-center p-6 @2xl:p-12 3xl:px-16 4xl:px-28">
         <div className="w-full max-w-[640px]">
-          <div className="relative mx-auto mb-6 h-20 w-20 @2xl:mb-8 @2xl:h-28 @2xl:w-28">
-            <Image
-              src={icon}
-              alt="newsletter"
-              fill
-              priority
-              sizes="(max-width: 768px) 140px"
-            />
-          </div>
           <div className="mb-8 text-center @2xl:mb-12">
             <h2 className="mb-2 text-xl @2xl:mb-3 @2xl:text-2xl">{title}</h2>
             <p className="mx-auto max-w-[45ch] text-sm leading-6 text-gray-500 @2xl:text-base">
               {description}
             </p>
           </div>
-          {/* <EmailForm template="accountConfirmation" /> */}
+          <EmailForm template="accountConfirmation" />
         </div>
       </div>
     </div>

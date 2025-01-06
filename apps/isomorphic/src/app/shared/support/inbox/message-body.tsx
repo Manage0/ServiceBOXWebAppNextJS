@@ -15,7 +15,6 @@ import {
 } from '@/app/shared/support/inbox/message-list';
 import { useCopyToClipboard } from '@core/hooks/use-copy-to-clipboard';
 import { DotSeparator } from '@/app/shared/support/inbox/message-details';
-import pdfIcon from '@public/pdf-icon.svg';
 
 const p1 = `asperiores nesciunt autem quod error hic laudantium iste perspiciatis officiis voluptatibus exercitationem facere atque sapiente fuga excepturi qui illum alias reiciendis exercitationem ad occaecati deserunt molestiae maxime ratione consequuntur mollitia quae tempore alias ea architecto dolore iusto eaque error odit`;
 const p2 = `maxime suscipit fuga ducimus perspiciatis nemo porro nihil eaque a ab molestias praesentium voluptatum dignissimos odit ea omnis dolores maxime aspernatur vitae incidunt corrupti laudantium deserunt nisi facere sapiente fugiat`;
@@ -111,19 +110,12 @@ export default function MessageBody() {
                 className="grid grid-cols-[40px_1fr] gap-2.5"
               >
                 <figure className="relative h-10 w-10 overflow-hidden rounded">
-                  {attachments.type === 'image' ? (
+                  {attachments.type === 'image' && (
                     <Image
                       fill
                       alt={attachments.name}
                       src={attachments.thumbnail}
                       className="object-contain"
-                    />
-                  ) : (
-                    <Image
-                      src={pdfIcon}
-                      alt="pdf icon"
-                      className="h-full w-full"
-                      quality={100}
                     />
                   )}
                 </figure>
