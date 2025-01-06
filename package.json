@@ -30,12 +30,10 @@
     "intl:build": "turbo build --filter=intl",
     "intl:start": "turbo start --filter=intl",
     "intl:clean": "turbo clean --filter=intl",
-    "gen-icons": "turbo gen-icons --filter=core",
-    "prepare": "husky"
+    "gen-icons": "turbo gen-icons --filter=core"
   },
   "devDependencies": {
     "eslint": "8.57.0",
-    "husky": "^9.1.6",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "turbo": "2.1.3",
@@ -46,8 +44,11 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@auth/pg-adapter": "^1.7.4",
+    "@types/pg": "^8.11.10",
     "@types/react-signature-canvas": "^1.0.6",
     "jspdf": "^2.4.0",
+    "pg": "^8.13.1",
     "react-signature-canvas": "~1.0.6"
   }
 }

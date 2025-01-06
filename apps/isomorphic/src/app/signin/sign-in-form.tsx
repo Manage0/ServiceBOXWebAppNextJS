@@ -16,8 +16,8 @@ import {
 } from '@/layouts/settings/use-theme-color';
 
 const initialValues: LoginSchema = {
-  email: 'admin@admin.com',
-  password: 'admin',
+  email: 'johndoe@example.com',
+  password: '1234',
   rememberMe: true,
 };
 
@@ -26,7 +26,6 @@ export default function SignInForm() {
   const [reset, setReset] = useState({});
 
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
-    console.log(data);
     signIn('credentials', {
       ...data,
     });

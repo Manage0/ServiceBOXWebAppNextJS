@@ -19,7 +19,7 @@ export default function AuthWrapperThree({
 }) {
   return (
     <>
-      <div className="bg-custom-green relative flex min-h-screen w-full flex-col justify-center p-4 md:p-12 lg:p-28">
+      <div className="relative flex min-h-screen w-full flex-col justify-center bg-custom-green p-4 md:p-12 lg:p-28">
         <div
           className={cn(
             'mx-auto w-full max-w-md rounded-xl bg-white px-4 py-9 dark:bg-gray-50 sm:px-6 md:max-w-xl md:px-10 md:py-12 lg:max-w-[700px] lg:px-16 xl:rounded-2xl 3xl:rounded-3xl',
@@ -40,7 +40,7 @@ export default function AuthWrapperThree({
               {title}
             </Title>
           </div>
-          <>
+          {/*<>
             <div className="flex flex-col gap-4 pb-6 md:flex-row md:gap-6 md:pb-7">
               <Button className="h-11 w-full" variant="outline">
                 <BsActivity className="me-2 h-5 w-5 shrink-0 text-primary" />
@@ -49,7 +49,7 @@ export default function AuthWrapperThree({
                 </span>
               </Button>
             </div>
-          </>
+          </>*/}
           {children}
         </div>
       </div>

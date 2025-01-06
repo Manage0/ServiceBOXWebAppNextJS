@@ -17,7 +17,6 @@ export const routes = {
     editOrder: (id: string) => `/ecommerce/orders/${id}/edit`,
     reviews: '/ecommerce/reviews',
     shop: '/ecommerce/shop',
-    cart: '/ecommerce/cart',
     checkout: '/ecommerce/checkout',
   },
   support: {

@@ -1,16 +1,27 @@
 import { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import { env } from '@/env.mjs';
-import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
+import { Pool } from 'pg';
+
+const pool = new Pool({
+  host: process.env.PG_HOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+  ssl: {
+    rejectUnauthorized: false, // Use true if you have a valid SSL certificate
+  },
+});
 
 export const authOptions: NextAuthOptions = {
-  // debug: true,
   pages: {
     ...pagesOptions,
   },
   session: {
+    //strategy: 'database', //ez errort dob
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
@@ -26,19 +37,11 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        // return user as JWT
         token.user = user;
       }
       return token;
     },
     async redirect({ url, baseUrl }) {
-      // const parsedUrl = new URL(url, baseUrl);
-      // if (parsedUrl.searchParams.has('callbackUrl')) {
-      //   return `${baseUrl}${parsedUrl.searchParams.get('callbackUrl')}`;
-      // }
-      // if (parsedUrl.origin === baseUrl) {
-      //   return url;
-      // }
       return baseUrl;
     },
   },
@@ -46,31 +49,45 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       id: 'credentials',
       name: 'Credentials',
-      credentials: {},
-      async authorize(credentials: any) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid
-        const user = {
-          email: 'admin@admin.com',
-          password: 'admin',
-        };
-
-        if (
-          isEqual(user, {
-            email: credentials?.email,
-            password: credentials?.password,
-          })
-        ) {
-          return user as any;
-        }
-        return null;
+      credentials: {
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
-    }),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID || '',
-      clientSecret: env.GOOGLE_CLIENT_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
+      async authorize(credentials: any) {
+        if (!credentials) {
+          return null;
+        }
+
+        const { email, password } = credentials;
+
+        try {
+          const nonRealLogin = true;
+          if (nonRealLogin) {
+            return { id: '1234', email: 'asd@asd.asd' };
+          }
+          // Query the database for the user
+          const result = await pool.query(
+            'SELECT id, email, password FROM users WHERE email = $1',
+            [email]
+          );
+
+          if (result.rows.length === 0) {
+            return null; // User not found
+          }
+
+          const user = result.rows[0];
+
+          // Replace this with proper password hashing (e.g., bcrypt.compare)
+          if (password !== user.password) {
+            return null; // Invalid password
+          }
+
+          return { id: user.id, email: user.email };
+        } catch (err) {
+          console.error('Error authorizing user:', err);
+          return null;
+        }
+      },
     }),
   ],
 };
