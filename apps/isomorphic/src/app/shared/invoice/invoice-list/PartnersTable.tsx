@@ -45,19 +45,7 @@ export default function PartnersTable({
 
   return (
     <>
-      <Filters
-        table={table}
-        searchbarPlaceholder={searchbarPlaceholder}
-        dropdownProps={{
-          options: [
-            { label: 'Kategória', value: 'Kategória' },
-            { label: 'Fiskálnyomtató', value: 'Fiskálnyomtató' },
-          ],
-          onChange: (value) => {
-            console.log('Selected value:', value);
-          },
-        }}
-      />
+      <Filters table={table} searchbarPlaceholder={searchbarPlaceholder} />
       <Table
         table={table}
         variant="modern"

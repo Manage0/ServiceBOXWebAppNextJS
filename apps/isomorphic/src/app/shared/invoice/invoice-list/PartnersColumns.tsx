@@ -35,7 +35,7 @@ export const PartnersColumns = [
   columnHelper.accessor('name', {
     id: 'name',
     size: 200,
-    header: 'PARTNER / KATEGÓRIA',
+    header: 'PARTNER / KÜLSŐ ID',
     enableSorting: false,
     cell: ({ row }) => {
       return (
