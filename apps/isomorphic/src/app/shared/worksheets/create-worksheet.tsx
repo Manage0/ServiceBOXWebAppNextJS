@@ -19,6 +19,7 @@ import {
 import { Label, LabeledInput } from '../account-settings/personal-info';
 import { PiPlusBold } from 'react-icons/pi';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
+import AddBtn from '../add-btn';
 
 const invoiceItems = [
   { item: '', description: '', quantity: 1, price: undefined },
@@ -247,10 +248,7 @@ export default function CreateInvoice({
                       )}
                     />
                   </LabeledInput>
-                  <Button className="ml-4 w-full @lg:w-auto">
-                    <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-                    Hozzáad
-                  </Button>
+                  <AddBtn onClick={() => console.log('Munkatárs hozzáadva')} />
                 </div>
               </FormBlockWrapper>
               <FormBlockWrapper
@@ -390,10 +388,7 @@ export default function CreateInvoice({
                   {...register('fromName')}
                   error={errors.fromName?.message}
                 />
-                <Button className="w-full max-w-[150px] @lg:w-auto">
-                  <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-                  Hozzáad
-                </Button>
+                <AddBtn onClick={() => console.log('Munkatárs hozzáadva')} />
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Kiszállás'}
