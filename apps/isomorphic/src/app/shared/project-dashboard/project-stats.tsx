@@ -12,7 +12,6 @@ import { formatNumber } from '@core/utils/format-number';
 import { StatType, projectStatData } from '@/data/project-dashboard';
 import Link from 'next/link';
 import PartnersImportBtn from '@/app/(hydrogen)/partners/PartnerImportBtn';
-import { routes } from '@/config/routes';
 import NewWorksheetBtn from '@/app/(hydrogen)/partners/NewWorksheetBtn';
 
 export type StatCardProps = {
@@ -29,15 +28,6 @@ export default function ProjectStats({ className }: { className?: string }) {
         </Title>
         <Box className="flex flex-col gap-5 @lg:flex-row">
           <NewWorksheetBtn />
-          <Link
-            href={'/' /*routes.eCommerce.createProduct*/}
-            className="w-full @lg:w-auto"
-          >
-            <Button as="span" className="w-full @lg:w-auto">
-              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-              Új termék
-            </Button>
-          </Link>
           <PartnersImportBtn />
         </Box>
 

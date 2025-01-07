@@ -3,7 +3,7 @@ import { metaObject } from '@/config/site.config';
 import CoworkersPageHeader from './page-header';
 
 export const metadata = {
-  ...metaObject('Coworkers'),
+  ...metaObject('Munkatársak'),
 };
 
 export default function LogisticsPage() {
