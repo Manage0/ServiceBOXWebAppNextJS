@@ -20,6 +20,7 @@ import { Label, LabeledInput } from '../account-settings/personal-info';
 import { PiPlusBold } from 'react-icons/pi';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
+import { FileInput } from '../file-upload';
 
 const invoiceItems = [
   { item: '', description: '', quantity: 1, price: undefined },
@@ -389,6 +390,19 @@ export default function CreateInvoice({
                   error={errors.fromName?.message}
                 />
                 <AddBtn onClick={() => console.log('Munkatárs hozzáadva')} />
+                <div className="col-span-2">
+                  <Textarea
+                    label="Átvett tartozék"
+                    {...register('toAddress')}
+                    error={errors.toAddress?.message}
+                    textareaClassName="h-20"
+                    className="mb-5 w-full"
+                  />
+                  <FileInput
+                    className="w-full"
+                    btnLabel="Mentés a munkalaphoz"
+                  />
+                </div>
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Kiszállás'}

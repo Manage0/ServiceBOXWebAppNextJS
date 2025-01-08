@@ -109,13 +109,13 @@ export const FileInput = ({
   function handleFileUpload() {
     if (files.length) {
       console.log('uploaded files:', files);
-      toast.success(<Text as="b">File successfully added</Text>);
+      toast.success(<Text as="b">Fájl sikeresen elmentve</Text>);
 
       setTimeout(() => {
         closeModal();
       }, 200);
     } else {
-      toast.error(<Text as="b">Please drop your file</Text>);
+      toast.error(<Text as="b">Tölts fel egy fájlt</Text>);
     }
   }
 
@@ -127,7 +127,7 @@ export const FileInput = ({
         accept={accept}
         multiple={multiple}
         onChange={(event) => handleFileDrop(event)}
-        className="mb-6 min-h-[280px] justify-center border-dashed bg-gray-50 dark:bg-transparent"
+        className="mb-6 min-h-[50px] justify-center border-dashed bg-gray-50 dark:bg-transparent"
       />
 
       {files.length > 1 ? (
@@ -177,7 +177,7 @@ export const FileInput = ({
           className={cn(!files.length && 'hidden', 'w-full')}
           onClick={() => setFiles([])}
         >
-          Reset
+          Visszaállítás
         </Button>
         <Button className="w-full" onClick={() => handleFileUpload()}>
           <PiArrowLineDownBold className="me-1.5 h-[17px] w-[17px]" />
