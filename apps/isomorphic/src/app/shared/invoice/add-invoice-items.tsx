@@ -227,6 +227,20 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     />
                   )}
                 />
+                <Textarea
+                  label="Megjegyzés számlán és bizonylaton"
+                  {...register('toAddress')}
+                  error={errors.toAddress?.message}
+                  textareaClassName="h-20"
+                  className="col-span-2"
+                />
+                <Textarea
+                  label="Egyéb mejegyzés (belső használat)"
+                  {...register('toAddress')}
+                  error={errors.toAddress?.message}
+                  textareaClassName="h-20"
+                  className="col-span-2"
+                />
               </div>
               <Button
                 variant="text"
