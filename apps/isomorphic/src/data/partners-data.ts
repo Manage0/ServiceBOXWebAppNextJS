@@ -7,7 +7,6 @@ export type PartnerType = {
   contact: number;
   addressDetail: string;
   address: string;
-  status: string;
   rating: number[];
 };
 
@@ -19,10 +18,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp',
     sku: '52442',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5, 3, 2],
   },
   {
@@ -32,10 +30,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/3.webp',
     sku: '98424',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5],
   },
   {
@@ -45,10 +42,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/1.webp',
     sku: '78192',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5, 2, 5, 3],
   },
   {
@@ -58,10 +54,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/11.webp',
     sku: '86229',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [3, 2],
   },
   {
@@ -71,10 +66,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/15.webp',
     sku: '89762',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [3, 4, 5],
   },
   {
@@ -84,10 +78,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/16.webp',
     sku: '21065',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [5, 5, 4, 3, 2],
   },
   {
@@ -97,10 +90,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/6.webp',
     sku: '41063',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [5, 2],
   },
   {
@@ -110,10 +102,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/8.webp',
     sku: '13240',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 2],
   },
   {
@@ -123,10 +114,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/9.webp',
     sku: '26214',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [2, 5, 4],
   },
   {
@@ -136,10 +126,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/10.webp',
     sku: '14317',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 3, 2, 5],
   },
   {
@@ -149,10 +138,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/12.webp',
     sku: '21944',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [3, 2, 4, 5],
   },
   {
@@ -162,10 +150,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/4.webp',
     sku: '93411',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [2, 5, 5],
   },
   {
@@ -175,10 +162,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/13.webp',
     sku: '61422',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [2, 5, 4, 5],
   },
   {
@@ -188,10 +174,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/14.webp',
     sku: '30532',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [5, 3, 4],
   },
   {
@@ -201,10 +186,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/4.webp',
     sku: '47948',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [5, 5, 4, 3],
   },
   {
@@ -214,10 +198,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp',
     sku: '52342',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5, 3, 2],
   },
   {
@@ -227,10 +210,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/3.webp',
     sku: '98414',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5],
   },
   {
@@ -240,10 +222,9 @@ export const partnersData = [
     image:
       'https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/1.webp',
     sku: '78592',
-    contact: "Hódosi Norbert",
+    contact: 'Hódosi Norbert',
     addressDetail: 'Sahy, Tesmak 78',
-    address:"Szolvákia - 93601",
-    status: 'Aktív',
+    address: 'Szolvákia - 93601',
     rating: [4, 5, 8, 5, 3],
   },
 ];

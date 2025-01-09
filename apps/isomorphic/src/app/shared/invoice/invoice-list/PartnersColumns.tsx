@@ -2,10 +2,8 @@
 
 import { routes } from '@/config/routes';
 import AvatarCard from '@core/ui/avatar-card';
-import DateCell from '@core/ui/date-cell';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Checkbox, Text } from 'rizzui';
-import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
+import { Checkbox } from 'rizzui';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
 import { PartnersDataType } from '../../ecommerce/dashboard/stock-report';
 
@@ -75,13 +73,6 @@ export const PartnersColumns = [
     size: 150,
     header: 'KAPCSOLATTARTÓ',
     cell: ({ row }) => row.original.contact, //TODO make type for it
-  }),
-  columnHelper.accessor('status', {
-    id: 'status',
-    size: 70,
-    header: 'STÁTUSZ',
-    enableSorting: false,
-    cell: ({ row }) => getStatusBadge(row.original.status, true),
   }),
   columnHelper.display({
     id: 'actions',
