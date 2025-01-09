@@ -15,7 +15,7 @@ export const siteConfig = {
   icon: logoIconImg,
   mode: MODE.LIGHT,
   layout: 'helium',
-  // TODO: favicon
+  favicon: '/favicon.ico',
 };
 
 export const metaObject = (

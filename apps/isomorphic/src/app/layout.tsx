@@ -14,6 +14,7 @@ import NextProgress from '@core/components/next-progress';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import '@/app/globals.css';
+import Head from 'next/head';
 
 export const metadata = {
   title: siteConfig.title,
@@ -43,6 +44,9 @@ export default async function RootLayout({
           'font-inter'
         )}
       >
+        <Head>
+          <link rel="icon" href={siteConfig.favicon} />
+        </Head>
         <AuthProvider session={session}>
           <ThemeProvider>
             <NextProgress />
