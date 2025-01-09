@@ -166,33 +166,13 @@ export const pageLinks = [
     name: "Not Found",
     href: routes.notFound,
   },
-  {
-    name: "Maintenance",
-    href: routes.maintenance,
-  },
-  {
-    name: "Blank",
-    href: routes.blank,
-  },
   // label start
   {
     name: "Authentication",
   },
   // label end
   {
-    name: "Trendy Sign Up",
-    href: routes.auth.signUp3,
-  },
-  {
     name: "Trendy Sign In",
     href: routes.auth.signIn3,
-  },
-  {
-    name: "Trendy Forgot Password",
-    href: routes.auth.forgotPassword3,
-  },
-  {
-    name: "Trendy OTP Page",
-    href: routes.auth.otp3,
   },
 ];

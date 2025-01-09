@@ -5,18 +5,27 @@ import Image from 'next/image';
 import { Button, Title } from 'rizzui';
 import cn from '@core/utils/class-names';
 import { BsActivity } from 'react-icons/bs';
+import { usePresets } from '@/config/color-presets';
+import {
+  useApplyColorPreset,
+  useColorPresets,
+} from '@/layouts/settings/use-theme-color';
+import { SubmitHandler } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
 
 export default function AuthWrapperThree({
-  children,
   title,
   className = '',
 }: {
-  children: React.ReactNode;
   title: React.ReactNode;
   isSocialLoginActive?: boolean;
   isSignIn?: boolean;
   className?: string;
 }) {
+  const COLOR_PRESETS = usePresets();
+  const { colorPresets } = useColorPresets();
+
+  useApplyColorPreset<any>(colorPresets ?? COLOR_PRESETS[0].colors);
   return (
     <>
       <div className="relative flex min-h-screen w-full flex-col justify-center bg-custom-green p-4 md:p-12 lg:p-28">
@@ -42,15 +51,22 @@ export default function AuthWrapperThree({
           </div>
           <>
             <div className="flex flex-col gap-4 pb-6 md:flex-row md:gap-6 md:pb-7">
-              <Button className="h-11 w-full" variant="outline">
+              <Button
+                className="h-11 w-full"
+                variant="outline"
+                onClick={() => {
+                  signIn('credentials', {
+                    email: 'admin@admin.com',
+                    password: 'admin',
+                    rememberMe: true,
+                  });
+                }}
+              >
                 <BsActivity className="me-2 h-5 w-5 shrink-0 text-primary" />
-                <span className="truncate">
-                  Csak ez a gomb maradna az Active Directory-hoz
-                </span>
+                <span className="truncate">Active Directory Bejelentkezés</span>
               </Button>
             </div>
           </>
-          {children}
         </div>
       </div>
     </>

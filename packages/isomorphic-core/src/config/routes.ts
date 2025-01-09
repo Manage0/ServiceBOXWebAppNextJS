@@ -74,16 +74,8 @@ export const routes = {
   welcome: "/welcome",
   accessDenied: "/access-denied",
   notFound: "/not-found",
-  maintenance: "/maintenance",
-  blank: "/blank",
   auth: {
-    signUp3: "/auth/sign-up-3",
-    // sign in
     signIn3: "/auth/sign-in-3",
-    // forgot password
-    forgotPassword3: "/auth/forgot-password-3",
-    // OTP
-    otp3: "/auth/otp-3",
   },
   signIn: "/signin",
 };
