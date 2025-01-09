@@ -8,13 +8,16 @@ const statusColors = {
   danger: ["text-red-dark", "bg-red-dark", "bg-red-100"],
   default: ["text-gray-600", "bg-gray-600", "bg-gray-100"],
   offline: ["text-gray-600", "bg-[#c46851]", "bg-gray-100"],
-  vázlat: ["text-[#b2b2b2]", "bg-[#b2b2b2]", "bg-white"],
+  draft: ["text-[#b2b2b2]", "bg-[#b2b2b2]", "bg-white"],
+  blue: ["text-blue-600", "bg-blue-600", "bg-blue-100"],
+  lightBlue: ["text-blue-400", "bg-blue-400", "bg-blue-75"],
+  black: ["text-black", "bg-black", "bg-black"],
 };
 
 const allStatus = {
   online: statusColors.success,
   offline: statusColors.offline,
-  pending: statusColors.warning,
+  pending: statusColors.blue,
   paid: statusColors.success,
   overdue: statusColors.danger,
   completed: statusColors.success,
@@ -27,16 +30,29 @@ const allStatus = {
   on_going: statusColors.warning,
   at_risk: statusColors.danger,
   delayed: statusColors.default,
-  draft: statusColors.default,
   refunded: statusColors.default,
-  vázlat: statusColors.vázlat,
-  aktív: statusColors.success,
+  draft: statusColors.draft,
+  new: statusColors.warning,
+  outforsignature: statusColors.lightBlue,
+  closed: statusColors.black,
 };
 
 export type StatusTypes = keyof typeof allStatus;
 
+const statusTranslations: { [key: string]: string } = {
+  new: "Új",
+  pending: "Folyamatban",
+  completed: "Elkészült",
+  outforsignature: "Aláírás alatt",
+  draft: "Vázlat",
+  closed: "Lezárt",
+};
+
+function translateStatus(status: string): string {
+  return statusTranslations[status.toLowerCase()] || status;
+}
+
 export function getStatusBadge(status: string, hasBadge?: Boolean) {
-  /**TODO use as badge, ha nincs más */
   const statusLower = status.toLowerCase() as StatusTypes;
   if (hasBadge && statusLower in allStatus) {
     return (
@@ -52,7 +68,7 @@ export function getStatusBadge(status: string, hasBadge?: Boolean) {
         <Text
           className={cn("font-medium capitalize", allStatus[statusLower][0])}
         >
-          {replaceUnderscoreDash(statusLower)}
+          {translateStatus(statusLower)}
         </Text>
       </Flex>
     );
@@ -64,7 +80,7 @@ export function getStatusBadge(status: string, hasBadge?: Boolean) {
         <Text
           className={cn("font-medium capitalize", allStatus[statusLower][0])}
         >
-          {replaceUnderscoreDash(statusLower)}
+          {translateStatus(statusLower)}
         </Text>
       </Flex>
     );
