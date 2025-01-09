@@ -102,7 +102,7 @@ export default function RolesView() {
     edit: 'Módosítás',
     delete: 'Törlés',
     printImage: 'Nyomtatási kép',
-    print: 'Nyomtatás',
+    download: 'Letöltés',
     changeStatus: 'Státusz módosítás',
     share: 'Megosztás',
     sendForSignature: 'Aláírásra küldés',
