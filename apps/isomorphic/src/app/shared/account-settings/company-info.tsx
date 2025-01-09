@@ -77,15 +77,6 @@ export default function CompanyInfoView() {
                   />
                 </LabeledInput>
                 <LabeledInput>
-                  <Label>Partner külső ID</Label>
-                  <Input
-                    placeholder="Partner külső ID"
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
                   <Label>Ország</Label>
                   <Select
                     options={[
