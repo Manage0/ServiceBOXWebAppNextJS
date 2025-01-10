@@ -1,9 +1,9 @@
 import { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
 import { env } from '@/env.mjs';
 import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
+import { Client } from 'pg';
 
 export const authOptions: NextAuthOptions = {
   // debug: true,
@@ -48,29 +48,46 @@ export const authOptions: NextAuthOptions = {
       name: 'Credentials',
       credentials: {},
       async authorize(credentials: any) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid
         const user = {
-          email: 'admin@admin.com',
+          id: '12345', // Add the id property here
+          email: 'john.doe@example.com',
           password: 'admin',
         };
 
-        if (
-          isEqual(user, {
-            email: credentials?.email,
-            password: credentials?.password,
-          })
-        ) {
-          return user as any;
+        const client = new Client({
+          connectionString: process.env.DATABASE_URL_UNPOOLED,
+          ssl: { rejectUnauthorized: false },
+        });
+
+        await client.connect();
+
+        try {
+          const res = await client.query(
+            'SELECT id, "roleID" FROM users WHERE email = $1',
+            [credentials?.email]
+          );
+
+          if (res.rows.length > 0) {
+            const user = res.rows[0]; // Contains id and roleID
+            console.log('USER: ', user);
+          }
+
+          if (
+            isEqual(user, {
+              id: '12345',
+              email: credentials?.email,
+              password: credentials?.password,
+            })
+          ) {
+            console.log('returning user');
+            return user;
+          }
+        } finally {
+          await client.end();
         }
+        console.log('returning null');
         return null;
       },
-    }),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID || '',
-      clientSecret: env.GOOGLE_CLIENT_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
     }),
   ],
 };

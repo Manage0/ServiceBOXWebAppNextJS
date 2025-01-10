@@ -56,7 +56,7 @@ export default function AuthWrapperThree({
                 variant="outline"
                 onClick={() => {
                   signIn('credentials', {
-                    email: 'admin@admin.com',
+                    email: 'john.doe@example.com',
                     password: 'admin',
                     rememberMe: true,
                   });
