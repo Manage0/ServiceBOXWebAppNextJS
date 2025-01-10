@@ -17,10 +17,6 @@ export default function ProfileSettingsNav() {
       value: '/forms/profile-settings',
     },
     {
-      label: 'Jelszó',
-      value: '/forms/profile-settings/password',
-    },
-    {
       label: 'Értesítések',
       value: '/forms/profile-settings/notification',
     },
