@@ -24,14 +24,6 @@ export const pageLinks = [
     href: routes.eCommerce.categories,
   },
   {
-    name: 'Create Category',
-    href: routes.eCommerce.createCategory,
-  },
-  {
-    name: 'Edit Category',
-    href: routes.eCommerce.editCategory(DUMMY_ID),
-  },
-  {
     name: 'Orders',
     href: routes.eCommerce.orders,
   },

@@ -3,8 +3,6 @@ export const routes = {
     createProduct: "/ecommerce/products/create",
     ediProduct: (slug: string) => `/ecommerce/products/${slug}/edit`,
     categories: "/ecommerce/categories",
-    createCategory: "/ecommerce/categories/create",
-    editCategory: (id: string) => `/ecommerce/categories/${id}/edit`,
     orders: "/ecommerce/orders",
     createOrder: "/ecommerce/orders/create",
     orderDetails: (id: string) => `/ecommerce/orders/${id}`,

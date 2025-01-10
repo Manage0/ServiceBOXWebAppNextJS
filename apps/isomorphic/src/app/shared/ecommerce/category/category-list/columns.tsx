@@ -1,11 +1,9 @@
 'use client';
 
 import DeletePopover from '@core/components/delete-popover';
-import { routes } from '@/config/routes';
 import PencilIcon from '@core/components/icons/pencil';
 import { createColumnHelper } from '@tanstack/react-table';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ActionIcon, Checkbox, Text, Title, Tooltip } from 'rizzui';
 import { CategoryDataType } from './table';
 
@@ -80,13 +78,9 @@ export const categoriesColumns = [
       },
     }) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        <Tooltip content={'Edit Category'} placement="top" color="invert">
-          <Link href={routes.eCommerce.editCategory(row.original.id)}>
-            <ActionIcon size="sm" variant="outline">
-              <PencilIcon className="h-4 w-4" />
-            </ActionIcon>
-          </Link>
-        </Tooltip>
+        <ActionIcon size="sm" variant="outline">
+          <PencilIcon className="h-4 w-4" />
+        </ActionIcon>
         <DeletePopover
           title={`Delete the category`}
           description={`Are you sure you want to delete this #${row.original.id} category?`}
