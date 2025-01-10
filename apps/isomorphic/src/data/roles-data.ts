@@ -27,7 +27,6 @@ export type Permissions = {
   printExportPartnerList?: boolean;
   importPartner?: boolean;
   myData?: boolean;
-  password?: boolean;
   companyData?: boolean;
   roles?: boolean;
 };
@@ -86,7 +85,6 @@ export const rolesData = [
       },
       Settings: {
         myData: false,
-        password: false,
         companyData: false,
         roles: false,
       },
@@ -132,7 +130,6 @@ export const rolesData = [
       },
       Settings: {
         myData: false,
-        password: true,
         companyData: false,
         roles: true,
       },
@@ -178,7 +175,6 @@ export const rolesData = [
       },
       Settings: {
         myData: true,
-        password: false,
         companyData: true,
         roles: false,
       },
@@ -224,7 +220,6 @@ export const rolesData = [
       },
       Settings: {
         myData: false,
-        password: false,
         companyData: false,
         roles: false,
       },
@@ -270,7 +265,6 @@ export const rolesData = [
       },
       Settings: {
         myData: true,
-        password: false,
         companyData: true,
         roles: false,
       },

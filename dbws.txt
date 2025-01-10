@@ -1,0 +1,137 @@
+Adott a következő DB:
+
+Table users {
+  userID varchar [pk, unique] // AD-ból nyert userID, elsődleges kulcs
+}
+
+Table company {
+  id int [pk, increment] // Egyedi azonosító (mindig 1 rekord lesz)
+  name varchar [not null] // Cég neve
+  country varchar [not null] // Ország neve
+  postalCode varchar [not null] // Irányítószám
+  city varchar [not null] // Település neve
+  address varchar [not null] // Utca és házszám
+  taxNum varchar [not null] // Adószám
+  EUTaxNum varchar // EU adószám (nem kötelező)
+  email varchar [not null] // Email cím
+}
+
+Table partners {
+  id int [pk, increment] // Egyedi azonosító
+  name varchar [not null] // Partner neve
+  taxNum varchar [not null] // Partner adószáma
+  contactPerson varchar [not null] // Kapcsolattartó neve
+  externalID varchar // Külső adatbázisból érkező ID
+  email varchar [not null, unique] // Fő email cím (egyedi és kötelező)
+  contactPhoneNumber varchar [not null] // Kapcsolattartó telefonszáma
+}
+
+Table partner_email {
+  id int [pk, increment] // Egyedi azonosító
+  partnerID int [ref: > partners.id, not null] // Kapcsolat a partners táblával
+  email varchar [not null] // Extra email cím
+}
+
+Table sites {
+  siteID int [pk, increment] // Egyedi telephely azonosító
+  partnerID int [ref: > partners.id, not null] // Kapcsolat a partners táblával
+  name varchar [not null] // Telephely neve
+  externalID varchar // Külső adatbázisból érkező ID
+  country varchar [not null] // Ország neve
+  postalCode varchar [not null] // Irányítószám
+  city varchar [not null] // Település neve
+  address varchar [not null] // Utca és házszám
+  taxNum varchar [not null] // Telephely adószáma
+  EUTaxNum varchar // Telephely EU adószáma
+}
+
+Table products {
+  id int [pk, increment] // Egyedi azonosító
+  name varchar [not null] // Termék neve
+  stock int [not null, default: 0] // Készleten lévő mennyiség
+  measure varchar [not null] // Mértékegység (pl. kg, db)
+  price decimal(10,2) [not null] // Termék ára
+  currency varchar [not null] // Ár valutája (pl. HUF, EUR)
+  category varchar [not null] // Termékkategória
+  status enum('active', 'inactive') [not null, default: 'active'] // Termék státusza
+}
+
+Ehhez a DB-hez kellene most több dolgot hozzáadni. Az outputban kérlek csak azokat a táblákat írd le, amelyeket most hoztál létre vagy változtattál rajta.
+
+Kezdjük a legnagyobb hozzáadandó táblával, a Worksheet táblával. Kérlek minden fieldet, amit külön kérek hozzá adj is hozzá, mert ennek statikusan a fenti táblák nélkül is tudnia kell létezni.
+
+-id
+-partnerID (a partner ID-ja, egy kapcsolat ide jót tenne)
+-creationDate
+-status (enum: new, pending, completed, outforsignature, draft, closed)
+-priority (enum: weakest, weak, normal, strong, strongest)
+-jiraTicketNum (text)
+-invoiceNumber
+-procurementPO
+-invoiceDate
+-deadlineDate
+-completionDate
+-handoverDate
+-partnerName (ami a partners tábla name attribútumával fogm megegyezni)
+-siteID (Site tábla ID-jával áll kapcsolatban, csak olyan siteID lehet, ami a partnerID-val kapcsolatban van)
+-country (text - országnév)
+-postalCode (text - irányítószám)
+-city (text - település)
+-address (text - cím, mint utca házszám)
+-taxNum (text - adószám)
+-email (vagy a partner fő emailje vagy az egyik extra email a partner_email táblából)
+-startTime
+-arrivalTime
+-departureTime
+-rearrivalTime
+-issueDescription
+-workDescription
+-publicComment
+-privateComment
+-nettoPrice
+-discount
+-totalPrice
+-companyName (A company tábla name oszlopa)
+-companyAddress (A company tábla Address oszlopa)
+-companyTaxNum (A company tábla TaxNum oszlopa)
+-signage (base64 vagy bináris kép)
+-signageDate
+-signingPerson
+-receivedAccessories (hosszú text)
+
+Kellenek hozzá segédtáblák:
+
+Kell egy olyan WS_WS segédtábla, amellyel össze tudok kapcsolni két munkalapot. Ennek a kialakítását rád bízom.
+
+Kell egy WS_Device:
+-wsid (Worksheet tábla ID-ja)
+-deviceID (text)
+-deviceName (text)
+
+Kell egy WS_Product:
+-wsid (Worksheet tábla ID-ja)
+-productName (Ez a Product táblából fog jönni)
+-amount
+-measure (Ez a product táblából fog jönni)
+-price (Ez a product táblából fog jönni)
+-currency (Ez a product táblából fog jönni)
+-publicComment (Teljesen eltérő a Worksheet publicComment-jétől)
+-privateComment (Teljesen eltérő a Worksheet privateComment-jétől)
+
+Kell egy WS_Assignees, ami a worksheet-hez hozzárendelt munkatársakról tárol információt.
+-wsid
+-userID (A users tábla ID-ja)
+-seen (bool, amely false, ha még nem látta a user a munkalapot, true, ha már látta)
+
+Kell egy Description_Templates, amit arra használok, hogy elmenthessek külön issue és work description párokat, így könnyen be tudom tölteni és nem kell újra begépelni minden új munkalapnál
+-id
+-name
+-issueDescription
+-workDescription
+
+Kell egy Comment_Templates, amit arra használok, hogy elmenthessek külön public és private comment párokat, így könnyen be tudom tölteni és nem kell újra begépelni minden új munkalapnál.
+Fontos, hogy ez nem a termék public és private commentje, hanem kizárólag a munkalap (worksheet) public és private comment-je.
+-id
+-name
+-publicComment
+-privateComment

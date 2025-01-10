@@ -126,7 +126,6 @@ export default function RolesView() {
     printExportPartnerList: 'Lista nyomtatás, export',
     importPartner: 'Partner import',
     myData: 'Adataim',
-    password: 'Jelszó',
     companyData: 'Cégadatok',
     roles: 'Szerepkörök',
   };
