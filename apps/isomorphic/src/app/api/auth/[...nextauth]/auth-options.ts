@@ -4,6 +4,7 @@ import { env } from '@/env.mjs';
 import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
 import { Client } from 'pg';
+import { executeQuery } from '@/db';
 
 export const authOptions: NextAuthOptions = {
   // debug: true,
@@ -54,15 +55,8 @@ export const authOptions: NextAuthOptions = {
           password: 'admin',
         };
 
-        const client = new Client({
-          connectionString: process.env.DATABASE_URL_UNPOOLED,
-          ssl: { rejectUnauthorized: false },
-        });
-
-        await client.connect();
-
         try {
-          const res = await client.query(
+          const res = await executeQuery(
             'SELECT id, "roleID" FROM users WHERE email = $1',
             [credentials?.email]
           );
@@ -82,8 +76,9 @@ export const authOptions: NextAuthOptions = {
             console.log('returning user');
             return user;
           }
-        } finally {
-          await client.end();
+        } catch (error) {
+          console.error('Error:', error);
+          return null;
         }
         console.log('returning null');
         return null;
