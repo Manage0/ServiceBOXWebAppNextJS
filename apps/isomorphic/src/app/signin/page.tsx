@@ -2,7 +2,7 @@ import { metaObject } from '@/config/site.config';
 import AuthWrapperThree from '../shared/auth-layout/auth-wrapper-three';
 
 export const metadata = {
-  ...metaObject('Sign In'),
+  ...metaObject('Bejelentkezés'),
 };
 
 export default function SignIn() {

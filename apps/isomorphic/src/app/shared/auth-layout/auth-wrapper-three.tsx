@@ -10,8 +10,9 @@ import {
   useApplyColorPreset,
   useColorPresets,
 } from '@/layouts/settings/use-theme-color';
-import { SubmitHandler } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function AuthWrapperThree({
   title,
@@ -26,6 +27,7 @@ export default function AuthWrapperThree({
   const { colorPresets } = useColorPresets();
 
   useApplyColorPreset<any>(colorPresets ?? COLOR_PRESETS[0].colors);
+  const router = useRouter();
   return (
     <>
       <div className="relative flex min-h-screen w-full flex-col justify-center bg-custom-green p-4 md:p-12 lg:p-28">
@@ -54,12 +56,19 @@ export default function AuthWrapperThree({
               <Button
                 className="h-11 w-full"
                 variant="outline"
-                onClick={() => {
-                  signIn('credentials', {
+                onClick={async () => {
+                  const result = await signIn('credentials', {
                     email: 'john.doe@example.com',
                     password: 'admin',
                     rememberMe: true,
+                    redirect: false,
                   });
+                  if (result?.error) {
+                    toast.error('Hibás felhasználónév vagy jelszó');
+                  } else if (result?.ok) {
+                    toast.success('Sikeres bejelentkezés!');
+                    router.push('/');
+                  }
                 }}
               >
                 <BsActivity className="me-2 h-5 w-5 shrink-0 text-primary" />

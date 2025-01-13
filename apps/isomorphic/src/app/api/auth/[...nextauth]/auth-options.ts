@@ -1,10 +1,9 @@
 import { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { env } from '@/env.mjs';
 import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
-import { Client } from 'pg';
 import { executeQuery } from '@/db';
+import { redirect } from 'next/navigation';
 
 export const authOptions: NextAuthOptions = {
   // debug: true,
