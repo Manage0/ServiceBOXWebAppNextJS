@@ -143,7 +143,6 @@ export default function AddPartnerView() {
                 <LabeledInput>
                   <Label>EU Adószám</Label>
                   <Input
-                    placeholder="EU Adószám"
                     {...register('last_name')}
                     error={errors.last_name?.message}
                     className="flex-grow"
@@ -203,22 +202,6 @@ export default function AddPartnerView() {
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Cím</Label>
-                  <Input
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Adószám</Label>
-                  <Input
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>EU Adószám</Label>
                   <Input
                     {...register('last_name')}
                     error={errors.last_name?.message}

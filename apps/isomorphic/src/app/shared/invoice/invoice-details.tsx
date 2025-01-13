@@ -186,7 +186,6 @@ export default function InvoiceDetails() {
           <Text className="mb-1.5">Bajcsy-Zsilinszky u. 212.</Text>
           <Text className="mb-1.5">Siófok</Text>
           <Text className="mb-1.5">8600</Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">HU16726478</Text>
         </div>
 
         <div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
@@ -310,10 +309,6 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
           <div className="flex items-center justify-between border-b border-gray-300 py-3.5 lg:py-5">
             <span className="text-sm text-gray-600">27% összege:</span>
             <span className="text-sm font-semibold">47 817 HUF</span>
-          </div>
-          <div className="flex items-center justify-between border-b border-gray-300 py-3.5 lg:py-5">
-            <span className="text-sm text-gray-600">Kedvezmény:</span>
-            <span className="text-sm font-semibold">0%</span>
           </div>
           <div className="flex items-center justify-between pt-4 text-lg font-semibold text-gray-900 lg:pt-5">
             <span>Összesen:</span>

@@ -278,12 +278,6 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                 {shippingCost ? `${shippingCost} HUF` : '--'}
               </Text>
             </Text>
-            <Text className="flex items-center justify-between font-bold">
-              Kedvezmény:{' '}
-              <Text as="span" className="font-medium text-gray-700">
-                {discount ? `${discount} HUF` : '--'}
-              </Text>
-            </Text>
             <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
               Összesen:{' '}
               <Text
