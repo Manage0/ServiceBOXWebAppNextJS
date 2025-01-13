@@ -1,17 +1,15 @@
 import { Box } from 'rizzui';
 import ProjectActivities from './activities';
 import OverallProgress from './overall-progress';
-import ProjectStats from './project-stats';
-import ProjectSummary from './project-summary';
+import DashboardHeader from './dashboardHeader';
 import TableLayout from '@/app/(hydrogen)/tables/table-layout';
 import InvoiceTable from '../invoice/invoice-list/table';
 import { invoiceData } from '@/data/invoice-data';
-import PageHeader from '../page-header';
 
 export default function ProjectDashboard() {
   return (
     <Box className="@container/pd">
-      <ProjectStats className="mb-6 3xl:mb-8" />
+      <DashboardHeader className="mb-6 3xl:mb-8" />
       <TableLayout
         title={'Nyitott munkalapok'}
         breadcrumb={[]}

@@ -1,9 +1,13 @@
-import { type NextAuthOptions } from 'next-auth';
+import { type NextAuthOptions, type User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
 import { executeQuery } from '@/db';
-import { redirect } from 'next/navigation';
+
+declare module 'next-auth' {
+  interface User {
+    roleID?: string;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   // debug: true,
@@ -15,21 +19,30 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.idToken as string,
-        },
-      };
-    },
     async jwt({ token, user }) {
+      console.log('User in JWT:', user);
       if (user) {
-        // return user as JWT
-        token.user = user;
+        // Set token.user if a user object is provided
+        token.user = {
+          id: user.id,
+          email: user.email,
+          roleID: user.roleID,
+        };
       }
       return token;
+    },
+    async session({ session, token }) {
+      console.log('Session:', session);
+      console.log('Token:', token);
+
+      // Ensure session.user includes user details from token.user
+      if (token.user) {
+        session.user = {
+          ...session.user,
+          ...token.user, // Merge token.user properties
+        };
+      }
+      return session;
     },
     async redirect({ url, baseUrl }) {
       // const parsedUrl = new URL(url, baseUrl);
@@ -48,38 +61,26 @@ export const authOptions: NextAuthOptions = {
       name: 'Credentials',
       credentials: {},
       async authorize(credentials: any) {
-        const user = {
-          id: '12345', // Add the id property here
-          email: 'john.doe@example.com',
-          password: 'admin',
-        };
-
         try {
           const res = await executeQuery(
-            'SELECT id, "roleID" FROM users WHERE email = $1',
+            'SELECT id, "roleID", email FROM users WHERE email = $1',
             [credentials?.email]
           );
 
           if (res.rows.length > 0) {
-            const user = res.rows[0]; // Contains id and roleID
-            console.log('USER: ', user);
-          }
+            const user = res.rows[0];
+            console.log('DB User:', user);
 
-          if (
-            isEqual(user, {
-              id: '12345',
-              email: credentials?.email,
-              password: credentials?.password,
-            })
-          ) {
-            console.log('returning user');
-            return user;
+            return {
+              id: user.id,
+              email: user.email,
+              roleID: user.roleID,
+            };
           }
         } catch (error) {
-          console.error('Error:', error);
-          return null;
+          console.error('Error during authorization:', error);
         }
-        console.log('returning null');
+
         return null;
       },
     }),

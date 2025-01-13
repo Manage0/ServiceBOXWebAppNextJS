@@ -1,37 +1,65 @@
 'use client';
 
 import cn from '@core/utils/class-names';
-import {
-  PiArrowUpRightBold,
-  PiArrowDownRightBold,
-  PiPlusBold,
-} from 'react-icons/pi';
+import { PiArrowUpRightBold, PiArrowDownRightBold } from 'react-icons/pi';
 import SimpleBar from 'simplebar-react';
-import { Box, Button, Flex, Text, Title } from 'rizzui';
+import { Box, Flex, Text, Title } from 'rizzui';
 import { formatNumber } from '@core/utils/format-number';
 import { StatType, projectStatData } from '@/data/project-dashboard';
-import Link from 'next/link';
 import PartnersImportBtn from '@/app/(hydrogen)/partners/PartnerImportBtn';
 import NewWorksheetBtn from '@/app/(hydrogen)/partners/NewWorksheetBtn';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 export type StatCardProps = {
   className?: string;
   transaction: StatType;
 };
 
-export default function ProjectStats({ className }: { className?: string }) {
+export default function DashboardHeader({ className }: { className?: string }) {
+  const { data: session } = useSession();
+  const [forename, setForename] = useState('');
+
+  useEffect(() => {
+    async function getForename() {
+      console.log(session);
+      if (!session?.user?.id) {
+        console.error('User ID not found in session');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/forename', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: session.user.id }),
+        });
+
+        if (res.ok) {
+          const data = (await res.json()) as { forename: string };
+          setForename(data.forename);
+        } else {
+          console.error('Failed to fetch forename:', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching forename:', error);
+      }
+    }
+    getForename();
+  }, [session?.user.id]);
+
   return (
     <Box className={cn('@container', className)}>
       <Flex justify="between" align="center" className="mb-6">
         <Title as="h1" className="text-#333333 font-30 font-lexendBold">
-          Jó reggelt, Norbert!
+          Jó reggelt, {forename}!
         </Title>
         <Box className="flex flex-col gap-5 @lg:flex-row">
           <NewWorksheetBtn />
           <PartnersImportBtn />
         </Box>
-
-        {/**TODO gombok ide jönnek, legyenek linkek, amik a megfelelő oldalra visznek, az elegáns, amúgy use displayname */}
       </Flex>
       <SimpleBar>
         <Flex className="sm:gap-6 3xl:gap-8">
