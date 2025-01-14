@@ -22,7 +22,6 @@ export default function DashboardHeader({ className }: { className?: string }) {
 
   useEffect(() => {
     async function getForename() {
-      console.log(session);
       if (!session?.user?.id) {
         console.error('User ID not found in session');
         return;

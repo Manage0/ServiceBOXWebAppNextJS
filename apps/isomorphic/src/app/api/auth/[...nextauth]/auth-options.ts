@@ -5,7 +5,7 @@ import { executeQuery } from '@/db';
 
 declare module 'next-auth' {
   interface User {
-    roleID?: string;
+    role_id?: string;
   }
 }
 
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
         token.user = {
           id: user.id,
           email: user.email,
-          roleID: user.roleID,
+          role_id: user.role_id,
         };
       }
       return token;
@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any) {
         try {
           const res = await executeQuery(
-            'SELECT id, "roleID", email FROM users WHERE email = $1',
+            'SELECT id, role_id, email FROM users WHERE email = $1',
             [credentials?.email]
           );
 
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
             return {
               id: user.id,
               email: user.email,
-              roleID: user.roleID,
+              role_id: user.role_id,
             };
           }
         } catch (error) {

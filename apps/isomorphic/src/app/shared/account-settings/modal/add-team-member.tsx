@@ -13,12 +13,12 @@ import {
 
 const role = [
   {
-    label: 'Product Designer',
-    value: 'product_designer',
+    label: 'Admin',
+    value: 1,
   },
   {
-    label: 'Software Engineer',
-    value: 'software_engineer',
+    label: 'User',
+    value: 2,
   },
 ];
 
@@ -27,26 +27,51 @@ export default function AddTeamMemberModalView() {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<AddTeamMemberInput> = (data) => {
-    toast.success(
-      <Text as="b" className="font-semibold">
-        Munkatárs sikeresen hozzáadva!
-      </Text>
-    );
-    // set timeout ony required to display loading state of the create product button
+  const onSubmit: SubmitHandler<AddTeamMemberInput> = async (data) => {
+    console.log('heyho');
     setLoading(true);
-    closeModal();
-    setTimeout(() => {
-      setLoading(false);
-      console.log(' data ->', data);
-      setReset({
-        first_name: '',
-        last_name: '',
-        email: '',
-        role: '',
-        country: '',
+    try {
+      // Call the registration API to create the user
+      const res = await fetch('/api/auth/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userID: 'user' + Math.floor(Math.random() * 1000000).toString(),
+          email: data.email,
+          role_id: data.role,
+          surname: data.last_name,
+          forename: data.first_name,
+        }),
       });
-    }, 600);
+
+      if (res.ok) {
+        // Clear the form after successful submission
+        setReset({
+          first_name: '',
+          last_name: '',
+          email: '',
+          role: '',
+        });
+        closeModal();
+
+        // Show success toast
+        toast.success(
+          <Text as="b" className="font-semibold">
+            Munkatárs sikeresen hozzáadva!
+          </Text>
+        );
+      } else {
+        const errorData = (await res.json()) as { error: string };
+        toast.error(`Hiba: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error submitting registration:', error);
+      toast.error('Hiba történt a munkatárs hozzáadásakor.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,7 +139,7 @@ export function MemberForm({ register, control, errors }: any) {
         name="role"
         render={({ field: { value, onChange } }) => (
           <Select
-            label="Jogosultság"
+            label="Szerepkör"
             inPortal={false}
             labelClassName="text-sm font-medium text-gray-900"
             dropdownClassName="h-auto"

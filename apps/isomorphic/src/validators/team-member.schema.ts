@@ -5,9 +5,9 @@ import { validateEmail } from './common-rules';
 // form zod validation schema
 export const addTeamMemberSchema = z.object({
   first_name: z.string().min(1, { message: messages.firstNameRequired }),
-  last_name: z.string().optional(),
+  last_name: z.string().min(1, { message: messages.lastNameRequired }),
   email: validateEmail,
-  role: z.string({ required_error: messages.roleIsRequired }),
+  role: z.number({ required_error: messages.roleIsRequired }),
 });
 
 // generate form types from zod validation schema
