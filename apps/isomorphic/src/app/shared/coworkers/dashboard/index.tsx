@@ -1,12 +1,21 @@
-import dayjs from 'dayjs';
-import CoworkersTable from '../../invoice/invoice-list/coworkersTable';
-
-const thisMonth = dayjs(new Date()).format('MMMM YYYY');
+'use client';
+import { useState } from 'react';
+import CoworkersTable from './coworkers-table/coworkersTable';
+import CoworkersPageHeader from '@/app/(hydrogen)/coworkers/page-header';
 
 export default function CoworkersDashboard() {
+  const [isLoading, setLoading] = useState(false);
   return (
-    <div className="@container">
-      <CoworkersTable searchbarPlaceholder="Keresés..." />
-    </div>
+    <>
+      <CoworkersPageHeader isLoading={isLoading} setLoading={setLoading} />
+      <div className="flex flex-col gap-10">
+        <div className="@container">
+          <CoworkersTable
+            searchbarPlaceholder="Keresés..."
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
+    </>
   );
 }

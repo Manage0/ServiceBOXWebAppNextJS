@@ -205,7 +205,7 @@ export default function MainTable<TData extends Record<string, any>>({
 
       {isEmpty(table.getRowModel().rows) && (
         <Box className="py-5 text-center lg:py-8">
-          <Empty /> <Text className="mt-3">No Data</Text>
+          <Empty /> <Text className="mt-3">Nincs adat</Text>
         </Box>
       )}
     </>

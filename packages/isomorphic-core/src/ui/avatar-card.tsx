@@ -3,7 +3,7 @@ import cn from "../utils/class-names";
 import Badge from "./Badge";
 
 interface AvatarCardProps {
-  src: string;
+  src?: string;
   name: string;
   className?: string;
   nameClassName?: string;

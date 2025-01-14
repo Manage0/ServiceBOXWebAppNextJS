@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log('User in JWT:', user);
       if (user) {
         // Set token.user if a user object is provided
         token.user = {
@@ -32,9 +31,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log('Session:', session);
-      console.log('Token:', token);
-
       // Ensure session.user includes user details from token.user
       if (token.user) {
         session.user = {
@@ -69,7 +65,6 @@ export const authOptions: NextAuthOptions = {
 
           if (res.rows.length > 0) {
             const user = res.rows[0];
-            console.log('DB User:', user);
 
             return {
               id: user.id,

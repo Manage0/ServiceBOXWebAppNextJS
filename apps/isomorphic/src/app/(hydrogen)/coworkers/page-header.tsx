@@ -23,7 +23,15 @@ const pageHeader = {
   ],
 };
 
-export default function CoworkersPageHeader() {
+interface CoworkersPageHeaderProps {
+  setLoading: (loading: boolean) => void;
+  isLoading: boolean;
+}
+
+export default function CoworkersPageHeader({
+  setLoading,
+  isLoading,
+}: CoworkersPageHeaderProps) {
   const { openModal } = useModal();
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
@@ -33,7 +41,12 @@ export default function CoworkersPageHeader() {
           className="w-full @lg:w-auto"
           onClick={() =>
             openModal({
-              view: <AddTeamMemberModalView />,
+              view: (
+                <AddTeamMemberModalView
+                  isLoading={isLoading}
+                  setLoading={setLoading}
+                />
+              ),
             })
           }
         >

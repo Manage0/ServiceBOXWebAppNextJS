@@ -1,13 +1,10 @@
 'use client';
-
-import { routes } from '@/config/routes';
 import AvatarCard from '@core/ui/avatar-card';
 import DateCell from '@core/ui/date-cell';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Checkbox, Text } from 'rizzui';
+import { Checkbox } from 'rizzui';
 import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
-import { InvoiceTableDataType } from './table';
 import { CoworkersTableDataType } from './coworkersTable';
 
 const columnHelper = createColumnHelper<CoworkersTableDataType>();
@@ -33,41 +30,64 @@ export const coworkersColumns = [
       />
     ),
   }),
-  columnHelper.accessor('name', {
+  columnHelper.accessor('forename', {
     id: 'name',
     size: 300,
     header: 'FELHASZNÁLÓ',
-    enableSorting: false,
+    enableSorting: true,
     cell: ({ row }) => {
       return (
         <AvatarCard
           hasAvatar={true}
-          src={row.original.avatar}
-          name={row.original.name}
+          src={row.original.profile_picture}
+          name={row.original.forename + ' ' + row.original.surname}
           description={row.original.email}
-          //badge={row.original.badge}
         />
       );
     },
   }),
-  columnHelper.display({
-    id: 'email',
+  columnHelper.accessor('role_name', {
+    id: 'role_name',
     size: 150,
     header: 'JOGKÖR',
-    cell: ({ row }) => row.original.role, //TODO make type for it
+    enableSorting: true,
+    cell: ({ row }) => row.original.role_name,
   }),
-  columnHelper.accessor('dueDate', {
-    id: 'dueDate',
+  columnHelper.accessor('last_login', {
+    id: 'last_login',
     size: 200,
     header: 'UTOLSÓ BELÉPÉS',
-    cell: ({ row }) => <DateCell date={new Date(row.original.dueDate)} />,
+    cell: ({ row }) => {
+      if (row.original.last_login) {
+        return (
+          <DateCell
+            date={new Date(row.original.last_login)}
+            dateFormat="YYYY. MM. DD."
+            timeFormat="hh:mm"
+          />
+        );
+      } else {
+        return 'Még nem jelentkezett be';
+      }
+    },
   }),
-  columnHelper.accessor('status', {
+  columnHelper.display({
     id: 'status',
     size: 70,
     header: 'STÁTUSZ',
-    enableSorting: false,
-    cell: ({ row }) => getStatusBadge(row.original.status, true),
+    cell: ({ row }) => {
+      //TODO check this, majd amikor a lastActivity middleware megjelenik
+      const last_activity = new Date(row.original.last_activity);
+      const now = new Date();
+      const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+      const status =
+        now.getTime() - last_activity.getTime() <= fiveMinutes
+          ? 'Online'
+          : 'Offline';
+
+      return getStatusBadge(status, true);
+    },
   }),
   columnHelper.display({
     id: 'actions',
@@ -79,11 +99,16 @@ export const coworkersColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editUrl={routes.invoice.edit(row.original.id)}
+        editUrl={/**TODO edit modal pop-up and implementation here */ ''}
         deletePopoverTitle="Munkatárs törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkatársat?"
         onDelete={() => {
-          meta?.handleDeleteRow?.(row.original);
+          /**TODO Implement Delete user function
+           * -- úgy kéne, hogy tömböt fogadjon, de itt az egy elemű, tehát a multi-delete is okés
+           * -- Ahogy nézem, ezt tényleg feljebb kell definiálni, úgyhogy legyen ott. Itt csak hívd meg
+           *
+           * Hint:  meta?.handleDeleteRow?.(row.original);
+           */
         }}
       />
     ),

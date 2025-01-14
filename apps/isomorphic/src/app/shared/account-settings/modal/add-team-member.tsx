@@ -11,10 +11,17 @@ import {
   addTeamMemberSchema,
 } from '@/validators/team-member.schema';
 
-export default function AddTeamMemberModalView() {
+interface AddTeamMemberModalViewProps {
+  setLoading: (loading: boolean) => void;
+  isLoading: boolean;
+}
+
+export default function AddTeamMemberModalView({
+  setLoading,
+  isLoading,
+}: AddTeamMemberModalViewProps) {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
-  const [isLoading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<AddTeamMemberInput> = async (data) => {
     setLoading(true);

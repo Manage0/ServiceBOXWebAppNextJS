@@ -1,4 +1,3 @@
-import { PiTextColumns } from "react-icons/pi";
 import { ActionIcon, Checkbox, Popover, Title } from "rizzui";
 import { type Table as ReactTableType } from "@tanstack/react-table";
 import Image from "next/image";
@@ -22,7 +21,7 @@ export default function ToggleColumns<TData extends Record<string, any>>({
       <Popover.Content className="z-0">
         <div className="p-2 text-left rtl:text-right">
           <Title as="h6" className="mb-6 px-0.5 text-sm font-semibold">
-            Toggle Columns
+            Oszlopok megjelenítése
           </Title>
           <div className="grid grid-cols-2 gap-6">
             {table.getAllLeafColumns().map((column) => {
