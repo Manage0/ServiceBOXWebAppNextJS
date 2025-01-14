@@ -6,10 +6,10 @@ import SimpleBar from 'simplebar-react';
 import { Box, Flex, Text, Title } from 'rizzui';
 import { formatNumber } from '@core/utils/format-number';
 import { StatType, projectStatData } from '@/data/project-dashboard';
-import PartnersImportBtn from '@/app/(hydrogen)/partners/PartnerImportBtn';
-import NewWorksheetBtn from '@/app/(hydrogen)/partners/NewWorksheetBtn';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import AddBtn from '../add-btn';
+import { routes } from '@/config/routes';
 
 export type StatCardProps = {
   className?: string;
@@ -56,8 +56,8 @@ export default function DashboardHeader({ className }: { className?: string }) {
           Jó reggelt, {forename}!
         </Title>
         <Box className="flex flex-col gap-5 @lg:flex-row">
-          <NewWorksheetBtn />
-          <PartnersImportBtn />
+          <AddBtn href={routes.worksheets.create} text="Új munkalap" />
+          <AddBtn href={routes.partners.add} text="Új partner" />
         </Box>
       </Flex>
       <SimpleBar>

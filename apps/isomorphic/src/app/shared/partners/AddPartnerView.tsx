@@ -262,7 +262,10 @@ export default function AddPartnerView() {
                       </div>
                     </LabeledInput>
                   ))}
-                  <AddBtn onClick={() => setEmails([...emails, ''])} />
+                  <AddBtn
+                    onClick={() => setEmails([...emails, ''])}
+                    variant="gray"
+                  />
                 </div>
               </FormGroup>
               <FormGroup

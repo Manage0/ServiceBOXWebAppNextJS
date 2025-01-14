@@ -9,7 +9,7 @@ import ExportButton from '@/app/shared/export-button';
 import { appointmentData } from '@/data/appointment-data';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import CreateUpdateAppointmentForm from '@/app/shared/appointment/appointment-list/appointment-form';
-import NewWorksheetBtn from '../partners/NewWorksheetBtn';
+import AddBtn from '@/app/shared/add-btn';
 
 const pageHeader = {
   title: 'Munkalap',
@@ -41,7 +41,7 @@ export default function WorksheetPageHeader({ className }: HeaderProps) {
   }
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-      <NewWorksheetBtn />
+      <AddBtn href={routes.worksheets.create} text="Új munkalap" />
     </PageHeader>
   );
 }

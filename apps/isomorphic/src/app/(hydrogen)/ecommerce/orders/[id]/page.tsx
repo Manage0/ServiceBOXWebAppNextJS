@@ -12,7 +12,6 @@ export default function OrderDetailsPage({ params }: any) {
         name: 'E-Commerce',
       },
       {
-        href: routes.eCommerce.orders,
         name: 'Orders',
       },
       {

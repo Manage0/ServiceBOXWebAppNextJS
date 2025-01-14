@@ -249,7 +249,10 @@ export default function CreateInvoice({
                       )}
                     />
                   </LabeledInput>
-                  <AddBtn onClick={() => console.log('Munkatárs hozzáadva')} />
+                  <AddBtn
+                    onClick={() => console.log('Munkatárs hozzáadva')}
+                    variant="gray"
+                  />
                 </div>
               </FormBlockWrapper>
               <FormBlockWrapper
@@ -389,7 +392,10 @@ export default function CreateInvoice({
                   {...register('fromName')}
                   error={errors.fromName?.message}
                 />
-                <AddBtn onClick={() => console.log('Munkatárs hozzáadva')} />
+                <AddBtn
+                  onClick={() => console.log('Munkatárs hozzáadva')}
+                  variant="gray"
+                />
                 <div className="col-span-2">
                   <Textarea
                     label="Átvett tartozék"

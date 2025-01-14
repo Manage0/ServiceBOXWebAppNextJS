@@ -1,12 +1,8 @@
-import Link from 'next/link';
 import { Metadata } from 'next';
-import { PiPlusBold } from 'react-icons/pi';
 import { productData } from '@/app/shared/ecommerce/product/create-edit/form-utils';
 import CreateEditProduct from '@/app/shared/ecommerce/product/create-edit';
 import PageHeader from '@/app/shared/page-header';
 import { metaObject } from '@/config/site.config';
-import { Button } from 'rizzui';
-import { routes } from '@/config/routes';
 
 type Props = {
   params: { slug: string };
@@ -46,17 +42,7 @@ export default function EditProductPage({
 }) {
   return (
     <>
-      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-        <Link
-          href={routes.eCommerce.createProduct}
-          className="mt-4 w-full @lg:mt-0 @lg:w-auto"
-        >
-          <Button as="span" className="w-full @lg:w-auto">
-            <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-            Add Product
-          </Button>
-        </Link>
-      </PageHeader>
+      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
 
       <CreateEditProduct slug={params.slug} product={productData} />
     </>

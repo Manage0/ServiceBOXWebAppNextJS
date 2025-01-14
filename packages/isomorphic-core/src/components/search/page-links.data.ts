@@ -28,10 +28,6 @@ export const pageLinks = [
     href: routes.eCommerce.categories,
   },
   {
-    name: "Orders",
-    href: routes.eCommerce.orders,
-  },
-  {
     name: "Order Details",
     href: routes.eCommerce.orderDetails(DUMMY_ID),
   },
@@ -42,10 +38,6 @@ export const pageLinks = [
   {
     name: "Edit Order",
     href: routes.eCommerce.editOrder(DUMMY_ID),
-  },
-  {
-    name: "Reviews",
-    href: routes.eCommerce.reviews,
   },
   {
     name: "Shop",
@@ -82,10 +74,6 @@ export const pageLinks = [
   {
     name: "Edit Invoice",
     href: routes.invoice.edit(DUMMY_ID),
-  },
-  {
-    name: "Shipment List",
-    href: routes.logistics.shipmentList,
   },
   {
     name: "Shipment Details",
