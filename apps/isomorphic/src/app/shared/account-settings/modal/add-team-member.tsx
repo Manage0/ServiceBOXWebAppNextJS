@@ -1,26 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { Input, Text, Title, Button, Select } from 'rizzui';
+import { Input, Text, Title, Button, Select, SelectOption } from 'rizzui';
 import { Form } from '@core/ui/form';
 import {
   AddTeamMemberInput,
   addTeamMemberSchema,
 } from '@/validators/team-member.schema';
-
-const role = [
-  {
-    label: 'Admin',
-    value: 1,
-  },
-  {
-    label: 'User',
-    value: 2,
-  },
-];
 
 export default function AddTeamMemberModalView() {
   const { closeModal } = useModal();
@@ -28,7 +17,6 @@ export default function AddTeamMemberModalView() {
   const [isLoading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<AddTeamMemberInput> = async (data) => {
-    console.log('heyho');
     setLoading(true);
     try {
       // Call the registration API to create the user
@@ -107,6 +95,29 @@ export default function AddTeamMemberModalView() {
 }
 
 export function MemberForm({ register, control, errors }: any) {
+  const [roles, setRoles] = useState<SelectOption[]>([]);
+  useEffect(() => {
+    async function getRoles() {
+      try {
+        const res = await fetch('/api/auth/roles', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.ok) {
+          const data: SelectOption[] = (await res.json()) as SelectOption[];
+          setRoles(data);
+        } else {
+          console.error('Failed to fetch roles:', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    }
+    getRoles();
+  }, []);
   return (
     <div className="flex flex-col gap-4 text-gray-700">
       <div className="flex flex-col gap-4 xs:flex-row xs:items-center">
@@ -144,12 +155,12 @@ export function MemberForm({ register, control, errors }: any) {
             labelClassName="text-sm font-medium text-gray-900"
             dropdownClassName="h-auto"
             placeholder="Válassz..."
-            options={role}
+            options={roles}
             onChange={onChange}
             value={value}
             getOptionValue={(option) => option.value}
             displayValue={(selected) =>
-              role?.find((r) => r.value === selected)?.label ?? ''
+              roles?.find((r) => r.value === selected)?.label ?? ''
             }
             error={errors?.role?.message as string}
           />
