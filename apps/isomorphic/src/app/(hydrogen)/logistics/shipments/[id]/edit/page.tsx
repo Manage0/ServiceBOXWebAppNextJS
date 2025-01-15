@@ -29,7 +29,6 @@ const pageHeader = {
       name: 'Dashboard',
     },
     {
-      href: routes.logistics.shipmentList,
       name: 'Shipments',
     },
     {
