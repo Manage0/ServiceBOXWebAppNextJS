@@ -9,18 +9,23 @@ import { coworkersData } from '@/data/coworkers-data';
 import CoworkersTableFooter from './coworkersTableFooter';
 import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
+import { useModal } from '@/app/shared/modal-views/use-modal';
+import AddTeamMemberModalView from '@/app/shared/account-settings/modal/add-team-member';
 
 export type CoworkersTableDataType = (typeof coworkersData)[number];
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
   isLoading: boolean;
+  setLoading: (loading: boolean) => void;
 };
 
 export default function CoworkersTable({
   searchbarPlaceholder,
   isLoading,
+  setLoading,
 }: SearchableTableProps) {
+  const { openModal } = useModal();
   const { table, setData } = useTanStackTable<CoworkersTableDataType>({
     tableData: [],
     columnConfig: coworkersColumns,
@@ -40,6 +45,17 @@ export default function CoworkersTable({
             (row: CoworkersTableDataType) => row.id
           );
           await deleteUsers(userIdsToDelete);
+        },
+        handleEdit(row) {
+          openModal({
+            view: (
+              <AddTeamMemberModalView
+                isLoading={isLoading}
+                setLoading={setLoading}
+                selectedUser={row}
+              />
+            ),
+          });
         },
       },
       enableColumnResizing: false,

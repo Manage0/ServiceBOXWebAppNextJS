@@ -13,6 +13,7 @@ export default function CoworkersDashboard() {
           <CoworkersTable
             searchbarPlaceholder="Keresés..."
             isLoading={isLoading}
+            setLoading={setLoading}
           />
         </div>
       </div>

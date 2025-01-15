@@ -19,7 +19,7 @@ interface AddTeamMemberModalViewProps {
     email: string;
     surname: string;
     forename: string;
-    role_id: number;
+    role_name: string;
   };
 }
 
@@ -82,7 +82,7 @@ export default function AddTeamMemberModalView({
         first_name: selectedUser.forename,
         last_name: selectedUser.surname,
         email: selectedUser.email,
-        role: selectedUser.role_id,
+        role: selectedUser.role_name,
       }
     : {
         first_name: '',
@@ -168,6 +168,7 @@ export function MemberForm({ register, control, errors, defaultValues }: any) {
           type="text"
           label="Keresztnév"
           labelClassName="text-sm font-medium text-gray-900"
+          defaultValue={defaultValues.last_name}
           {...register('last_name')}
           error={errors?.last_name?.message}
           className="flex-grow"
@@ -177,30 +178,36 @@ export function MemberForm({ register, control, errors, defaultValues }: any) {
         type="email"
         label="Email"
         labelClassName="text-sm font-medium text-gray-900"
+        defaultValue={defaultValues.email}
         {...register('email')}
         error={errors.email?.message}
       />
-      <Controller
-        control={control}
-        name="role"
-        render={({ field: { value, onChange } }) => (
-          <Select
-            label="Szerepkör"
-            inPortal={false}
-            labelClassName="text-sm font-medium text-gray-900"
-            dropdownClassName="h-auto"
-            placeholder="Válassz..."
-            options={roles}
-            onChange={onChange}
-            value={value}
-            getOptionValue={(option) => option.value}
-            displayValue={(selected) =>
-              roles?.find((r) => r.value === selected)?.label ?? ''
-            }
-            error={errors?.role?.message as string}
-          />
-        )}
-      />
+      {roles.length > 0 && (
+        <Controller
+          control={control}
+          name="role"
+          defaultValue={
+            roles.filter((role) => role.label === defaultValues.role)[0]?.value
+          }
+          render={({ field: { value, onChange } }) => (
+            <Select
+              label="Szerepkör"
+              inPortal={false}
+              labelClassName="text-sm font-medium text-gray-900"
+              dropdownClassName="h-auto"
+              placeholder="Válassz..."
+              options={roles}
+              onChange={onChange}
+              value={value}
+              getOptionValue={(option) => option.value}
+              displayValue={(selected) =>
+                roles?.find((r) => r.value === selected)?.label ?? ''
+              }
+              error={errors?.role?.message as string}
+            />
+          )}
+        />
+      )}
     </div>
   );
 }

@@ -99,7 +99,7 @@ export const coworkersColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editAction={() => alert('EDIT!')}
+        editAction={() => meta?.handleEdit?.(row.original)}
         deletePopoverTitle="Munkatárs törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkatársat?"
         onDelete={() => {
