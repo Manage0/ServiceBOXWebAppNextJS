@@ -15,7 +15,7 @@ interface AddTeamMemberModalViewProps {
   setLoading: (loading: boolean) => void;
   isLoading: boolean;
   selectedUser?: {
-    userID: string;
+    id: string;
     email: string;
     surname: string;
     forename: string;
@@ -34,14 +34,19 @@ export default function AddTeamMemberModalView({
   const onSubmit: SubmitHandler<AddTeamMemberInput> = async (data) => {
     setLoading(true);
     try {
-      // Call the registration API to create the user
-      const res = await fetch('/api/auth/addUser', {
-        method: 'POST',
+      const url = '/api/auth/addUser';
+      const method = selectedUser ? 'PUT' : 'POST';
+
+      // Call the appropriate API to create or update the user
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userID: 'user' + Math.floor(Math.random() * 1000000).toString(),
+          id: selectedUser
+            ? selectedUser.id
+            : 'user' + Math.floor(Math.random() * 1000000).toString(),
           email: data.email,
           role_id: data.role,
           surname: data.last_name,
@@ -62,7 +67,9 @@ export default function AddTeamMemberModalView({
         // Show success toast
         toast.success(
           <Text as="b" className="font-semibold">
-            Munkatárs sikeresen hozzáadva!
+            {selectedUser
+              ? 'Munkatárs sikeresen frissítve!'
+              : 'Munkatárs sikeresen hozzáadva!'}
           </Text>
         );
       } else {
@@ -94,7 +101,9 @@ export default function AddTeamMemberModalView({
   return (
     <div className="m-auto p-6">
       <Title as="h3" className="mb-6 text-lg">
-        Új Felhasználó Hozzáadása
+        {selectedUser
+          ? 'Felhasználó szerkesztése'
+          : 'Új Felhasználó Hozzáadása'}
       </Title>
       <Form<AddTeamMemberInput>
         validationSchema={addTeamMemberSchema}
@@ -118,7 +127,7 @@ export default function AddTeamMemberModalView({
                 Mégsem
               </Button>
               <Button type="submit" isLoading={isLoading} className="w-auto">
-                Hozzáadás
+                {selectedUser ? 'Módosítások mentése' : 'Hozzáadás'}
               </Button>
             </div>
           </>

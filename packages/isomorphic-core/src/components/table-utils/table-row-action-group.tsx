@@ -51,13 +51,13 @@ export default function TableRowActionGroup({
         </Tooltip>
       )}
       {editUrl && (
-        <Tooltip size="sm" content="Edit Item" placement="top" color="invert">
+        <Tooltip size="sm" content="Szerkesztés" placement="top" color="invert">
           <Link href={editUrl}>
             <ActionIcon
               as="span"
               size="sm"
               variant="outline"
-              aria-label="Edit Item"
+              aria-label="Szerkesztés"
             >
               <Image
                 src={"/Edit.svg"}
@@ -71,12 +71,12 @@ export default function TableRowActionGroup({
         </Tooltip>
       )}
       {editAction && (
-        <Tooltip size="sm" content="Edit Item" placement="top" color="invert">
+        <Tooltip size="sm" content="Szerkesztés" placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
             variant="outline"
-            aria-label="Edit Item"
+            aria-label="Szerkesztés"
             onClick={editAction}
           >
             <Image

@@ -49,7 +49,7 @@ export const coworkersColumns = [
   columnHelper.accessor('role_name', {
     id: 'role_name',
     size: 150,
-    header: 'JOGKÖR',
+    header: 'SZEREPKÖR',
     enableSorting: true,
     cell: ({ row }) => row.original.role_name,
   }),
