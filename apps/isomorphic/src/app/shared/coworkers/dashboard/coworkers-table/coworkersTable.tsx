@@ -94,11 +94,6 @@ export default function CoworkersTable({
     getUsers();
   }, [setData, isLoading]);
 
-  const selectedData = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-  /**TODO ez amúgy mi a tosz? */
-
   return (
     <>
       <Filters table={table} searchbarPlaceholder={searchbarPlaceholder} />

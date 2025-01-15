@@ -9,6 +9,7 @@ import Image from "next/image";
 export default function TableRowActionGroup({
   onDelete,
   editUrl,
+  editAction,
   viewUrl,
   comment,
   deletePopoverTitle = "Delete the appointment",
@@ -18,6 +19,7 @@ export default function TableRowActionGroup({
   onDelete?: () => void;
   comment?: string;
   editUrl?: string;
+  editAction?: () => void;
   viewUrl?: string;
   deletePopoverTitle?: string;
   deletePopoverDescription?: string;
@@ -66,6 +68,25 @@ export default function TableRowActionGroup({
               />
             </ActionIcon>
           </Link>
+        </Tooltip>
+      )}
+      {editAction && (
+        <Tooltip size="sm" content="Edit Item" placement="top" color="invert">
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            aria-label="Edit Item"
+            onClick={editAction}
+          >
+            <Image
+              src={"/Edit.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
+          </ActionIcon>
         </Tooltip>
       )}
       {viewUrl && (

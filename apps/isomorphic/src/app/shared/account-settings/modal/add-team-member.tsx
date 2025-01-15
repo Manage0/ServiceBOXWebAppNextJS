@@ -14,11 +14,19 @@ import {
 interface AddTeamMemberModalViewProps {
   setLoading: (loading: boolean) => void;
   isLoading: boolean;
+  selectedUser?: {
+    userID: string;
+    email: string;
+    surname: string;
+    forename: string;
+    role_id: number;
+  };
 }
 
 export default function AddTeamMemberModalView({
   setLoading,
   isLoading,
+  selectedUser,
 }: AddTeamMemberModalViewProps) {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
@@ -69,6 +77,20 @@ export default function AddTeamMemberModalView({
     }
   };
 
+  const defaultValues = selectedUser
+    ? {
+        first_name: selectedUser.forename,
+        last_name: selectedUser.surname,
+        email: selectedUser.email,
+        role: selectedUser.role_id,
+      }
+    : {
+        first_name: '',
+        last_name: '',
+        email: '',
+        role: '',
+      };
+
   return (
     <div className="m-auto p-6">
       <Title as="h3" className="mb-6 text-lg">
@@ -81,7 +103,12 @@ export default function AddTeamMemberModalView({
       >
         {({ register, control, formState: { errors } }) => (
           <>
-            <MemberForm control={control} register={register} errors={errors} />
+            <MemberForm
+              control={control}
+              register={register}
+              errors={errors}
+              defaultValues={defaultValues}
+            />
             <div className="mt-8 flex justify-end gap-3">
               <Button
                 className="w-auto"
@@ -101,7 +128,7 @@ export default function AddTeamMemberModalView({
   );
 }
 
-export function MemberForm({ register, control, errors }: any) {
+export function MemberForm({ register, control, errors, defaultValues }: any) {
   const [roles, setRoles] = useState<SelectOption[]>([]);
   useEffect(() => {
     async function getRoles() {
@@ -132,6 +159,7 @@ export function MemberForm({ register, control, errors }: any) {
           type="text"
           label="Vezetéknév"
           labelClassName="text-sm font-medium text-gray-900"
+          defaultValue={defaultValues.first_name}
           {...register('first_name')}
           error={errors?.first_name?.message}
           className="flex-grow"

@@ -99,16 +99,11 @@ export const coworkersColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editUrl={/**TODO edit modal pop-up and implementation here */ ''}
+        editAction={() => alert('EDIT!')}
         deletePopoverTitle="Munkatárs törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkatársat?"
         onDelete={() => {
-          /**TODO Implement Delete user function
-           * -- úgy kéne, hogy tömböt fogadjon, de itt az egy elemű, tehát a multi-delete is okés
-           * -- Ahogy nézem, ezt tényleg feljebb kell definiálni, úgyhogy legyen ott. Itt csak hívd meg
-           *
-           * Hint:  meta?.handleDeleteRow?.(row.original);
-           */
+          meta?.handleDeleteRow?.(row.original);
         }}
       />
     ),
