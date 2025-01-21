@@ -6,9 +6,9 @@ import Filters from './filters';
 import TablePagination from '@core/components/table/pagination';
 
 import TableFooter from '@core/components/table/footer';
-import { partnersData } from '@/data/partners-data';
+import { PartnerType } from '@/data/partners-data';
 import { PartnersColumns } from './PartnersColumns';
-export type PartnersTableDataType = (typeof partnersData)[number];
+import { useEffect } from 'react';
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
@@ -17,8 +17,8 @@ export type SearchableTableProps = {
 export default function PartnersTable({
   searchbarPlaceholder,
 }: SearchableTableProps) {
-  const { table, setData } = useTanStackTable<PartnersTableDataType>({
-    tableData: partnersData,
+  const { table, setData } = useTanStackTable<PartnerType>({
+    tableData: [],
     columnConfig: PartnersColumns,
     options: {
       initialState: {
@@ -39,9 +39,28 @@ export default function PartnersTable({
     },
   });
 
-  const selectedData = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const res = await fetch('/api/partners', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.ok) {
+          const data: PartnerType[] = (await res.json()) as PartnerType[];
+          setData(data);
+        } else {
+          console.error('Failed to fetch partners:', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching partners:', error);
+      }
+    }
+    getUsers();
+  }, [setData]);
 
   return (
     <>

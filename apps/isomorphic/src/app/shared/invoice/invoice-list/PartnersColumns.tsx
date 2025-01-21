@@ -5,9 +5,9 @@ import AvatarCard from '@core/ui/avatar-card';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Checkbox } from 'rizzui';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
-import { PartnersDataType } from '../../ecommerce/dashboard/stock-report';
+import { PartnerType } from '@/data/partners-data';
 
-const columnHelper = createColumnHelper<PartnersDataType>();
+const columnHelper = createColumnHelper<PartnerType>();
 
 export const PartnersColumns = [
   columnHelper.display({
@@ -39,9 +39,8 @@ export const PartnersColumns = [
       return (
         <AvatarCard
           //hasAvatar={true}
-          src={row.original.image}
           name={row.original.name}
-          description={row.original.category}
+          description={row.original.external_id}
           //badge={row.original.badge}
         />
       );
@@ -51,7 +50,7 @@ export const PartnersColumns = [
     id: 'itemNum',
     size: 100,
     header: 'ADÓSZÁM',
-    cell: ({ row }) => row.original.sku, //TODO make type for it
+    cell: ({ row }) => row.original.tax_num, //TODO make type for it
   }),
   columnHelper.display({
     id: 'address',
@@ -60,9 +59,8 @@ export const PartnersColumns = [
     cell: ({ row }) => {
       return (
         <AvatarCard
-          src={row.original.image}
-          name={row.original.addressDetail}
-          description={row.original.address}
+          name={row.original.city + ', ' + row.original.address}
+          description={row.original.country + ' - ' + row.original.postal_code}
           //badge={row.original.badge}
         />
       );
@@ -72,7 +70,7 @@ export const PartnersColumns = [
     id: 'contact',
     size: 150,
     header: 'KAPCSOLATTARTÓ',
-    cell: ({ row }) => row.original.contact, //TODO make type for it
+    cell: ({ row }) => row.original.contact_person, //TODO make type for it
   }),
   columnHelper.display({
     id: 'actions',
@@ -85,6 +83,9 @@ export const PartnersColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
+        deletePopoverTitle="Partner törlése"
+        deletePopoverDescription="Biztosan törölni szeretnéd a partnert?"
+        //TODO implement delete, when creation is ok
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}

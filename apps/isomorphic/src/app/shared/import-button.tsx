@@ -18,7 +18,7 @@ type ImportButtonProps = {
 
 export default function ImportButton({
   title,
-  modalBtnLabel = 'Import File',
+  modalBtnLabel = 'Fájl importálása',
   className,
   buttonLabel = 'Import',
 }: React.PropsWithChildren<ImportButtonProps>) {

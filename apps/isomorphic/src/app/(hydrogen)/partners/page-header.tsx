@@ -29,7 +29,7 @@ export default function PartnersPageHeader({ className }: HeaderProps) {
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
       <div className="mt-4 flex flex-col items-center gap-3 @sm:flex-row @lg:mt-0">
         <ImportButton
-          title="Upload File"
+          title="Partnerek Importálása"
           className="me-[10px] mt-4 border-0 border-[1px] border-[#E3E3E3] bg-white text-[#484848] hover:border-[#E3E3E3] hover:bg-gray-100 hover:text-[#484848] @lg:mt-0"
         />
         <AddBtn href={routes.partners.add} text="Új partner" />
