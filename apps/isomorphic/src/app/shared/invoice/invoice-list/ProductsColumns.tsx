@@ -2,14 +2,13 @@
 
 import { routes } from '@/config/routes';
 import AvatarCard from '@core/ui/avatar-card';
-import DateCell from '@core/ui/date-cell';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Checkbox, Text } from 'rizzui';
+import { Checkbox } from 'rizzui';
 import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
-import { ProductsDataType } from '../../ecommerce/dashboard/stock-report';
+import { ProductType } from '@/data/prod-data';
 
-const columnHelper = createColumnHelper<ProductsDataType>();
+const columnHelper = createColumnHelper<ProductType>();
 
 export const productsColumns = [
   columnHelper.display({
@@ -53,7 +52,7 @@ export const productsColumns = [
     id: 'itemNum',
     size: 150,
     header: 'CIKKSZÁM',
-    cell: ({ row }) => row.original.sku, //TODO make type for it
+    cell: ({ row }) => row.original.id, //TODO make type for it
   }),
   columnHelper.display({
     id: 'price',
@@ -65,7 +64,8 @@ export const productsColumns = [
     id: 'stock',
     size: 150,
     header: 'RAKTÁR',
-    cell: ({ row }) => row.original.stock + ' db', //TODO make type for it
+    cell: ({ row }) =>
+      row.original.stock.toString() + ' ' + row.original.measure, //TODO make type for it
   }),
   columnHelper.accessor('status', {
     id: 'status',

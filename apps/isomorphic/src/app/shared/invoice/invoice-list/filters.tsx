@@ -57,7 +57,7 @@ export default function Filters<TData extends Record<string, any>>({
           clearable={true}
           prefix={<PiMagnifyingGlass className="h-4 w-4" />}
         />
-        {dropdownProps && (
+        {dropdownProps && dropdownProps.options?.length > 0 && (
           <DropdownAction
             className="ml-4 w-[30%] rounded-md border"
             options={dropdownProps.options}

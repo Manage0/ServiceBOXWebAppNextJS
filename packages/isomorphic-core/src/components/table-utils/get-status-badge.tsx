@@ -46,6 +46,7 @@ const statusTranslations: { [key: string]: string } = {
   outforsignature: "Aláírás alatt",
   draft: "Vázlat",
   closed: "Lezárt",
+  active: "Aktív",
 };
 
 function translateStatus(status: string): string {

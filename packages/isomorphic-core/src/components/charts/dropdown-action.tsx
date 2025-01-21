@@ -42,6 +42,8 @@ export default function DropdownAction({
     onChange && onChange(data.value);
   }
 
+  console.log(JSON.stringify(viewType));
+
   return (
     <Select
       inPortal={inPortal}
@@ -49,7 +51,9 @@ export default function DropdownAction({
       value={viewType.value}
       options={options}
       onChange={handleOnChange}
-      displayValue={(selected) => options.find((option) => option.value === selected)?.label}
+      displayValue={(selected) =>
+        options.find((option) => option.value === selected)?.label
+      }
       selectClassName={cn("py-1 px-2 leading-[32px] h-8 me-2", selectClassName)}
       optionClassName="py-1 px-2 leading-[32px] h-8"
       dropdownClassName={cn(
@@ -58,8 +62,14 @@ export default function DropdownAction({
         dropdownClassName
       )}
       placement="bottom-end"
-      prefix={<PiCalendarBlank className={cn("h-5 w-5 text-gray-500", prefixIconClassName)} />}
-      suffix={<PiCaretDownBold className={cn("h-3 w-3", suffixIconClassName)} />}
+      prefix={
+        <PiCalendarBlank
+          className={cn("h-5 w-5 text-gray-500", prefixIconClassName)}
+        />
+      }
+      suffix={
+        <PiCaretDownBold className={cn("h-3 w-3", suffixIconClassName)} />
+      }
       className={cn("w-auto", className)}
     />
   );
