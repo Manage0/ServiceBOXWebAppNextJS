@@ -85,7 +85,6 @@ export const PartnersColumns = [
         editUrl={routes.invoice.edit(row.original.id)}
         deletePopoverTitle="Partner törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a partnert?"
-        //TODO implement delete, when creation is ok
         onDelete={() => {
           meta?.handleDeleteRow?.(row.original);
         }}

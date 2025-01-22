@@ -99,3 +99,45 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { partner_ids } = (await req.json()) as { partner_ids: string[] };
+
+    if (!partner_ids || partner_ids.length === 0) {
+      return NextResponse.json(
+        { error: 'No partner IDs provided' },
+        { status: 400 }
+      );
+    }
+
+    // Construct the query string with values for logging
+    const queryString = `
+      DELETE FROM partners
+      WHERE id = ANY($1::int[])
+      RETURNING id;
+    `;
+    console.log('Executing query:', queryString);
+
+    // Delete partner data from the database
+    const res = await executeQuery(queryString, [partner_ids]);
+
+    if (res.rows.length === 0) {
+      return NextResponse.json(
+        { error: 'Partner deletion failed' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { deletedIds: res.rows.map((row) => row.id) },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error deleting partners:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}

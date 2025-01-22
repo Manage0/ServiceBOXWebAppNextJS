@@ -5,10 +5,10 @@ import { useTanStackTable } from '@core/components/table/custom/use-TanStack-Tab
 import Filters from './filters';
 import TablePagination from '@core/components/table/pagination';
 
-import TableFooter from '@core/components/table/footer';
 import { PartnerType } from '@/data/partners-data';
 import { PartnersColumns } from './PartnersColumns';
 import { useEffect } from 'react';
+import OnlyMultiDeleteTableFooter from '../../coworkers/dashboard/coworkers-table/OnlyMultiDeleteTableFooter';
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
@@ -28,16 +28,50 @@ export default function PartnersTable({
         },
       },
       meta: {
-        handleDeleteRow: (row) => {
-          setData((prev) => prev.filter((r) => r.id !== row.id));
+        handleDeleteRow: async (row) => {
+          await deletePartners([row.id]);
         },
-        handleMultipleDelete: (rows) => {
-          setData((prev) => prev.filter((r) => !rows.includes(r)));
+        handleMultipleDelete: async (rows: PartnerType[]) => {
+          const partnerIdsToDelete = rows.map((row: PartnerType) => row.id);
+          await deletePartners(partnerIdsToDelete);
         },
+        /*handleEdit(row) {
+          openModal({
+            view: (
+              <AddPartnerModalView
+                isLoading={isLoading}
+                setLoading={setLoading}
+                selectedPartner={row}
+              />
+            ),
+          });
+        },*/
       },
       enableColumnResizing: false,
     },
   });
+
+  const deletePartners = async (partnerIdsToDelete: string[]) => {
+    try {
+      const res = await fetch('/api/partners', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ partner_ids: partnerIdsToDelete }),
+      });
+
+      if (res.ok) {
+        setData((prev) =>
+          prev.filter((r) => !partnerIdsToDelete.includes(r.id))
+        );
+      } else {
+        console.error('Failed to delete partners:', await res.json());
+      }
+    } catch (error) {
+      console.error('Error deleting partners:', error);
+    }
+  };
 
   useEffect(() => {
     async function getUsers() {
@@ -73,7 +107,7 @@ export default function PartnersTable({
           rowClassName: 'last:border-0',
         }}
       />
-      <TableFooter table={table} />
+      <OnlyMultiDeleteTableFooter table={table} />
       <TablePagination table={table} className="py-4" />
     </>
   );

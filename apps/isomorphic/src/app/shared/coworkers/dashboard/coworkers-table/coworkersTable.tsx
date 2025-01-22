@@ -6,7 +6,7 @@ import Filters from './coworkersFilters';
 import TablePagination from '@core/components/table/pagination';
 import { coworkersColumns } from './coworkersColumns';
 import { coworkersData } from '@/data/coworkers-data';
-import CoworkersTableFooter from './coworkersTableFooter';
+import OnlyMultiDeleteTableFooter from './OnlyMultiDeleteTableFooter';
 import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -121,7 +121,7 @@ export default function CoworkersTable({
           rowClassName: 'last:border-0',
         }}
       />
-      <CoworkersTableFooter table={table} />
+      <OnlyMultiDeleteTableFooter table={table} />
       <TablePagination table={table} className="py-4" />
     </>
   );

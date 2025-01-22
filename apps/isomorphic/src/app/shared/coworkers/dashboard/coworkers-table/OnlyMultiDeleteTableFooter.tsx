@@ -5,7 +5,7 @@ interface TableToolbarProps<TData extends Record<string, any>> {
   table: ReactTableType<TData>;
 }
 
-export default function CoworkersTableFooter<
+export default function OnlyMultiDeleteTableFooter<
   TData extends Record<string, any>,
 >({ table }: TableToolbarProps<TData>) {
   const checkedItems = table
