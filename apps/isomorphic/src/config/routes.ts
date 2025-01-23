@@ -1,6 +1,7 @@
 export const routes = {
   partners: {
     add: '/partners/add',
+    edit: (id: string) => `/partners/edit/${id}`,
   },
   worksheets: {
     create: '/worksheets/create',

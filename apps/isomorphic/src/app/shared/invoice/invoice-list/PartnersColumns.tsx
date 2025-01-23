@@ -82,7 +82,7 @@ export const PartnersColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editUrl={routes.invoice.edit(row.original.id)}
+        editUrl={routes.partners.edit(row.original.id)}
         deletePopoverTitle="Partner törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a partnert?"
         onDelete={() => {

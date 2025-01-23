@@ -1,6 +1,6 @@
 import { metaObject } from '@/config/site.config';
-import PartnersPageHeader from './page-header';
 import AddPartnerView from '@/app/shared/partners/AddPartnerView';
+import PartnersPageHeader from '../page-header';
 
 export const metadata = {
   ...metaObject('Partner hozzáadása'),
@@ -9,7 +9,7 @@ export const metadata = {
 export default function PartnersPage() {
   return (
     <>
-      <PartnersPageHeader />
+      <PartnersPageHeader name="Új" />
       <AddPartnerView />
     </>
   );

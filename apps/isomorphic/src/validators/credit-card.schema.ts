@@ -1,12 +1,11 @@
-import { messages } from '@/config/messages';
 import { z } from 'zod';
 
 // form zod validation schema
 export const creditCardSchema = z.object({
-  cardHolder: z.string().min(1, { message: messages.cardHolderNameIsRequired }),
-  cardNumber: z.string().min(10, { message: messages.cardNumberIsRequired }),
-  expiryDate: z.string().min(1, { message: messages.cardExpireIsRequired }),
-  cvc: z.string().length(3, { message: messages.cvcNumberIsRequired }),
+  cardHolder: z.string().min(1),
+  cardNumber: z.string().min(10),
+  expiryDate: z.string().min(1),
+  cvc: z.string().length(3),
 });
 
 // generate form types from zod validation schema

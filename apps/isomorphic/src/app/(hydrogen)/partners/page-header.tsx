@@ -5,26 +5,25 @@ import ImportButton from '@/app/shared/import-button';
 import AddBtn from '@/app/shared/add-btn';
 import { routes } from '@/config/routes';
 
-const pageHeader = {
-  title: 'Partnerek',
-  breadcrumb: [
-    {
-      name: 'Home',
-    },
-    {
-      name: 'Partnerek',
-    },
-    {
-      name: 'Lista',
-    },
-  ],
-};
-
 interface HeaderProps {
-  className?: string;
+  name: string;
 }
 
-export default function PartnersPageHeader({ className }: HeaderProps) {
+export default function PartnersPageHeader({ name }: HeaderProps) {
+  const pageHeader = {
+    title: 'Partnerek',
+    breadcrumb: [
+      {
+        name: 'Home',
+      },
+      {
+        name: 'Partnerek',
+      },
+      {
+        name,
+      },
+    ],
+  };
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
       <div className="mt-4 flex flex-col items-center gap-3 @sm:flex-row @lg:mt-0">

@@ -40,20 +40,35 @@ export const LabeledInput = ({
   className?: string;
 }) => <div className={cn('flex flex-col gap-4', className)}>{children}</div>;
 
-export default function AddPartnerView() {
+type PartnerDataWithId = PartnerFormTypes & { id: string };
+
+export default function AddPartnerView({
+  partnerData,
+}: {
+  partnerData?: PartnerDataWithId;
+}) {
   const onSubmit: SubmitHandler<PartnerFormTypes> = async (data) => {
     try {
-      const res = await fetch('/api/partners', {
-        method: 'POST',
+      const method = partnerData ? 'PUT' : 'POST';
+      const url = '/api/partners';
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, id: partnerData?.id }),
       });
+      if (partnerData) {
+        partnerData = { ...data, id: partnerData?.id || '' };
+      }
 
       if (res.ok) {
-        toast.success(<Text as="b">Partner sikeresen hozzáadva</Text>);
-        console.log('Partner addition data ->', data);
+        toast.success(
+          <Text as="b">
+            Partner sikeresen {partnerData ? 'frissítve' : 'hozzáadva'}
+          </Text>
+        );
+        console.log('Partner data ->', data);
       } else {
         const errorData = (await res.json()) as { error: string };
         toast.error(`Hiba: ${errorData.error}`);
@@ -72,7 +87,6 @@ export default function AddPartnerView() {
   );
 
   const countryOptions = [
-    { value: '', label: 'Válassz országot' },
     { value: 'HU', label: 'Magyarország' },
     { value: 'EU', label: 'EU' },
     // Add other countries as needed
@@ -90,6 +104,17 @@ export default function AddPartnerView() {
       }}
     >
       {({ register, control, setValue, getValues, formState: { errors } }) => {
+        if (partnerData) {
+          Object.keys(partnerData).forEach((key) => {
+            if (partnerData) {
+              //crying inside
+              setValue(
+                key as keyof PartnerFormTypes,
+                partnerData[key as keyof PartnerFormTypes]
+              );
+            }
+          });
+        }
         return (
           <>
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
