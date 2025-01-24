@@ -5,14 +5,10 @@ import { fileSchema, validateEmail } from './common-rules';
 // form zod validation schema
 export const personalInfoFormSchema = z.object({
   first_name: z.string().min(1, { message: messages.firstNameRequired }),
-  last_name: z.string().optional(),
+  last_name: z.string().min(1, { message: messages.lastNameRequired }),
   email: validateEmail,
-  avatar: fileSchema.optional(),
-  role: z.string().optional(),
-  country: z.string().optional(),
-  timezone: z.string().optional(),
-  bio: z.string().optional(),
-  portfolios: z.array(fileSchema).optional(),
+  role: z.number({ required_error: messages.roleIsRequired }),
+  avatar: z.string().optional(),
 });
 
 // generate form types from zod validation schema
@@ -24,8 +20,4 @@ export const defaultValues = {
   email: '',
   avatar: undefined,
   role: undefined,
-  country: undefined,
-  timezone: undefined,
-  bio: undefined,
-  portfolios: undefined,
 };

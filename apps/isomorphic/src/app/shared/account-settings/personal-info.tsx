@@ -3,9 +3,9 @@
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { SubmitHandler, Controller } from 'react-hook-form';
-import { PiClock, PiEnvelopeSimple } from 'react-icons/pi';
+import { PiEnvelopeSimple } from 'react-icons/pi';
 import { Form } from '@core/ui/form';
-import { Loader, Text, Input } from 'rizzui';
+import { Loader, Text, Input, SelectOption } from 'rizzui';
 import FormGroup from '@/app/shared/form-group';
 import FormFooter from '@core/components/form-footer';
 import {
@@ -13,9 +13,11 @@ import {
   personalInfoFormSchema,
   PersonalInfoFormTypes,
 } from '@/validators/personal-info.schema';
-import UploadZone from '@core/ui/file-upload/upload-zone';
-import { countries, roles, timezones } from '@/data/forms/my-details';
+import UploadZone from '@core/ui/file-upload/upload-zone'; //ohm.... ???
 import AvatarUpload from '@core/ui/file-upload/avatar-upload';
+import { useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { CoworkersTableDataType } from '../coworkers/dashboard/coworkers-table/coworkersTable';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -24,10 +26,6 @@ const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
       <Loader variant="spinner" />
     </div>
   ),
-});
-
-const QuillEditor = dynamic(() => import('@core/ui/quill-editor'), {
-  ssr: false,
 });
 
 export const Label = ({ children }: { children: React.ReactNode }) => (
@@ -41,18 +39,81 @@ export const LabeledInput = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function PersonalInfoView() {
+  const [roles, setRoles] = useState<SelectOption[]>([]);
+  const [user, setUser] = useState<CoworkersTableDataType | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    async function getRoles() {
+      try {
+        const res = await fetch('/api/auth/roles', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.ok) {
+          const data: SelectOption[] = (await res.json()) as SelectOption[];
+          alert(JSON.stringify(data));
+          setRoles(data);
+        } else {
+          console.error('Failed to fetch roles:', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    }
+    getRoles();
+  }, []);
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const session = await getSession();
+        const userId = session?.user?.id;
+
+        const res = await fetch('/api/usersOnlyMe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_id: userId }), // Send user_id in the request body
+        });
+
+        if (res.ok) {
+          const data: CoworkersTableDataType =
+            (await res.json()) as CoworkersTableDataType;
+          setUser(data);
+          //console.log(JSON.stringify(data));
+          //alert(JSON.stringify(data));
+        } else {
+          console.error('Failed to fetch roles:', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    }
+    getUser();
+  }, []);
+
   const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
-    toast.success(<Text as="b">Successfully added!</Text>);
+    toast.success(<Text as="b">Elmentettük az adataid!</Text>);
     console.log('Profile settings data ->', {
       ...data,
     });
   };
-
+  if (!user) {
+    return <div>Betöltés...</div>;
+  }
   return (
     <Form<PersonalInfoFormTypes>
       validationSchema={personalInfoFormSchema}
       // resetValues={reset}
-      onSubmit={onSubmit}
+      onSubmit={(data) => {
+        alert('YALLAH');
+        console.log('Form data before submit handler:', data);
+        onSubmit(data);
+      }}
       className="@container"
       useFormProps={{
         mode: 'onChange',
@@ -60,8 +121,37 @@ export default function PersonalInfoView() {
       }}
     >
       {({ register, control, setValue, getValues, formState: { errors } }) => {
+        // Key mapping to align CoworkersTableDataType keys with PersonalInfoFormTypes keys
+        const keyMapping: Record<
+          keyof CoworkersTableDataType,
+          keyof PersonalInfoFormTypes | undefined
+        > = {
+          forename: 'first_name',
+          surname: 'last_name',
+          email: 'email',
+          role_name: 'role',
+          profile_picture: 'avatar',
+          id: undefined,
+          last_login: undefined,
+          last_activity: undefined,
+        };
+
+        if (user) {
+          (Object.keys(user) as (keyof CoworkersTableDataType)[]).forEach(
+            (key) => {
+              const formKey = keyMapping[key]; // Map the key
+              if (formKey) {
+                setValue(
+                  formKey,
+                  user[key] as PersonalInfoFormTypes[typeof formKey]
+                );
+              }
+            }
+          );
+        }
         return (
           <>
+            {JSON.stringify(errors)}
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
               <FormGroup
                 title="Személyes adatok"
@@ -70,7 +160,6 @@ export default function PersonalInfoView() {
                 <LabeledInput>
                   <Label>Vezetéknév</Label>
                   <Input
-                    placeholder="First Name"
                     {...register('first_name')}
                     error={errors.first_name?.message}
                     className="flex-grow"
@@ -79,7 +168,6 @@ export default function PersonalInfoView() {
                 <LabeledInput>
                   <Label>Keresztnév</Label>
                   <Input
-                    placeholder="Last Name"
                     {...register('last_name')}
                     error={errors.last_name?.message}
                     className="flex-grow"
@@ -108,7 +196,6 @@ export default function PersonalInfoView() {
                     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
                   }
                   type="email"
-                  placeholder="georgia.young@example.com"
                   {...register('email')}
                   error={errors.email?.message}
                 />
@@ -117,33 +204,28 @@ export default function PersonalInfoView() {
                 title="Jogosultság"
                 className="mb-20 pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                <Controller
+                {/*<Controller
                   control={control}
                   name="role"
                   render={({ field: { value, onChange } }) => (
                     <Select
                       dropdownClassName="!z-10 h-auto"
                       inPortal={false}
-                      placeholder="Select Role"
                       options={roles}
-                      onChange={onChange}
-                      value={value}
-                      className="col-span-full"
-                      getOptionValue={(option) => option.value}
-                      displayValue={(selected) =>
-                        roles?.find((r) => r.value === selected)?.label ?? ''
+                      onChange={(selectedOption) =>
+                        onChange(selectedOption?.value)
                       }
+                      value={roles.find((role) => role.value === value)}
+                      className="col-span-full"
+                      getOptionValue={(option) => option.value.toString()}
+                      getOptionLabel={(option) => option.label}
                       error={errors?.role?.message as string}
                     />
                   )}
-                />
+                />*/}
               </FormGroup>
             </div>
-            <FormFooter
-              // isLoading={isLoading}
-              altBtnText="Mégsem"
-              submitBtnText="Mentés"
-            />
+            <FormFooter altBtnText="Mégsem" submitBtnText="Mentés" />
           </>
         );
       }}

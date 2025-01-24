@@ -31,10 +31,11 @@ export default function AvatarUpload({
 }: UploadZoneProps) {
   const [files, setFiles] = useState<File[]>([]);
 
-  const formValue = getValues(name);
+  // Get the form value as a string
+  const formValue = getValues(name) ?? "";
 
   const { startUpload, routeConfig, isUploading } = useUploadThing("avatar", {
-    onClientUploadComplete: (
+    onClientUploadComplete: async (
       res: ClientUploadedFileData<any>[] | undefined
     ) => {
       if (setValue) {
@@ -43,11 +44,13 @@ export default function AvatarUpload({
           size: r.size,
           url: r.url,
         }));
-        setValue(name, respondedUrls?.[0]);
+
+        // Save the uploaded file URL or Base64 as the new value
+        setValue(name, respondedUrls?.[0]?.url ?? formValue);
       }
       toast.success(
         <Text as="b" className="font-semibold">
-          Avatar updated
+          Profilkép feltöltve
         </Text>
       );
     },
@@ -59,6 +62,7 @@ export default function AvatarUpload({
 
   const fileTypes = routeConfig ? Object.keys(routeConfig) : [];
 
+  // Handle file drop and convert files to Base64 if necessary
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
       setFiles([
@@ -68,10 +72,22 @@ export default function AvatarUpload({
           })
         ),
       ]);
+
+      // Convert the first accepted file to Base64
+      if (acceptedFiles.length > 0) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          if (setValue) setValue(name, base64); // Save Base64 as the form value
+        };
+        reader.readAsDataURL(acceptedFiles[0]);
+      }
+
+      // Start file upload
       startUpload(files);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [files]
+    [files, setValue, name]
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -92,7 +108,7 @@ export default function AvatarUpload({
               <Image
                 fill
                 alt="user avatar"
-                src={formValue?.url}
+                src={formValue}
                 className="rounded-full"
               />
             </figure>
