@@ -55,7 +55,6 @@ export default function PersonalInfoView() {
 
         if (res.ok) {
           const data: SelectOption[] = (await res.json()) as SelectOption[];
-          alert(JSON.stringify(data));
           setRoles(data);
         } else {
           console.error('Failed to fetch roles:', await res.json());
@@ -109,11 +108,7 @@ export default function PersonalInfoView() {
     <Form<PersonalInfoFormTypes>
       validationSchema={personalInfoFormSchema}
       // resetValues={reset}
-      onSubmit={(data) => {
-        alert('YALLAH');
-        console.log('Form data before submit handler:', data);
-        onSubmit(data);
-      }}
+      onSubmit={onSubmit}
       className="@container"
       useFormProps={{
         mode: 'onChange',
@@ -149,9 +144,17 @@ export default function PersonalInfoView() {
             }
           );
         }
+
+        if (user?.role_name) {
+          const matchingRole = roles.find(
+            (role) => role.label === user.role_name
+          );
+          if (matchingRole) {
+            setValue('role', Number(matchingRole.value)); // Set the numeric value
+          }
+        }
         return (
           <>
-            {JSON.stringify(errors)}
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
               <FormGroup
                 title="Személyes adatok"
@@ -204,25 +207,25 @@ export default function PersonalInfoView() {
                 title="Jogosultság"
                 className="mb-20 pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                {/*<Controller
+                <Controller
                   control={control}
                   name="role"
-                  render={({ field: { value, onChange } }) => (
+                  render={({ field: { value, onChange, ref } }) => (
                     <Select
+                      ref={ref} // Pass the ref for proper integration with react-hook-form
                       dropdownClassName="!z-10 h-auto"
                       inPortal={false}
                       options={roles}
-                      onChange={(selectedOption) =>
-                        onChange(selectedOption?.value)
-                      }
-                      value={roles.find((role) => role.value === value)}
+                      onChange={(selectedOption: Number) => {
+                        onChange(selectedOption); // Update the form state with the numeric value
+                      }}
+                      value={roles.find((role) => role.value === value) || null} // Ensure the correct option is selected
                       className="col-span-full"
-                      getOptionValue={(option) => option.value.toString()}
-                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
                       error={errors?.role?.message as string}
                     />
                   )}
-                />*/}
+                />
               </FormGroup>
             </div>
             <FormFooter altBtnText="Mégsem" submitBtnText="Mentés" />
