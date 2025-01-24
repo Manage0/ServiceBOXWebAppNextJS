@@ -13,7 +13,6 @@ import {
   personalInfoFormSchema,
   PersonalInfoFormTypes,
 } from '@/validators/personal-info.schema';
-import UploadZone from '@core/ui/file-upload/upload-zone'; //ohm.... ???
 import AvatarUpload from '@core/ui/file-upload/avatar-upload';
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
@@ -149,7 +148,7 @@ export default function PersonalInfoView() {
           const matchingRole = roles.find(
             (role) => role.label === user.role_name
           );
-          if (matchingRole) {
+          if (matchingRole?.value) {
             setValue('role', Number(matchingRole.value)); // Set the numeric value
           }
         }
@@ -204,7 +203,7 @@ export default function PersonalInfoView() {
                 />
               </FormGroup>
               <FormGroup
-                title="Jogosultság"
+                title="Szerepkör"
                 className="mb-20 pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
                 <Controller
@@ -217,6 +216,7 @@ export default function PersonalInfoView() {
                       inPortal={false}
                       options={roles}
                       onChange={(selectedOption: Number) => {
+                        alert(JSON.stringify(selectedOption));
                         onChange(selectedOption); // Update the form state with the numeric value
                       }}
                       value={roles.find((role) => role.value === value) || null} // Ensure the correct option is selected
