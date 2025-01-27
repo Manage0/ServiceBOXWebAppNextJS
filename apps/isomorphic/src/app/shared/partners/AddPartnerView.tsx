@@ -40,7 +40,7 @@ export const LabeledInput = ({
   className?: string;
 }) => <div className={cn('flex flex-col gap-4', className)}>{children}</div>;
 
-type PartnerDataWithId = PartnerFormTypes & { id: string };
+type PartnerDataWithId = PartnerFormTypes & { id: string; emails?: string[] };
 
 export default function AddPartnerView({
   partnerData,
@@ -56,7 +56,7 @@ export default function AddPartnerView({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, id: partnerData?.id }),
+        body: JSON.stringify({ ...data, id: partnerData?.id, emails }),
       });
       if (partnerData) {
         partnerData = { ...data, id: partnerData?.id || '' };
@@ -80,7 +80,7 @@ export default function AddPartnerView({
   };
 
   //Temporary solution to represent additional emails option
-  const [emails, setEmails] = useState<string[]>([]);
+  const [emails, setEmails] = useState<string[]>(partnerData?.emails || []);
 
   const [selectedCountry, setSelectedCountry] = useState<string>(
     defaultValues.country || ''
@@ -281,14 +281,19 @@ export default function AddPartnerView({
                       className="flex-grow"
                     />
                   </LabeledInput>
-                  {/*emails.map((email, index) => (
+                  {emails.map((email, index) => (
                     <LabeledInput key={index} className="mr-4">
                       <Label>{index + 2}. E-mail</Label>
                       <div className="flex flex-row items-center gap-4">
                         <Input
-                          {...register('first_name')}
+                          value={email}
                           error={errors.email?.message}
                           className="flex-grow"
+                          onChange={(e) => {
+                            const newEmails = [...emails];
+                            newEmails[index] = e.target.value;
+                            setEmails(newEmails);
+                          }}
                         />
                         <DeletePopover
                           title={'E-mail törlése'}
@@ -301,7 +306,7 @@ export default function AddPartnerView({
                         />
                       </div>
                     </LabeledInput>
-                  ))*/}
+                  ))}
                   <AddBtn
                     onClick={() => setEmails([...emails, ''])}
                     variant="gray"

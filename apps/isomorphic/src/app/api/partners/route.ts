@@ -8,11 +8,21 @@ export async function GET() {
     );
 
     const partners = res.rows;
+
     if (partners.length === 0) {
       return NextResponse.json(
         { error: 'partners not found' },
         { status: 404 }
       );
+    }
+
+    // Fetch emails for each partner
+    for (const partner of partners) {
+      const emailRes = await executeQuery(
+        'SELECT email FROM partner_email WHERE partner_id = $1',
+        [partner.id]
+      );
+      partner.emails = emailRes.rows.map((row) => row.email);
     }
 
     return NextResponse.json(partners);
@@ -38,6 +48,7 @@ export async function POST(req: NextRequest) {
       postal_code,
       city,
       address,
+      emails,
     } = (await req.json()) as {
       name: string;
       tax_num: string;
@@ -49,6 +60,7 @@ export async function POST(req: NextRequest) {
       postal_code: string;
       city: string;
       address: string;
+      emails: string[];
     };
 
     if (
@@ -72,16 +84,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Construct the query string with values for logging
-    const queryString = `
-      INSERT INTO partners (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address)
-      VALUES ('${name}', '${tax_num}', '${contact_person}', '${external_id}', '${email}', '${contact_phone_number}', '${country}', '${postal_code}', '${city}', '${address}')
-      RETURNING id;
-    `;
-    console.log('Executing query:', queryString);
-
     // Insert partner data into the database
-    const res = await executeQuery(queryString);
+    const res = await executeQuery(
+      'INSERT INTO partners (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id',
+      [
+        name,
+        tax_num,
+        contact_person,
+        external_id,
+        email,
+        contact_phone_number,
+        country,
+        postal_code,
+        city,
+        address,
+      ]
+    );
 
     if (res.rows.length === 0) {
       return NextResponse.json(
@@ -90,7 +108,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ id: res.rows[0].id }, { status: 201 });
+    const partnerId = res.rows[0].id;
+
+    // Insert emails into partner_email table
+    for (const email of emails) {
+      await executeQuery(
+        'INSERT INTO partner_email (partner_id, email) VALUES ($1, $2)',
+        [partnerId, email]
+      );
+    }
+
+    return NextResponse.json({ id: partnerId }, { status: 201 });
   } catch (error) {
     console.error('Error creating partner:', error);
     return NextResponse.json(
@@ -114,6 +142,7 @@ export async function PUT(req: NextRequest) {
       postal_code,
       city,
       address,
+      emails,
     } = (await req.json()) as {
       id: string;
       name: string;
@@ -126,6 +155,7 @@ export async function PUT(req: NextRequest) {
       postal_code: string;
       city: string;
       address: string;
+      emails: string[];
     };
 
     if (
@@ -150,14 +180,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const queryString = `
-      UPDATE partners
-      SET name = '${name}', tax_num = '${tax_num}', contact_person = '${contact_person}', external_id = '${external_id}', email = '${email}', contact_phone_number = '${contact_phone_number}', country = '${country}', postal_code = '${postal_code}', city = '${city}', address = '${address}'
-      WHERE id = '${id}'
-      RETURNING id;
-    `;
-    console.log('Executing query:', queryString);
-
+    // Update partner data in the database
     const res = await executeQuery(
       'UPDATE partners SET name = $1, tax_num = $2, contact_person = $3, external_id = $4, email = $5, contact_phone_number = $6, country = $7, postal_code = $8, city = $9, address = $10 WHERE id = $11 RETURNING id',
       [
@@ -182,6 +205,17 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    // Delete existing emails for the partner
+    await executeQuery('DELETE FROM partner_email WHERE partner_id = $1', [id]);
+
+    // Insert new emails into partner_email table
+    for (const email of emails) {
+      await executeQuery(
+        'INSERT INTO partner_email (partner_id, email) VALUES ($1, $2)',
+        [id, email]
+      );
+    }
+
     return NextResponse.json({ id: res.rows[0].id }, { status: 200 });
   } catch (error) {
     console.error('Error updating partner:', error);
@@ -203,16 +237,17 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Construct the query string with values for logging
-    const queryString = `
-      DELETE FROM partners
-      WHERE id = ANY($1::int[])
-      RETURNING id;
-    `;
-    console.log('Executing query:', queryString);
+    // Delete emails for the partners
+    await executeQuery(
+      'DELETE FROM partner_email WHERE partner_id = ANY($1::int[])',
+      [partner_ids]
+    );
 
     // Delete partner data from the database
-    const res = await executeQuery(queryString, [partner_ids]);
+    const res = await executeQuery(
+      'DELETE FROM partners WHERE id = ANY($1::int[]) RETURNING id',
+      [partner_ids]
+    );
 
     if (res.rows.length === 0) {
       return NextResponse.json(

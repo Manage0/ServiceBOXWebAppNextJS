@@ -21,7 +21,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Partner not found' }, { status: 404 });
     }
 
-    return NextResponse.json(res.rows[0], { status: 200 });
+    const partner = res.rows[0];
+
+    // Fetch emails for the partner
+    const emailRes = await executeQuery(
+      'SELECT email FROM partner_email WHERE partner_id = $1',
+      [id]
+    );
+    partner.emails = emailRes.rows.map((row) => row.email);
+
+    return NextResponse.json(partner, { status: 200 });
   } catch (error) {
     console.error('Error fetching partner:', error);
     return NextResponse.json(
