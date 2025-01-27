@@ -42,6 +42,82 @@ export default function PersonalInfoView() {
   const [user, setUser] = useState<CoworkersTableDataType | undefined>(
     undefined
   );
+
+  async function getUser() {
+    try {
+      const session = await getSession();
+      const userId = session?.user?.id;
+
+      const res = await fetch('/api/usersOnlyMe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId }), // Send user_id in the request body
+      });
+
+      if (res.ok) {
+        const data: CoworkersTableDataType =
+          (await res.json()) as CoworkersTableDataType;
+        setUser(data);
+      } else {
+        console.error('Failed to fetch roles:', await res.json());
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const onSubmit: SubmitHandler<PersonalInfoFormTypes> = async (data) => {
+    try {
+      toast.success(<Text as="b">Éppen elmentjük az adataid...</Text>);
+      console.log('Profile settings data ->', {
+        ...data,
+      });
+
+      const url = '/api/auth/updateUser';
+      const method = 'PUT';
+
+      const session = await getSession();
+      const userId = session?.user?.id;
+
+      // Call the API to update the user data
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          email: data.email,
+          role_id: data.role,
+          surname: data.last_name,
+          forename: data.first_name,
+          profile_picture: data.avatar, // Pass the base64 avatar
+        }),
+      });
+
+      if (res.ok) {
+        await getUser();
+        toast.success(
+          <Text as="b" className="font-semibold">
+            A profil adataid sikeresen frissítve lettek!
+          </Text>
+        );
+      } else {
+        const errorData = (await res.json()) as { error: string };
+        toast.error(`Hiba: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error('Hiba történt a profil frissítésekor.');
+    }
+  };
+
   useEffect(() => {
     async function getRoles() {
       try {
@@ -64,42 +140,7 @@ export default function PersonalInfoView() {
     }
     getRoles();
   }, []);
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const session = await getSession();
-        const userId = session?.user?.id;
 
-        const res = await fetch('/api/usersOnlyMe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user_id: userId }), // Send user_id in the request body
-        });
-
-        if (res.ok) {
-          const data: CoworkersTableDataType =
-            (await res.json()) as CoworkersTableDataType;
-          setUser(data);
-          //console.log(JSON.stringify(data));
-          //alert(JSON.stringify(data));
-        } else {
-          console.error('Failed to fetch roles:', await res.json());
-        }
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      }
-    }
-    getUser();
-  }, []);
-
-  const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
-    toast.success(<Text as="b">Elmentettük az adataid!</Text>);
-    console.log('Profile settings data ->', {
-      ...data,
-    });
-  };
   if (!user) {
     return <div>Betöltés...</div>;
   }
@@ -216,7 +257,6 @@ export default function PersonalInfoView() {
                       inPortal={false}
                       options={roles}
                       onChange={(selectedOption: Number) => {
-                        alert(JSON.stringify(selectedOption));
                         onChange(selectedOption); // Update the form state with the numeric value
                       }}
                       value={roles.find((role) => role.value === value) || null} // Ensure the correct option is selected
