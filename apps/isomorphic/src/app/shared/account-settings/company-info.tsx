@@ -3,18 +3,15 @@
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import { SubmitHandler, Controller } from 'react-hook-form';
-import { PiClock, PiEnvelopeSimple } from 'react-icons/pi';
 import { Form } from '@core/ui/form';
 import { Loader, Text, Input } from 'rizzui';
 import FormGroup from '@/app/shared/form-group';
 import FormFooter from '@core/components/form-footer';
 import {
-  defaultValues,
-  personalInfoFormSchema,
-  PersonalInfoFormTypes,
-} from '@/validators/personal-info.schema';
-import UploadZone from '@core/ui/file-upload/upload-zone';
-import AvatarUpload from '@core/ui/file-upload/avatar-upload';
+  companyFormSchema,
+  CompanyFormTypes,
+} from '@/validators/company-info.schema';
+import { useEffect, useState } from 'react';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -23,10 +20,6 @@ const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
       <Loader variant="spinner" />
     </div>
   ),
-});
-
-const QuillEditor = dynamic(() => import('@core/ui/quill-editor'), {
-  ssr: false,
 });
 
 export const Label = ({ children }: { children: React.ReactNode }) => (
@@ -40,16 +33,68 @@ export const LabeledInput = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function CompanyInfoView() {
-  const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
-    toast.success(<Text as="b">Successfully added!</Text>);
-    console.log('Profile settings data ->', {
-      ...data,
-    });
+  const [defaultValues, setDefaultValues] = useState<CompanyFormTypes | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchCompanyData = async () => {
+      try {
+        const res = await fetch('/api/company');
+        if (!res.ok) {
+          throw new Error('Failed to fetch company data');
+        }
+        const data: CompanyFormTypes = (await res.json()) as CompanyFormTypes;
+        setDefaultValues(data);
+      } catch (error) {
+        console.error('Error fetching company data:', error);
+        toast.error('Hiba történt a cégadatok betöltésekor.');
+      }
+    };
+
+    fetchCompanyData();
+  }, []);
+
+  const onSubmit: SubmitHandler<CompanyFormTypes> = async (data) => {
+    try {
+      const res = await fetch('/api/company', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        toast.success(<Text as="b">Cégadatok sikeresen megváltoztatva!</Text>);
+        console.log('Profile settings data ->', data);
+      } else {
+        const errorData = (await res.json()) as { error: string };
+        toast.error(`Hiba: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error updating company data:', error);
+      toast.error('Hiba történt a cégadatok frissítésekor.');
+    }
   };
 
+  if (!defaultValues) {
+    return (
+      <div className="grid h-10 place-content-center">
+        <Loader variant="spinner" />
+      </div>
+    );
+  }
+
+  const countryOptions = [
+    { value: 'HU', label: 'Magyarország' },
+    { value: 'EU', label: 'EU' },
+    // Add other countries as needed
+  ];
+
   return (
-    <Form<PersonalInfoFormTypes>
-      validationSchema={personalInfoFormSchema}
+    <Form<CompanyFormTypes>
+      validationSchema={companyFormSchema}
       // resetValues={reset}
       onSubmit={onSubmit}
       className="@container"
@@ -63,84 +108,83 @@ export default function CompanyInfoView() {
           <>
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
               <FormGroup
-                title="Személyes adatok"
+                title="Cégadatok"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
                 <LabeledInput>
                   <Label>Cég neve</Label>
                   <Input
-                    placeholder="Cég neve"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
+                    {...register('company_name')}
+                    error={errors.company_name?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Ország</Label>
-                  <Select
-                    options={[
-                      {
-                        label: 'Magyarország',
-                        value: 'HU',
-                      },
-                    ]}
-                    placeholder="Ország"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                    className="flex-grow"
+                  <Controller
+                    control={control}
+                    name="country"
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={countryOptions}
+                        value={countryOptions.find(
+                          (option) => option.value === field.value
+                        )}
+                        onChange={(selectedOption: { value: string } | null) =>
+                          field.onChange(selectedOption?.value)
+                        }
+                        error={errors.country?.message}
+                        className="flex-grow"
+                      />
+                    )}
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Irányítószám</Label>
                   <Input
-                    placeholder="Irányítószám"
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
+                    {...register('postal_code')}
+                    error={errors.postal_code?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Település</Label>
                   <Input
-                    placeholder="Település"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
+                    {...register('city')}
+                    error={errors.city?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Cím</Label>
                   <Input
-                    placeholder="Cím"
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
+                    {...register('address')}
+                    error={errors.address?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>Adószám</Label>
                   <Input
-                    placeholder="Adószám"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
+                    {...register('tax_number')}
+                    error={errors.tax_number?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>EU Adószám</Label>
                   <Input
-                    placeholder="EU Adószám"
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
+                    {...register('eu_tax_number')}
+                    error={errors.eu_tax_number?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>
                 <LabeledInput>
                   <Label>E-mail</Label>
                   <Input
-                    placeholder="E-mail"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
+                    {...register('email')}
+                    error={errors.email?.message}
                     className="flex-grow"
                   />
                 </LabeledInput>

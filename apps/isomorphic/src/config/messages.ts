@@ -1,4 +1,5 @@
 export const messages = {
+  companyNameIsRequired: 'Cégnév megadása kötelező',
   contactPersonIsRequired: 'Kapcsolattartó megadása kötelező',
   taxNumIsRequired: 'Adószám megadása kötelező',
   externalIDIsRequired: 'A külső ID megadása kötelező',
