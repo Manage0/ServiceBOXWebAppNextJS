@@ -22,16 +22,6 @@ const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ),
 });
 
-export const Label = ({ children }: { children: React.ReactNode }) => (
-  <div className="text-left font-inter text-sm font-normal tracking-normal text-[#25282B] opacity-100">
-    {children}
-  </div>
-);
-
-export const LabeledInput = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex flex-col gap-4">{children}</div>
-);
-
 export default function CompanyInfoView() {
   const [defaultValues, setDefaultValues] = useState<CompanyFormTypes | null>(
     null
@@ -111,83 +101,67 @@ export default function CompanyInfoView() {
                 title="Cégadatok"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                <LabeledInput>
-                  <Label>Cég neve</Label>
-                  <Input
-                    {...register('company_name')}
-                    error={errors.company_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Ország</Label>
-                  <Controller
-                    control={control}
-                    name="country"
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={countryOptions}
-                        value={countryOptions.find(
-                          (option) => option.value === field.value
-                        )}
-                        onChange={(selectedOption: { value: string } | null) =>
-                          field.onChange(selectedOption?.value)
-                        }
-                        error={errors.country?.message}
-                        className="flex-grow"
-                      />
-                    )}
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Irányítószám</Label>
-                  <Input
-                    {...register('postal_code')}
-                    error={errors.postal_code?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Település</Label>
-                  <Input
-                    {...register('city')}
-                    error={errors.city?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Cím</Label>
-                  <Input
-                    {...register('address')}
-                    error={errors.address?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Adószám</Label>
-                  <Input
-                    {...register('tax_number')}
-                    error={errors.tax_number?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>EU Adószám</Label>
-                  <Input
-                    {...register('eu_tax_number')}
-                    error={errors.eu_tax_number?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>E-mail</Label>
-                  <Input
-                    {...register('email')}
-                    error={errors.email?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
+                <Input
+                  label="Cég neve"
+                  {...register('company_name')}
+                  error={errors.company_name?.message}
+                  className="flex-grow"
+                />
+                <Controller
+                  control={control}
+                  name="country"
+                  render={({ field }) => (
+                    <Select
+                      label="Ország"
+                      {...field}
+                      options={countryOptions}
+                      value={countryOptions.find(
+                        (option) => option.value === field.value
+                      )}
+                      onChange={(selectedOption: { value: string } | null) =>
+                        field.onChange(selectedOption?.value)
+                      }
+                      error={errors.country?.message}
+                      className="flex-grow"
+                    />
+                  )}
+                />
+                <Input
+                  label="Irányítószám"
+                  {...register('postal_code')}
+                  error={errors.postal_code?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Település"
+                  {...register('city')}
+                  error={errors.city?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Cím"
+                  {...register('address')}
+                  error={errors.address?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Adószám"
+                  {...register('tax_number')}
+                  error={errors.tax_number?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="EU Adószám"
+                  {...register('eu_tax_number')}
+                  error={errors.eu_tax_number?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="E-mail"
+                  {...register('email')}
+                  error={errors.email?.message}
+                  className="flex-grow"
+                />
               </FormGroup>
             </div>
             <FormFooter
