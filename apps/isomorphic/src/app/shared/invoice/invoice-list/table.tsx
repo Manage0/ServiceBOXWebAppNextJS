@@ -1,14 +1,13 @@
 'use client';
 
-import { invoiceData } from '@/data/invoice-data';
+import { useEffect, useState } from 'react';
 import Table from '@core/components/table';
 import { useTanStackTable } from '@core/components/table/custom/use-TanStack-Table';
 import Filters from './filters';
 import { invoiceListColumns } from './columns';
 import TablePagination from '@core/components/table/pagination';
-
 import TableFooter from '@core/components/table/footer';
-export type InvoiceTableDataType = (typeof invoiceData)[number];
+import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 
 export type SearchableTableProps = {
   searchbarPlaceholder: string;
@@ -17,8 +16,8 @@ export type SearchableTableProps = {
 export default function InvoiceTable({
   searchbarPlaceholder,
 }: SearchableTableProps) {
-  const { table, setData } = useTanStackTable<InvoiceTableDataType>({
-    tableData: invoiceData,
+  const { table, setData } = useTanStackTable<WorksheetFormTypes>({
+    tableData: [],
     columnConfig: invoiceListColumns,
     options: {
       initialState: {
@@ -39,9 +38,23 @@ export default function InvoiceTable({
     },
   });
 
-  const selectedData = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
+  useEffect(() => {
+    const fetchWorksheetData = async () => {
+      try {
+        const res = await fetch('/api/worksheets');
+        if (!res.ok) {
+          throw new Error('Failed to fetch worksheet data');
+        }
+        const data: WorksheetFormTypes[] =
+          (await res.json()) as WorksheetFormTypes[];
+        setData(data);
+      } catch (error) {
+        console.error('Error fetching worksheet data:', error);
+      }
+    };
+
+    fetchWorksheetData();
+  }, [setData]);
 
   return (
     <>

@@ -7,9 +7,9 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Checkbox, Text } from 'rizzui';
 import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
 import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
-import { InvoiceTableDataType } from './table';
+import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 
-const columnHelper = createColumnHelper<InvoiceTableDataType>();
+const columnHelper = createColumnHelper<WorksheetFormTypes>();
 
 export const invoiceListColumns = [
   columnHelper.display({
@@ -32,17 +32,16 @@ export const invoiceListColumns = [
       />
     ),
   }),
-  columnHelper.accessor('name', {
-    id: 'name',
+  columnHelper.accessor('worksheet_id', {
+    id: 'worksheet_id',
     size: 250,
     header: 'MUNKALAPSZÁM / MUNKATÁRS',
     enableSorting: false,
     cell: ({ row }) => {
       return (
         <AvatarCard
-          src={row.original.avatar}
-          name={`PPRK-${row.original.id}`}
-          description={row.original.name}
+          name={row.original.worksheet_id}
+          description={row.original.creator_name}
           badge={row.original.badge}
         />
       );
@@ -54,19 +53,19 @@ export const invoiceListColumns = [
     header: 'VEVŐ',
     cell: ({ row }) => row.original.email.toLowerCase(),
   }),
-  columnHelper.accessor('amount', {
-    id: 'amount',
+  columnHelper.accessor('total_price', {
+    id: 'total_price',
     size: 150,
     header: 'ÖSSZEG',
     cell: ({ row }) => (
-      <Text className="text-sm font-medium">${row.original.amount}</Text>
+      <Text className="text-sm font-medium">${row.original.total_price}</Text>
     ),
   }),
-  columnHelper.accessor('dueDate', {
-    id: 'dueDate',
+  columnHelper.accessor('creation_date', {
+    id: 'creation_date',
     size: 200,
     header: 'LÉTREHOZÁS DÁTUMA',
-    cell: ({ row }) => <DateCell date={new Date(row.original.dueDate)} />,
+    cell: ({ row }) => <DateCell date={new Date(row.original.creation_date)} />,
   }),
   columnHelper.accessor('status', {
     id: 'status',
@@ -86,7 +85,7 @@ export const invoiceListColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={routes.invoice.edit(row.original.id)}
-        comment={row.original.comment}
+        comment={row.original.public_comment}
         viewUrl={routes.invoice.details(row.original.id)}
         deletePopoverTitle="Munkalap törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkalapot?"
