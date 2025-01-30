@@ -5,6 +5,8 @@ export const routes = {
   },
   worksheets: {
     create: '/worksheets/create',
+    edit: (id: string) => `/worksheets/edit/${id}`,
+    details: (id: string) => `/worksheets/${id}`,
   },
   eCommerce: {
     createProduct: '/ecommerce/products/create',

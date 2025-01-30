@@ -48,24 +48,32 @@ export const invoiceListColumns = [
     },
   }),
   columnHelper.display({
-    id: 'email',
+    id: 'partner_name',
     size: 280,
     header: 'VEVŐ',
-    cell: ({ row }) => row.original.email.toLowerCase(),
+    cell: ({ row }) => row.original.partner_name,
   }),
   columnHelper.accessor('total_price', {
     id: 'total_price',
     size: 150,
     header: 'ÖSSZEG',
     cell: ({ row }) => (
-      <Text className="text-sm font-medium">${row.original.total_price}</Text>
+      <Text className="text-sm font-medium">
+        {row.original.total_price} HUF
+      </Text>
     ),
   }),
   columnHelper.accessor('creation_date', {
     id: 'creation_date',
     size: 200,
     header: 'LÉTREHOZÁS DÁTUMA',
-    cell: ({ row }) => <DateCell date={new Date(row.original.creation_date)} />,
+    cell: ({ row }) => (
+      <DateCell
+        dateFormat="YYYY. MM. DD."
+        timeFormat="hh:mm"
+        date={new Date(row.original.creation_date)}
+      />
+    ),
   }),
   columnHelper.accessor('status', {
     id: 'status',
@@ -84,9 +92,9 @@ export const invoiceListColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editUrl={routes.invoice.edit(row.original.id)}
+        editUrl={routes.worksheets.edit(row.original.id)}
         comment={row.original.public_comment}
-        viewUrl={routes.invoice.details(row.original.id)}
+        viewUrl={routes.worksheets.details(row.original.id)}
         deletePopoverTitle="Munkalap törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkalapot?"
         onDelete={() => {
