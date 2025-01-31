@@ -69,7 +69,7 @@ export default function Filters<TData extends Record<string, any>>({
         {isLarge && showFilters && <FilterElements table={table} />}
       </Flex>
       <Flex align="center" className="w-auto">
-        <Button
+        {/*<Button
           {...(!isLarge
             ? {
                 onClick: () => {
@@ -91,7 +91,7 @@ export default function Filters<TData extends Record<string, any>>({
             className="me-1.5"
           />
           {'Szűrők'}
-        </Button>
+        </Button>*/}
 
         {!isLarge && (
           <FilterDrawerView
