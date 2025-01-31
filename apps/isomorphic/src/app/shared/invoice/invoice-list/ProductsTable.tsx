@@ -34,14 +34,6 @@ export default function ProductsTable({
           pageSize: 10,
         },
       },
-      meta: {
-        handleDeleteRow: (row) => {
-          setData((prev) => prev.filter((r) => r.id !== row.id));
-        },
-        handleMultipleDelete: (rows) => {
-          setData((prev) => prev.filter((r) => !rows.includes(r)));
-        },
-      },
       enableColumnResizing: false,
     },
   });

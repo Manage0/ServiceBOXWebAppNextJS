@@ -1,11 +1,9 @@
 'use client';
 
-import { routes } from '@/config/routes';
 import AvatarCard from '@core/ui/avatar-card';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Checkbox } from 'rizzui';
 import { getStatusBadge } from '@core/components/table-utils/get-status-badge';
-import TableRowActionGroup from '@core/components/table-utils/table-row-action-group';
 import { ProductType } from '@/data/prod-data';
 
 const columnHelper = createColumnHelper<ProductType>();
@@ -73,24 +71,5 @@ export const productsColumns = [
     header: 'STÁTUSZ',
     enableSorting: false,
     cell: ({ row }) => getStatusBadge(row.original.status, true),
-  }),
-  columnHelper.display({
-    id: 'actions',
-    size: 120,
-    cell: ({
-      row,
-      table: {
-        options: { meta },
-      },
-    }) => (
-      <TableRowActionGroup
-        editUrl={routes.invoice.edit(row.original.id)}
-        deletePopoverTitle="Termék törlése"
-        deletePopoverDescription="Biztosan törölni szeretnéd a terméket?"
-        onDelete={() => {
-          meta?.handleDeleteRow?.(row.original);
-        }}
-      />
-    ),
   }),
 ];

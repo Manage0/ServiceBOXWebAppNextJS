@@ -32,10 +32,11 @@ export default function InvoiceTable({
       },
       meta: {
         handleDeleteRow: (row) => {
-          setData((prev) => prev.filter((r) => r.id !== row.id));
+          handleDelete([row.id]);
         },
         handleMultipleDelete: (rows) => {
-          setData((prev) => prev.filter((r) => !rows.includes(r)));
+          const ids = rows.map((row: WorksheetFormTypes) => row.id);
+          handleDelete(ids);
         },
       },
       enableColumnResizing: false,
@@ -89,6 +90,30 @@ export default function InvoiceTable({
       setData(filtered);
     } else {
       setData(allData);
+    }
+  };
+
+  const handleDelete = async (ids: number[]) => {
+    try {
+      const res = await fetch('/api/worksheets/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ids }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete worksheets');
+      }
+
+      const remainingData = allData.filter(
+        (worksheet) => !ids.includes(Number(worksheet.id))
+      );
+      setAllData(remainingData);
+      setData(remainingData);
+    } catch (error) {
+      console.error('Error deleting worksheets:', error);
     }
   };
 

@@ -68,12 +68,7 @@ export const rolesData = [
         importEmployee: false,
       },
       Products: {
-        addNewProduct: false,
-        editProduct: false,
-        deleteProduct: false,
-        viewProductDetails: false,
-        printExportProduct: false,
-        importProduct: false,
+        viewProductDetails: false, //elvileg ennek kéne valami disabled inputos nézet...
       },
       Partners: {
         addNewPartner: true,
@@ -113,12 +108,7 @@ export const rolesData = [
         importEmployee: true,
       },
       Products: {
-        addNewProduct: true,
-        editProduct: false,
-        deleteProduct: false,
         viewProductDetails: true,
-        printExportProduct: false,
-        importProduct: true,
       },
       Partners: {
         addNewPartner: true,
@@ -158,12 +148,7 @@ export const rolesData = [
         importEmployee: false,
       },
       Products: {
-        addNewProduct: false,
-        editProduct: true,
-        deleteProduct: false,
-        viewProductDetails: false,
-        printExportProduct: true,
-        importProduct: true,
+        viewProductDetails: true,
       },
       Partners: {
         addNewPartner: false,
@@ -203,12 +188,7 @@ export const rolesData = [
         importEmployee: false,
       },
       Products: {
-        addNewProduct: false,
-        editProduct: false,
-        deleteProduct: false,
         viewProductDetails: false,
-        printExportProduct: false,
-        importProduct: false,
       },
       Partners: {
         addNewPartner: true,
@@ -248,12 +228,7 @@ export const rolesData = [
         importEmployee: false,
       },
       Products: {
-        addNewProduct: false,
-        editProduct: true,
-        deleteProduct: false,
-        viewProductDetails: false,
-        printExportProduct: true,
-        importProduct: true,
+        viewProductDetails: true,
       },
       Partners: {
         addNewPartner: false,
