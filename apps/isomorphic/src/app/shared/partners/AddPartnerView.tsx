@@ -16,6 +16,7 @@ import {
   PartnerFormSchema,
   defaultValues,
 } from '@/validators/partner.schema';
+import countryOptions from '../countryOptions';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -85,12 +86,6 @@ export default function AddPartnerView({
   const [selectedCountry, setSelectedCountry] = useState<string>(
     defaultValues.country || ''
   );
-
-  const countryOptions = [
-    { value: 'HU', label: 'Magyarország' },
-    { value: 'EU', label: 'EU' },
-    // Add other countries as needed
-  ];
 
   return (
     <Form<PartnerFormTypes>

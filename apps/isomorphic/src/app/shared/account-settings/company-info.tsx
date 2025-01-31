@@ -12,6 +12,7 @@ import {
   CompanyFormTypes,
 } from '@/validators/company-info.schema';
 import { useEffect, useState } from 'react';
+import countryOptions from '../countryOptions';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -75,12 +76,6 @@ export default function CompanyInfoView() {
       </div>
     );
   }
-
-  const countryOptions = [
-    { value: 'HU', label: 'Magyarország' },
-    { value: 'EU', label: 'EU' },
-    // Add other countries as needed
-  ];
 
   return (
     <Form<CompanyFormTypes>
