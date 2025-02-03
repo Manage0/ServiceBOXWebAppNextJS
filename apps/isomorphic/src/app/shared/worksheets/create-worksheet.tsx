@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from '@core/ui/form';
-import { Text, Input, Select, Textarea, Button } from 'rizzui';
+import { Text, Input, Select, Textarea } from 'rizzui';
 import { DatePicker } from '@core/ui/datepicker';
 import {
   FormBlockWrapper,
@@ -17,7 +17,6 @@ import {
   invoiceFormSchema,
 } from '@/validators/create-invoice.schema';
 import { Label, LabeledInput } from '../account-settings/personal-info';
-import { PiPlusBold } from 'react-icons/pi';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
@@ -586,14 +585,12 @@ export default function CreateInvoice({
                     />
                   )}
                 />
-
-                <Button
+                <AddBtn
                   style={{ alignSelf: 'end' }}
                   className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
-                >
-                  <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-                  Mentés új sablonként
-                </Button>
+                  onClick={() => console.log('Mentve új sablonként')}
+                  text="Mentés új sablonként"
+                />
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Megjegyzések'}

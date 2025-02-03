@@ -9,6 +9,8 @@ interface AddBtnProps {
   variant?: 'gray' | 'colored';
   text?: string;
   href?: string;
+  className?: string;
+  style?: { [key: string]: string };
 }
 
 const AddBtn: React.FC<AddBtnProps> = ({
@@ -16,13 +18,17 @@ const AddBtn: React.FC<AddBtnProps> = ({
   variant = 'colored',
   text = 'Hozzáad',
   href,
+  style = {},
+  className = '',
 }) => {
   const button = (
     <Button
+      style={style}
       className={cn(
         'w-full max-w-[150px] @lg:w-auto',
         variant === 'gray' &&
-          'border-gray-300 bg-white text-black hover:bg-gray-100'
+          'border-gray-300 bg-white text-black hover:bg-gray-100',
+        className
       )}
       onClick={onClick}
     >
