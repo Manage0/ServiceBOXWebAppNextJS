@@ -16,13 +16,19 @@ export async function GET() {
       );
     }
 
-    // Fetch emails for each partner
+    // Fetch emails and site for each partner
     for (const partner of partners) {
       const emailRes = await executeQuery(
         'SELECT email FROM partner_email WHERE partner_id = $1',
         [partner.id]
       );
       partner.emails = emailRes.rows.map((row) => row.email);
+
+      const siteRes = await executeQuery(
+        'SELECT site_id, name, external_id, country, postal_code, city, address FROM sites WHERE partner_id = $1',
+        [partner.id]
+      );
+      partner.site = siteRes.rows[0];
     }
 
     return NextResponse.json(partners);
@@ -33,6 +39,19 @@ export async function GET() {
       { status: 500 }
     );
   }
+}
+
+function formatQuery(query: string, params: any[]): string {
+  return query.replace(/\$(\d+)/g, (_, index) => {
+    const paramIndex = parseInt(index, 10) - 1;
+    return JSON.stringify(params[paramIndex]);
+  });
+}
+
+async function logAndExecuteQuery(query: string, params: any[]) {
+  const formattedQuery = formatQuery(query, params);
+  console.log('Executing query:', formattedQuery);
+  return executeQuery(query, params);
 }
 
 export async function POST(req: NextRequest) {
@@ -49,6 +68,7 @@ export async function POST(req: NextRequest) {
       city,
       address,
       emails,
+      site,
     } = (await req.json()) as {
       name: string;
       tax_num: string;
@@ -61,6 +81,14 @@ export async function POST(req: NextRequest) {
       city: string;
       address: string;
       emails: string[];
+      site: {
+        name: string;
+        external_id: string;
+        country: string;
+        postal_code: string;
+        city: string;
+        address: string;
+      };
     };
 
     if (
@@ -73,19 +101,24 @@ export async function POST(req: NextRequest) {
       !country ||
       !postal_code ||
       !city ||
-      !address
+      !address ||
+      !site.name ||
+      !site.country ||
+      !site.postal_code ||
+      !site.city ||
+      !site.address
     ) {
       return NextResponse.json(
         {
           error:
-            'All fields (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address) are required',
+            'All fields (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address, site.name, site.country, site.postal_code, site.city, site.address) are required',
         },
         { status: 400 }
       );
     }
 
     // Insert partner data into the database
-    const res = await executeQuery(
+    const res = await logAndExecuteQuery(
       'INSERT INTO partners (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id',
       [
         name,
@@ -112,11 +145,25 @@ export async function POST(req: NextRequest) {
 
     // Insert emails into partner_email table
     for (const email of emails) {
-      await executeQuery(
+      await logAndExecuteQuery(
         'INSERT INTO partner_email (partner_id, email) VALUES ($1, $2)',
         [partnerId, email]
       );
     }
+
+    // Insert site data into the sites table
+    await logAndExecuteQuery(
+      'INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [
+        partnerId,
+        site.name,
+        site.external_id,
+        site.country,
+        site.postal_code,
+        site.city,
+        site.address,
+      ]
+    );
 
     return NextResponse.json({ id: partnerId }, { status: 201 });
   } catch (error) {
@@ -143,6 +190,7 @@ export async function PUT(req: NextRequest) {
       city,
       address,
       emails,
+      site,
     } = (await req.json()) as {
       id: string;
       name: string;
@@ -156,6 +204,14 @@ export async function PUT(req: NextRequest) {
       city: string;
       address: string;
       emails: string[];
+      site: {
+        name: string;
+        external_id: string;
+        country: string;
+        postal_code: string;
+        city: string;
+        address: string;
+      };
     };
 
     if (
@@ -169,12 +225,17 @@ export async function PUT(req: NextRequest) {
       !country ||
       !postal_code ||
       !city ||
-      !address
+      !address ||
+      !site.name ||
+      !site.country ||
+      !site.postal_code ||
+      !site.city ||
+      !site.address
     ) {
       return NextResponse.json(
         {
           error:
-            'All fields (id, name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address) are required',
+            'All fields (id, name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address, site.name, site.country, site.postal_code, site.city, site.address) are required',
         },
         { status: 400 }
       );
@@ -216,6 +277,20 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    // Update site data in the sites table
+    await executeQuery(
+      'UPDATE sites SET name = $1, external_id = $2, country = $3, postal_code = $4, city = $5, address = $6 WHERE partner_id = $7',
+      [
+        site.name,
+        site.external_id,
+        site.country,
+        site.postal_code,
+        site.city,
+        site.address,
+        id,
+      ]
+    );
+
     return NextResponse.json({ id: res.rows[0].id }, { status: 200 });
   } catch (error) {
     console.error('Error updating partner:', error);
@@ -242,6 +317,11 @@ export async function DELETE(req: NextRequest) {
       'DELETE FROM partner_email WHERE partner_id = ANY($1::int[])',
       [partner_ids]
     );
+
+    // Delete site data for the partners
+    await executeQuery('DELETE FROM sites WHERE partner_id = ANY($1::int[])', [
+      partner_ids,
+    ]);
 
     // Delete partner data from the database
     const res = await executeQuery(

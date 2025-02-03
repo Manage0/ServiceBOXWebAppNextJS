@@ -29,6 +29,12 @@ export const PartnerFormSchema = z
     tax_num: z.string().min(1, messages.taxNumIsRequired),
     contact_person: z.string().min(1, messages.contactPersonIsRequired),
     contact_phone_number: z.string().min(1, messages.phoneNumberIsRequired),
+    site_name: z.string(),
+    site_external_id: z.string(),
+    site_country: z.string(),
+    site_postal_code: z.string(),
+    site_city: z.string(),
+    site_address: z.string(),
   })
   .superRefine((data, ctx) => {
     if (data.tax_num) {
@@ -66,4 +72,11 @@ export const defaultValues: PartnerFormTypes = {
   tax_num: '',
   contact_person: '',
   contact_phone_number: '',
+  site_name: '',
+  site_external_id: '',
+  site_country: '',
+  site_postal_code: '',
+  site_city: '',
+  site_address: '',
+  additional_emails: [],
 };

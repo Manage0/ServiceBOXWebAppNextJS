@@ -30,6 +30,13 @@ export async function POST(req: NextRequest) {
     );
     partner.emails = emailRes.rows.map((row) => row.email);
 
+    // Fetch site for the partner
+    const siteRes = await executeQuery(
+      'SELECT site_id, name, external_id, country, postal_code, city, address FROM sites WHERE partner_id = $1',
+      [id]
+    );
+    partner.site = siteRes.rows[0];
+
     return NextResponse.json(partner, { status: 200 });
   } catch (error) {
     console.error('Error fetching partner:', error);

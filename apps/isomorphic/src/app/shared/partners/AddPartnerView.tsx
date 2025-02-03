@@ -2,12 +2,12 @@
 
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
-import { Controller, SubmitHandler } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from '@core/ui/form';
 import { Loader, Text, Input } from 'rizzui';
 import FormGroup from '@/app/shared/form-group';
 import FormFooter from '@core/components/form-footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import cn from '@core/utils/class-names';
 import DeletePopover from '@core/components/delete-popover';
 import AddBtn from '../add-btn';
@@ -41,27 +41,73 @@ export const LabeledInput = ({
   className?: string;
 }) => <div className={cn('flex flex-col gap-4', className)}>{children}</div>;
 
-type PartnerDataWithId = PartnerFormTypes & { id: string; emails?: string[] };
+export type PartnerDataWithId = PartnerFormTypes & {
+  id: string;
+  emails?: string[];
+  site?: {
+    name: string;
+    external_id: string;
+    country: string;
+    postal_code: string;
+    city: string;
+    address: string;
+  };
+};
 
 export default function AddPartnerView({
   partnerData,
 }: {
   partnerData?: PartnerDataWithId;
 }) {
+  const [emails, setEmails] = useState<string[]>(partnerData?.emails || []);
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    partnerData?.country || defaultValues.country
+  );
+
+  useEffect(() => {
+    if (partnerData) {
+      setEmails(partnerData.emails || []);
+      setSelectedCountry(partnerData.country || '');
+    }
+  }, [partnerData]);
+
   const onSubmit: SubmitHandler<PartnerFormTypes> = async (data) => {
+    console.log('Form data:', data); // Log the form data
+
     try {
       const method = partnerData ? 'PUT' : 'POST';
       const url = '/api/partners';
+      const {
+        site_name,
+        site_external_id,
+        site_country,
+        site_postal_code,
+        site_city,
+        site_address,
+        ...rest
+      } = data;
+
+      const payload = {
+        ...rest,
+        id: partnerData?.id,
+        emails,
+        site: {
+          name: site_name,
+          external_id: site_external_id,
+          country: site_country,
+          postal_code: site_postal_code,
+          city: site_city,
+          address: site_address,
+        },
+      };
+
       const res = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, id: partnerData?.id, emails }),
+        body: JSON.stringify(payload),
       });
-      if (partnerData) {
-        partnerData = { ...data, id: partnerData?.id || '' };
-      }
 
       if (res.ok) {
         toast.success(
@@ -69,7 +115,11 @@ export default function AddPartnerView({
             Partner sikeresen {partnerData ? 'frissítve' : 'hozzáadva'}
           </Text>
         );
-        console.log('Partner data ->', data);
+        console.log('Partner data ->', payload);
+        if (partnerData) {
+          // Reload the page to reflect the changes
+          window.location.reload();
+        }
       } else {
         const errorData = (await res.json()) as { error: string };
         toast.error(`Hiba: ${errorData.error}`);
@@ -80,36 +130,34 @@ export default function AddPartnerView({
     }
   };
 
-  //Temporary solution to represent additional emails option
-  const [emails, setEmails] = useState<string[]>(partnerData?.emails || []);
-
-  const [selectedCountry, setSelectedCountry] = useState<string>(
-    defaultValues.country || ''
-  );
-
   return (
     <Form<PartnerFormTypes>
       validationSchema={PartnerFormSchema}
-      // resetValues={reset}
       onSubmit={onSubmit}
       className="@container"
       useFormProps={{
         mode: 'onChange',
-        defaultValues,
+        defaultValues: partnerData || defaultValues,
       }}
     >
       {({ register, control, setValue, getValues, formState: { errors } }) => {
         if (partnerData) {
           Object.keys(partnerData).forEach((key) => {
-            if (partnerData) {
-              //crying inside
-              setValue(
-                key as keyof PartnerFormTypes,
-                partnerData[key as keyof PartnerFormTypes]
-              );
-            }
+            setValue(
+              key as keyof PartnerFormTypes,
+              partnerData[key as keyof PartnerFormTypes]
+            );
           });
+          if (partnerData.site) {
+            setValue('site_name', partnerData.site.name);
+            setValue('site_external_id', partnerData.site.external_id);
+            setValue('site_country', partnerData.site.country);
+            setValue('site_postal_code', partnerData.site.postal_code);
+            setValue('site_city', partnerData.site.city);
+            setValue('site_address', partnerData.site.address);
+          }
         }
+
         return (
           <>
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
@@ -117,190 +165,162 @@ export default function AddPartnerView({
                 title="Partner adatok"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                <LabeledInput>
-                  <Label>Partner neve</Label>
-                  <Input
-                    {...register('name')}
-                    error={errors.name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Partner külső ID</Label>
-                  <Input
-                    {...register('external_id')}
-                    error={errors.external_id?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
+                <Input
+                  label="Partner neve"
+                  {...register('name')}
+                  error={errors.name?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Partner külső ID"
+                  {...register('external_id')}
+                  error={errors.external_id?.message}
+                  className="flex-grow"
+                />
                 <Controller
                   name="country"
                   control={control}
                   render={({ field }) => (
-                    <LabeledInput>
-                      <Label>Ország</Label>
-                      <Select
-                        {...field}
-                        options={countryOptions}
-                        onChange={(option: { value: string }) => {
-                          field.onChange(option.value);
-                          setSelectedCountry(option.value || '');
-                        }}
-                        placeholder=""
-                        className="flex-grow"
-                      />
-                    </LabeledInput>
+                    <Select
+                      {...field}
+                      label="Ország"
+                      options={countryOptions}
+                      onChange={(option: { value: string }) => {
+                        field.onChange(option.value);
+                        setSelectedCountry(option.value || '');
+                      }}
+                      placeholder=""
+                      className="flex-grow"
+                    />
                   )}
                 />
-                <LabeledInput>
-                  <Label>Irányítószám</Label>
-                  <Input
-                    {...register('postal_code')}
-                    error={errors.postal_code?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Település</Label>
-                  <Input
-                    {...register('city')}
-                    error={errors.city?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Cím</Label>
-                  <Input
-                    {...register('address')}
-                    error={errors.address?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>
-                    {selectedCountry === 'HU' ? 'Adószám' : 'EU adószám'}
-                  </Label>
-                  <Input
-                    {...register('tax_num')}
-                    error={errors.tax_num?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
+                <Input
+                  label="Irányítószám"
+                  {...register('postal_code')}
+                  error={errors.postal_code?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Település"
+                  {...register('city')}
+                  error={errors.city?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Cím"
+                  {...register('address')}
+                  error={errors.address?.message}
+                  className="flex-grow"
+                />
+
+                <Input
+                  label={selectedCountry === 'HU' ? 'Adószám' : 'EU adószám'}
+                  {...register('tax_num')}
+                  error={errors.tax_num?.message}
+                  className="flex-grow"
+                />
               </FormGroup>
-              {/*<FormGroup
+              <FormGroup
                 title="Telephely"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                <LabeledInput>
-                  <Label>Telephely neve</Label>
-                  <Input
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Partner külső ID (Telephely)</Label>
-                  <Input
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Ország</Label>
-                  <Select
-                    options={[
-                      {
-                        label: 'Magyarország',
-                        value: 'HU',
-                      },
-                    ]}
-                    placeholder="Ország"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Irányítószám</Label>
-                  <Input
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Település</Label>
-                  <Input
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Cím</Label>
-                  <Input
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-              </FormGroup>*/}
+                <Input
+                  label="Telephely neve"
+                  {...register('site_name')}
+                  error={errors.site_name?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Partner külső ID (Telephely)"
+                  {...register('site_external_id')}
+                  error={errors.site_external_id?.message}
+                  className="flex-grow"
+                />
+                <Controller
+                  name="site_country"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      label="Ország"
+                      options={countryOptions}
+                      onChange={(option: { value: string }) => {
+                        field.onChange(option.value);
+                        setSelectedCountry(option.value || '');
+                      }}
+                      placeholder=""
+                      className="flex-grow"
+                    />
+                  )}
+                />
+                <Input
+                  label="Irányítószám"
+                  {...register('site_postal_code')}
+                  error={errors.site_postal_code?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Település"
+                  {...register('site_city')}
+                  error={errors.site_city?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Cím"
+                  {...register('site_address')}
+                  error={errors.site_address?.message}
+                  className="flex-grow"
+                />
+              </FormGroup>
               <FormGroup
                 title="Központi elérhetőségek"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
-                <LabeledInput>
-                  <Label>Kapcsolattartó neve</Label>
-                  <Input
-                    {...register('contact_person')}
-                    error={errors.contact_person?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
-                <LabeledInput>
-                  <Label>Kapcsolattartó telefonszám</Label>
-                  <Input
-                    {...register('contact_phone_number')}
-                    error={errors.contact_phone_number?.message}
-                    className="flex-grow"
-                  />
-                </LabeledInput>
+                <Input
+                  label="Kapcsolattartó neve"
+                  {...register('contact_person')}
+                  error={errors.contact_person?.message}
+                  className="flex-grow"
+                />
+                <Input
+                  label="Kapcsolattartó telefonszám"
+                  {...register('contact_phone_number')}
+                  error={errors.contact_phone_number?.message}
+                  className="flex-grow"
+                />
                 <div className="flex flex-col gap-4">
-                  <LabeledInput>
-                    <Label>E-mail</Label>
-                    <Input
-                      {...register('email')}
-                      error={errors.email?.message}
-                      className="flex-grow"
-                    />
-                  </LabeledInput>
+                  <Input
+                    label="E-mail"
+                    {...register('email')}
+                    error={errors.email?.message}
+                    className="flex-grow"
+                  />
                   {emails.map((email, index) => (
-                    <LabeledInput key={index} className="mr-4">
-                      <Label>{index + 2}. E-mail</Label>
-                      <div className="flex flex-row items-center gap-4">
-                        <Input
-                          value={email}
-                          error={errors.email?.message}
-                          className="flex-grow"
-                          onChange={(e) => {
-                            const newEmails = [...emails];
-                            newEmails[index] = e.target.value;
-                            setEmails(newEmails);
-                          }}
-                        />
-                        <DeletePopover
-                          title={'E-mail törlése'}
-                          description={
-                            'Biztosan törölni szeretnéd az e-mail címet?'
-                          }
-                          onDelete={() => {
-                            setEmails(emails.filter((_, i) => i !== index));
-                          }}
-                        />
-                      </div>
-                    </LabeledInput>
+                    <div
+                      className="flex flex-row items-center gap-4"
+                      key={index}
+                    >
+                      <Input
+                        label={index + 2 + '. E-mail'}
+                        value={email}
+                        error={errors.email?.message}
+                        className="flex-grow"
+                        onChange={(e) => {
+                          const newEmails = [...emails];
+                          newEmails[index] = e.target.value;
+                          setEmails(newEmails);
+                        }}
+                      />
+                      <DeletePopover
+                        title={'E-mail törlése'}
+                        description={
+                          'Biztosan törölni szeretnéd az e-mail címet?'
+                        }
+                        onDelete={() => {
+                          setEmails(emails.filter((_, i) => i !== index));
+                        }}
+                      />
+                    </div>
                   ))}
                   <AddBtn
                     onClick={() => setEmails([...emails, ''])}

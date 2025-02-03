@@ -1,6 +1,8 @@
 import { metaObject } from '@/config/site.config';
 import PartnersPageHeader from '../../page-header';
-import AddPartnerView from '@/app/shared/partners/AddPartnerView';
+import AddPartnerView, {
+  PartnerDataWithId,
+} from '@/app/shared/partners/AddPartnerView';
 import { PartnerType } from '@/data/partners-data';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +10,7 @@ export const metadata = {
   ...metaObject('Partnerek'),
 };
 
-async function fetchPartnerData(id: string): Promise<PartnerType | null> {
+async function fetchPartnerData(id: string): Promise<PartnerDataWithId | null> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Define this in your environment variables
   const res = await fetch(`${baseUrl}/api/partners/get`, {
     method: 'POST',
@@ -23,7 +25,7 @@ async function fetchPartnerData(id: string): Promise<PartnerType | null> {
   }
 
   const data = await res.json();
-  return data as PartnerType;
+  return data as PartnerDataWithId;
 }
 
 export default async function PartnersPage({
