@@ -5,7 +5,6 @@ import { metaObject } from '@/config/site.config';
 import TableLayout from '../table-layout';
 import BasicTable from '@/app/shared/tables/basic';
 import ModernTable from '@/app/shared/tables/basic/modern';
-import MinimalTable from '@/app/shared/tables/basic/minimal';
 import ElegantTable from '@/app/shared/tables/basic/elegant';
 import RetroTable from '@/app/shared/tables/basic/retro';
 import WidgetCard from '@core/components/cards/widget-card';
@@ -44,9 +43,6 @@ export default function BasicTablePage() {
         </WidgetCard>
         <WidgetCard title="Modern Table" className="space-y-4">
           <ModernTable />
-        </WidgetCard>
-        <WidgetCard title={'Minimal Table'} className="space-y-4">
-          <MinimalTable />
         </WidgetCard>
         <WidgetCard title="Elegant Table" className="space-y-4">
           <ElegantTable />
