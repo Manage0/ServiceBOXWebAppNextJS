@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from '@core/ui/form';
 import { Text, Input, Select, Textarea } from 'rizzui';
-import { DatePicker } from '@core/ui/datepicker';
 import {
   FormBlockWrapper,
   statusOptions,
@@ -20,6 +19,7 @@ import { Label, LabeledInput } from '../account-settings/personal-info';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
+import ControlledDatePicker from './ControlledDatePicker';
 
 const invoiceItems = [
   { item: '', description: '', quantity: 1, price: undefined },
@@ -160,58 +160,26 @@ export default function CreateInvoice({
                   {...register('fromName')}
                   error={errors.fromName?.message}
                 />
-                <div className="[&>.react-datepicker-wrapper]:w-full">
-                  <Controller
-                    name="createDate"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        inputProps={{ label: 'Bizonylat kelte' }}
-                        selected={value}
-                        onChange={onChange}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="[&>.react-datepicker-wrapper]:w-full">
-                  <Controller
-                    name="createDate"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        inputProps={{ label: 'Vállalási határidő' }}
-                        selected={value}
-                        onChange={onChange}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="[&>.react-datepicker-wrapper]:w-full">
-                  <Controller
-                    name="createDate"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        inputProps={{ label: 'Elkészült' }}
-                        selected={value}
-                        onChange={onChange}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="[&>.react-datepicker-wrapper]:w-full">
-                  <Controller
-                    name="createDate"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        inputProps={{ label: 'Átadva' }}
-                        selected={value}
-                        onChange={onChange}
-                      />
-                    )}
-                  />
-                </div>
+                <ControlledDatePicker
+                  name="createDate"
+                  control={control}
+                  label="Bizonylat kelte"
+                />
+                <ControlledDatePicker
+                  name="createDate"
+                  control={control}
+                  label="Vállalási határidő"
+                />
+                <ControlledDatePicker
+                  name="createDate"
+                  control={control}
+                  label="Elkészült"
+                />
+                <ControlledDatePicker
+                  name="createDate"
+                  control={control}
+                  label="Átadva"
+                />
                 <div
                   style={{
                     display: 'flex',
