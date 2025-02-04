@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { SubmitHandler, Controller } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@core/ui/form';
-import { Text, Input, Select, Textarea } from 'rizzui';
+import { Text, Input, Textarea } from 'rizzui';
 import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
