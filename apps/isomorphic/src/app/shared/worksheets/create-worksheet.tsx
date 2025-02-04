@@ -8,9 +8,10 @@ import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
 import {
-  InvoiceFormInput,
-  invoiceFormSchema,
-} from '@/validators/create-invoice.schema';
+  WorksheetFormTypes,
+  WorksheetFormSchema,
+  defaultValues,
+} from '@/validators/worksheet.schema';
 import { Label, LabeledInput } from '../account-settings/personal-info';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
@@ -18,65 +19,54 @@ import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
 
-const invoiceItems = [
-  { item: '', description: '', quantity: 1, price: undefined },
+const statusOptions = [
+  { label: 'Új munkalap', value: 'new' },
+  { label: 'Folyamatban', value: 'pending' },
+  { label: 'Elkészült', value: 'completed' },
+  { label: 'Aláírás alatt', value: 'outforsignature' },
+  { label: 'Vázlat', value: 'draft' },
+  { label: 'Lezárt', value: 'closed' },
+];
+
+const priorityOptions = [
+  { label: 'Leggyengébb', value: 'weakest' },
+  { label: 'Gyenge', value: 'weak' },
+  { label: 'Normál', value: 'normal' },
+  { label: 'Erős', value: 'strong' },
+  { label: 'Legerősebb', value: 'strongest' },
 ];
 
 const dummyOptions = [{ label: 'Dummy', value: 'dummy' }];
 
-export default function CreateInvoice({
+export default function CreateWorksheet({
   id,
   record,
 }: {
   id?: string;
-  record?: InvoiceFormInput;
+  record?: WorksheetFormTypes;
 }) {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<InvoiceFormInput> = (data) => {
+  const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
     toast.success(
-      <Text as="b">Invoice successfully {id ? 'updated' : 'created'}</Text>
+      <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
     );
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      console.log('createInvoice data ->', data);
-      setReset({
-        fromName: '',
-        fromAddress: '',
-        fromPhone: '',
-        toName: '',
-        toAddress: '',
-        toPhone: '',
-        shipping: '',
-        discount: '',
-        taxes: '',
-        createDate: new Date(),
-        status: 'draft',
-        items: invoiceItems,
-      });
+      console.log('createWorksheet data ->', data);
+      setReset(defaultValues);
     }, 600);
   };
 
-  const newItems = record?.items
-    ? record.items.map((item) => ({
-        ...item,
-      }))
-    : invoiceItems;
-
   return (
-    <Form<InvoiceFormInput>
-      validationSchema={invoiceFormSchema}
+    <Form<WorksheetFormTypes>
+      //validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
-        defaultValues: {
-          ...record,
-          invoiceNumber: 'INV-0071',
-          createDate: new Date(),
-          items: newItems,
-        },
+        defaultValues: record || defaultValues,
       }}
       className="flex flex-grow flex-col @container [&_label]:font-medium"
     >
@@ -91,56 +81,56 @@ export default function CreateInvoice({
                 }
               >
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={statusOptions}
                   name="status"
                   control={control}
                   label="Státusz"
                   error={errors?.status?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
-                  name="fromName"
+                  options={priorityOptions}
+                  name="priority"
                   control={control}
                   label="Prioritás"
-                  error={errors?.fromName?.message}
+                  error={errors?.priority?.message}
                 />
                 <Input
                   label="JIRA Ticket száma"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('jira_ticket_num')}
+                  error={errors.jira_ticket_num?.message}
                 />
                 <Input
                   label="Munkalap sorszám"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('worksheet_id')}
+                  error={errors.worksheet_id?.message}
                 />
                 <Input
                   label="Számla sorszám"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('invoice_number')}
+                  error={errors.invoice_number?.message}
                 />
                 <Input
                   label="Beszerzési PO szám"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('procurement_po')}
+                  error={errors.procurement_po?.message}
                 />
                 <ControlledDatePicker
-                  name="createDate"
+                  name="creation_date"
                   control={control}
                   label="Bizonylat kelte"
                 />
                 <ControlledDatePicker
-                  name="createDate"
+                  name="deadline_date"
                   control={control}
                   label="Vállalási határidő"
                 />
                 <ControlledDatePicker
-                  name="createDate"
+                  name="completion_date"
                   control={control}
                   label="Elkészült"
                 />
                 <ControlledDatePicker
-                  name="createDate"
+                  name="handover_date"
                   control={control}
                   label="Átadva"
                 />
@@ -175,49 +165,49 @@ export default function CreateInvoice({
               >
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="partner_id"
                   control={control}
                   label="Partner"
-                  error={errors?.status?.message}
+                  error={errors?.partner_id?.message}
                 />
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="site_id"
                   control={control}
                   label="Telephely"
-                  error={errors?.status?.message}
+                  error={errors?.site_id?.message}
                 />
                 <Input
                   label="Adószám"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('tax_num')}
+                  error={errors.tax_num?.message}
                 />
                 <Input
                   label="Irányítószám"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('postal_code')}
+                  error={errors.postal_code?.message}
                 />
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="country"
                   control={control}
                   label="Ország"
-                  error={errors?.status?.message}
+                  error={errors?.country?.message}
                 />
                 <Input
                   label="Település"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('city')}
+                  error={errors.city?.message}
                 />
                 <Input
                   label="Cím"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('address')}
+                  error={errors.address?.message}
                 />
                 <Input
                   label="Email"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('email')}
+                  error={errors.email?.message}
                 />
               </FormBlockWrapper>
               <FormBlockWrapper
@@ -235,18 +225,18 @@ export default function CreateInvoice({
                 />
                 <Input
                   label="Eszköz azonosítója"
-                  {...register('fromName')}
-                  error={errors.fromName?.message}
+                  {...register('received_accessories')}
+                  error={errors.received_accessories?.message}
                 />
                 <AddBtn
-                  onClick={() => console.log('Munkatárs hozzáadva')}
+                  onClick={() => console.log('Eszköz hozzáadva')}
                   variant="gray"
                 />
                 <div className="col-span-2">
                   <Textarea
                     label="Átvett tartozék"
-                    {...register('toAddress')}
-                    error={errors.toAddress?.message}
+                    {...register('received_accessories')}
+                    error={errors.received_accessories?.message}
                     textareaClassName="h-20"
                     className="mb-5 w-full"
                   />
@@ -264,31 +254,31 @@ export default function CreateInvoice({
               >
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="departure_time"
                   control={control}
                   label="Indulás"
-                  error={errors?.status?.message}
+                  error={errors?.departure_time?.message}
                 />
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="arrival_time"
                   control={control}
                   label="Érkezés"
-                  error={errors?.status?.message}
+                  error={errors?.arrival_time?.message}
                 />
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="go_time"
                   control={control}
                   label="Távozás"
-                  error={errors?.status?.message}
+                  error={errors?.go_time?.message}
                 />
                 <ControlledSelect
                   options={dummyOptions}
-                  name="status"
+                  name="rearrival_time"
                   control={control}
                   label="Visszaérkezés"
-                  error={errors?.status?.message}
+                  error={errors?.rearrival_time?.message}
                 />
                 <LabeledInput>
                   <Label>
@@ -296,10 +286,10 @@ export default function CreateInvoice({
                   </Label>
                   <ControlledSelect
                     options={dummyOptions}
-                    name="status"
+                    name="worksheet_id"
                     control={control}
                     label="Munkalap azonosító"
-                    error={errors?.status?.message}
+                    error={errors?.worksheet_id?.message}
                   />
                 </LabeledInput>
               </FormBlockWrapper>
@@ -311,15 +301,15 @@ export default function CreateInvoice({
               >
                 <Textarea
                   label="Hiba / Munka oka"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register('issue_description')}
+                  error={errors.issue_description?.message}
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
                 <Textarea
                   label="Elvégzett munka leírása"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register('work_description')}
+                  error={errors.work_description?.message}
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
@@ -348,8 +338,8 @@ export default function CreateInvoice({
                 </Label>
                 <Textarea
                   label="Nyilvános megjegyzés"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register('public_comment')}
+                  error={errors.public_comment?.message}
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
@@ -368,8 +358,8 @@ export default function CreateInvoice({
                 </Label>
                 <Textarea
                   label="Belső megjegyzés"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register('private_comment')}
+                  error={errors.private_comment?.message}
                   textareaClassName="h-20"
                   className="col-span-2"
                 />

@@ -33,11 +33,19 @@ const ControlledSelect = ({
         error={error}
         getOptionValue={(option) => option.value}
         getOptionDisplayValue={(option) =>
-          renderOptionDisplayValue(option.value as string)
+          renderOptionDisplayValue(option.label as string)
         }
-        displayValue={(selected: string) => renderOptionDisplayValue(selected)}
+        displayValue={(selected: string) => {
+          const selectedOption = options.find(
+            (option) => option.value === selected
+          );
+          return selectedOption
+            ? renderOptionDisplayValue(selectedOption.label as string)
+            : '';
+        }}
       />
     )}
   />
 );
+
 export default ControlledSelect;
