@@ -4,11 +4,7 @@ import { useState } from 'react';
 import { SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from '@core/ui/form';
 import { Text, Input, Select, Textarea } from 'rizzui';
-import {
-  FormBlockWrapper,
-  statusOptions,
-  renderOptionDisplayValue,
-} from '@/app/shared/invoice/form-utils';
+import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
 import {
@@ -20,10 +16,13 @@ import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
+import ControlledSelect from './ControlledSelect';
 
 const invoiceItems = [
   { item: '', description: '', quantity: 1, price: undefined },
 ];
+
+const dummyOptions = [{ label: 'Dummy', value: 'dummy' }];
 
 export default function CreateInvoice({
   id,
@@ -76,7 +75,6 @@ export default function CreateInvoice({
           ...record,
           invoiceNumber: 'INV-0071',
           createDate: new Date(),
-          // status: 'draft',
           items: newItems,
         },
       }}
@@ -92,53 +90,19 @@ export default function CreateInvoice({
                   'Töltsd ki a munkalap adatait részletesen, ha többen dolgotok egy munkán, add hozzá munkatásaidat is'
                 }
               >
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Státusz"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Státusz"
+                  error={errors?.status?.message}
                 />
-                <Controller
-                  name="status"
+                <ControlledSelect
+                  options={dummyOptions}
+                  name="fromName"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Prioritás"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Prioritás"
+                  error={errors?.fromName?.message}
                 />
                 <Input
                   label="JIRA Ticket száma"
@@ -191,29 +155,12 @@ export default function CreateInvoice({
                     <Label>
                       <b>Hozzáférés</b>
                     </Label>
-                    <Controller
+                    <ControlledSelect
+                      options={dummyOptions}
                       name="status"
                       control={control}
-                      render={({ field: { name, onChange, value } }) => (
-                        <Select
-                          dropdownClassName="!z-10 h-auto"
-                          inPortal={false}
-                          options={statusOptions}
-                          defaultValue={statusOptions[0]}
-                          value={value}
-                          onChange={onChange}
-                          name={name}
-                          label="Munkatárs"
-                          error={errors?.status?.message}
-                          getOptionValue={(option) => option.value}
-                          getOptionDisplayValue={(option) =>
-                            renderOptionDisplayValue(option.value as string)
-                          }
-                          displayValue={(selected: string) =>
-                            renderOptionDisplayValue(selected)
-                          }
-                        />
-                      )}
+                      label="Munkatárs"
+                      error={errors?.status?.message}
                     />
                   </LabeledInput>
                   <AddBtn
@@ -226,53 +173,19 @@ export default function CreateInvoice({
                 title={'Partner adatai'}
                 description={'Válaszd ki, hogy kinek szól a bizonylat'}
               >
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Partner"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Partner"
+                  error={errors?.status?.message}
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Telephely"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Telephely"
+                  error={errors?.status?.message}
                 />
                 <Input
                   label="Adószám"
@@ -284,29 +197,12 @@ export default function CreateInvoice({
                   {...register('fromName')}
                   error={errors.fromName?.message}
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Ország"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Ország"
+                  error={errors?.status?.message}
                 />
                 <Input
                   label="Település"
@@ -330,29 +226,12 @@ export default function CreateInvoice({
                   'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
                 }
               >
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Eszköz neve"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Eszköz neve"
+                  error={errors?.status?.message}
                 />
                 <Input
                   label="Eszköz azonosítója"
@@ -383,129 +262,44 @@ export default function CreateInvoice({
                   'Írd be, hogy mennyi időt vett igénybe a szerviz, ha fel szeretnéd osztani a kiszállás költségeit, válaszd ki, hogy melyik munkalappal ossza fel'
                 }
               >
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Induás"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Indulás"
+                  error={errors?.status?.message}
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Érkezés"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Érkezés"
+                  error={errors?.status?.message}
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Távozás"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Távozás"
+                  error={errors?.status?.message}
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Visszarkezés"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Visszaérkezés"
+                  error={errors?.status?.message}
                 />
                 <LabeledInput>
                   <Label>
                     <b>Összekapcsolás munkalappal</b>
                   </Label>
-                  <Controller
+                  <ControlledSelect
+                    options={dummyOptions}
                     name="status"
                     control={control}
-                    render={({ field: { name, onChange, value } }) => (
-                      <Select
-                        dropdownClassName="!z-10 h-auto"
-                        inPortal={false}
-                        options={statusOptions}
-                        defaultValue={statusOptions[0]}
-                        value={value}
-                        onChange={onChange}
-                        name={name}
-                        label="Munkalap azonosító"
-                        error={errors?.status?.message}
-                        getOptionValue={(option) => option.value}
-                        getOptionDisplayValue={(option) =>
-                          renderOptionDisplayValue(option.value as string)
-                        }
-                        displayValue={(selected: string) =>
-                          renderOptionDisplayValue(selected)
-                        }
-                      />
-                    )}
+                    label="Munkalap azonosító"
+                    error={errors?.status?.message}
                   />
                 </LabeledInput>
               </FormBlockWrapper>
@@ -529,29 +323,12 @@ export default function CreateInvoice({
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Sablon használata"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Sablon használata"
+                  error={errors?.status?.message}
                 />
                 <AddBtn
                   style={{ alignSelf: 'end' }}
@@ -576,29 +353,12 @@ export default function CreateInvoice({
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
-                <Controller
+                <ControlledSelect
+                  options={dummyOptions}
                   name="status"
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={statusOptions}
-                      defaultValue={statusOptions[0]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Sablon használata"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }
-                    />
-                  )}
+                  label="Sablon használata"
+                  error={errors?.status?.message}
                 />
                 <div></div>
                 <Label>
