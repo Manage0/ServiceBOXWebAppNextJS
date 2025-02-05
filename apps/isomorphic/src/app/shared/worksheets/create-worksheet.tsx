@@ -19,6 +19,8 @@ import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
 import countryOptions from '../countryOptions';
+import { CompanyFormTypes } from '@/validators/company-info.schema';
+import { fetchCompanyData } from '@/utils';
 
 const statusOptions = [
   { label: 'Új munkalap', value: 'new' },
@@ -53,6 +55,7 @@ export default function CreateWorksheet({
   const [partnerOptions, setPartnerOptions] = useState<
     { label: string; value: string }[]
   >([]);
+  const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
 
   useEffect(() => {
     // Fetch site options
@@ -92,6 +95,8 @@ export default function CreateWorksheet({
       .catch((error) =>
         console.error('Error fetching partner options:', error)
       );
+
+    fetchCompanyData(setCompanyData);
   }, []);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
@@ -101,6 +106,13 @@ export default function CreateWorksheet({
     if (selectedPartner) {
       data.partner_name = selectedPartner.label;
     }
+
+    if (companyData) {
+      data.company_name = companyData.company_name;
+      data.company_address = companyData.address;
+      data.company_tax_num = companyData.tax_number;
+    }
+
     toast.success(
       <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
     );

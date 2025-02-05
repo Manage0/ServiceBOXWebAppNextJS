@@ -13,6 +13,7 @@ import {
 } from '@/validators/company-info.schema';
 import { useEffect, useState } from 'react';
 import countryOptions from '../countryOptions';
+import { fetchCompanyData } from '@/utils';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -29,21 +30,7 @@ export default function CompanyInfoView() {
   );
 
   useEffect(() => {
-    const fetchCompanyData = async () => {
-      try {
-        const res = await fetch('/api/company');
-        if (!res.ok) {
-          throw new Error('Failed to fetch company data');
-        }
-        const data: CompanyFormTypes = (await res.json()) as CompanyFormTypes;
-        setDefaultValues(data);
-      } catch (error) {
-        console.error('Error fetching company data:', error);
-        toast.error('Hiba történt a cégadatok betöltésekor.');
-      }
-    };
-
-    fetchCompanyData();
+    fetchCompanyData(setDefaultValues);
   }, []);
 
   const onSubmit: SubmitHandler<CompanyFormTypes> = async (data) => {

@@ -1,13 +1,6 @@
 
 Empty Required Fields:
 
-partner_name: A validátor szerint ez a mező kötelező, de az értéke üres.
-country: A validátor szerint ez a mező kötelező, de az értéke üres.
-postal_code: A validátor szerint ez a mező kötelező, de az értéke üres.
-city: A validátor szerint ez a mező kötelező, de az értéke üres.
-address: A validátor szerint ez a mező kötelező, de az értéke üres.
-tax_num: A validátor szerint ez a mező kötelező, de az értéke üres.
-email: A validátor szerint ez a mező kötelező, de az értéke üres.
 company_name: A validátor szerint ez a mező kötelező, de az értéke üres.
 company_address: A validátor szerint ez a mező kötelező, de az értéke üres.
 company_tax_num: A validátor szerint ez a mező kötelező, de az értéke üres.
