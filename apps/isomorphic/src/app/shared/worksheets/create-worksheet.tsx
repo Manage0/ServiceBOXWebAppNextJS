@@ -95,6 +95,12 @@ export default function CreateWorksheet({
   }, []);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
+    const selectedPartner = partnerOptions.find(
+      (option) => option.value === String(data.partner_id)
+    );
+    if (selectedPartner) {
+      data.partner_name = selectedPartner.label;
+    }
     toast.success(
       <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
     );

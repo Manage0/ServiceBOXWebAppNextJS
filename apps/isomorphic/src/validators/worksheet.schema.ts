@@ -40,7 +40,7 @@ export const WorksheetFormSchema = z
     jira_ticket_num: z.string().optional(),
     invoice_number: z.string().optional(),
     procurement_po: z.string().optional(),
-    partner_name: z.string(),
+    partner_name: z.string().optional(),
     country: z.string(),
     postal_code: z.string(),
     city: z.string(),
