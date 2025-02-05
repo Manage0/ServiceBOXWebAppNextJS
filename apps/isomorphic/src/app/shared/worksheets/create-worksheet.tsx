@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@core/ui/form';
 import { Text, Input, Textarea } from 'rizzui';
@@ -18,6 +18,7 @@ import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
+import countryOptions from '../countryOptions';
 
 const statusOptions = [
   { label: 'Új munkalap', value: 'new' },
@@ -35,7 +36,6 @@ const priorityOptions = [
   { label: 'Erős', value: 'strong' },
   { label: 'Legerősebb', value: 'strongest' },
 ];
-
 const dummyOptions = [{ label: 'Dummy', value: 'dummy' }];
 
 export default function CreateWorksheet({
@@ -47,6 +47,52 @@ export default function CreateWorksheet({
 }) {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const [siteOptions, setSiteOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [partnerOptions, setPartnerOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+
+  useEffect(() => {
+    // Fetch site options
+    fetch('/api/sites')
+      .then((response) => response.json())
+      .then((data) => {
+        if ((data as { error?: string }).error) {
+          throw new Error((data as { error: string }).error);
+        }
+        const siteData = data as { name: string; site_id: string }[];
+        const options = siteData.map((site) => ({
+          label: site.name,
+          value: site.site_id,
+        }));
+        setSiteOptions(options);
+      })
+      .catch((error) => {
+        console.error('Error fetching site options:', error);
+        if (error instanceof Error) {
+          toast.error('Hiba a telephelyek betöltése során: ' + error.message);
+        } else {
+          toast.error('Hiba a telephelyek betöltése során');
+        }
+      });
+
+    // Fetch partner options
+    fetch('/api/partners')
+      .then((response) => response.json())
+      .then((data) => {
+        const partnerData = data as { name: string; id: string }[];
+        const options = partnerData.map((partner) => ({
+          label: partner.name,
+          value: partner.id,
+        }));
+        setPartnerOptions(options);
+      })
+      .catch((error) =>
+        console.error('Error fetching partner options:', error)
+      );
+  }, []);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
     toast.success(
@@ -164,14 +210,14 @@ export default function CreateWorksheet({
                 description={'Válaszd ki, hogy kinek szól a bizonylat'}
               >
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={partnerOptions}
                   name="partner_id"
                   control={control}
                   label="Partner"
                   error={errors?.partner_id?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={siteOptions}
                   name="site_id"
                   control={control}
                   label="Telephely"
@@ -188,7 +234,7 @@ export default function CreateWorksheet({
                   error={errors.postal_code?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={countryOptions}
                   name="country"
                   control={control}
                   label="Ország"
