@@ -113,6 +113,7 @@ export default function CreateWorksheet({
   }, [session?.user.id]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
+    console.log('createWorksheet data withOUT added stuff ->', data);
     const selectedPartner = partnerOptions.find(
       (option) => option.value === String(data.partner_id)
     );
@@ -136,14 +137,14 @@ export default function CreateWorksheet({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      console.log('createWorksheet data ->', data);
+      console.log('createWorksheet data with added stuff ->', data);
       setReset(defaultValues);
     }, 600);
   };
 
   return (
     <Form<WorksheetFormTypes>
-      //validationSchema={WorksheetFormSchema}
+      validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
@@ -215,7 +216,7 @@ export default function CreateWorksheet({
                   control={control}
                   label="Átadva"
                 />
-                <div
+                {/*<div
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -238,7 +239,7 @@ export default function CreateWorksheet({
                     onClick={() => console.log('Munkatárs hozzáadva')}
                     variant="gray"
                   />
-                </div>
+                </div>*/}
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Partner adatai'}
@@ -291,7 +292,7 @@ export default function CreateWorksheet({
                   error={errors.email?.message}
                 />
               </FormBlockWrapper>
-              <FormBlockWrapper
+              {/*<FormBlockWrapper
                 title={'Eszköz információ'}
                 description={
                   'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
@@ -326,7 +327,7 @@ export default function CreateWorksheet({
                     btnLabel="Mentés a munkalaphoz"
                   />
                 </div>
-              </FormBlockWrapper>
+              </FormBlockWrapper>*/}
               <FormBlockWrapper
                 title={'Kiszállás'}
                 description={
@@ -394,13 +395,13 @@ export default function CreateWorksheet({
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
-                <ControlledSelect
+                {/*<ControlledSelect
                   options={dummyOptions}
                   name="status"
                   control={control}
                   label="Sablon használata"
                   error={errors?.status?.message}
-                />
+                />*/}
                 <AddBtn
                   style={{ alignSelf: 'end' }}
                   className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
@@ -424,13 +425,13 @@ export default function CreateWorksheet({
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
-                <ControlledSelect
+                {/*<ControlledSelect
                   options={dummyOptions}
                   name="status"
                   control={control}
                   label="Sablon használata"
                   error={errors?.status?.message}
-                />
+                />*/}
                 <div></div>
                 <Label>
                   <b>

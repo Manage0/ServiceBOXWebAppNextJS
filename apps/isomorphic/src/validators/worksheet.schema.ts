@@ -5,6 +5,7 @@ import { validateEmail } from './common-rules';
 // Regular expressions for Hungarian and EU tax numbers
 const HUNGARIAN_TAX_NUMBER_REGEX = /^\d{8}-\d-\d{2}$/;
 const EU_TAX_NUMBER_REGEX = /^[A-Z]{2}\d{8,}$/;
+const HUNGARIAN_POSTAL_CODE_REGEX = /^\d{4}$/;
 
 // Form Zod validation schema
 export const WorksheetFormSchema = z
@@ -42,7 +43,12 @@ export const WorksheetFormSchema = z
     procurement_po: z.string().optional(),
     partner_name: z.string().optional(),
     country: z.string(),
-    postal_code: z.string(),
+    postal_code: z
+      .string()
+      .refine((val) => HUNGARIAN_POSTAL_CODE_REGEX.test(val), {
+        message:
+          'Érvénytelen irányítószám formátum. Magyar (xxxx) formátum szükséges.',
+      }),
     city: z.string(),
     address: z.string(),
     tax_num: z.string(),

@@ -1,13 +1,4 @@
 
-Empty Required Fields:
-
-worksheet_id: A validátor szerint ez a mező kötelező, de az értéke üres.
-Invalid Date Fields:
-
-completion_date, creation_date, deadline_date, handover_date, invoice_date, signage_date: Ezek az értékek Date típusúak, de a validátor z.date() típusú értékeket vár, amelyek Date objektumokat várnak, nem pedig stringeket.
-Optional Fields with Undefined Values:
-
-go_time, netto_price, total_price, partner_id, site_id: Ezek az értékek undefined, de a validátor z.string().optional() vagy z.number().optional() típusú értékeket vár, amelyek lehetnek undefined, de ha meg vannak adva, akkor a megfelelő típusúaknak kell lenniük.
 
 
 --------------------------------------------------------------------------------
