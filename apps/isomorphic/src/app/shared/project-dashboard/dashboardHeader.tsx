@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import AddBtn from '../add-btn';
 import { routes } from '@/config/routes';
+import { getName, User } from '@/utils';
 
 export type StatCardProps = {
   className?: string;
@@ -18,42 +19,19 @@ export type StatCardProps = {
 
 export default function DashboardHeader({ className }: { className?: string }) {
   const { data: session } = useSession();
-  const [forename, setForename] = useState('');
+  const [userName, setUserName] = useState<User>();
 
   useEffect(() => {
-    async function getForename() {
-      if (!session?.user?.id) {
-        console.error('User ID not found in session');
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/auth/forename', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: session.user.id }),
-        });
-
-        if (res.ok) {
-          const data = (await res.json()) as { forename: string };
-          setForename(data.forename);
-        } else {
-          console.error('Failed to fetch forename:', await res.json());
-        }
-      } catch (error) {
-        console.error('Error fetching forename:', error);
-      }
+    if (session?.user.id) {
+      getName(session.user.id, setUserName);
     }
-    getForename();
   }, [session?.user.id]);
 
   return (
     <Box className={cn('@container', className)}>
       <Flex justify="between" align="center" className="mb-6">
         <Title as="h1" className="text-#333333 font-30 font-lexendBold">
-          Jó reggelt, {forename}!
+          Jó reggelt, {userName?.forename}!
         </Title>
         <Box className="flex flex-col gap-5 @lg:flex-row">
           <AddBtn href={routes.worksheets.create} text="Új munkalap" />

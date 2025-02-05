@@ -26,3 +26,29 @@ export const fetchCompanyData = async (
     toast.error('Hiba történt a cégadatok betöltésekor.');
   }
 };
+
+export interface User {
+  forename: string;
+  surname: string;
+}
+
+export async function getName(userId: string, setter: (user: User) => void) {
+  try {
+    const res = await fetch('/api/auth/name', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (res.ok) {
+      const data: User = (await res.json()) as User;
+      setter(data);
+    } else {
+      console.error('Failed to fetch user name:', await res.json());
+    }
+  } catch (error) {
+    console.error('Error fetching user name:', error);
+  }
+}

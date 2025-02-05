@@ -14,15 +14,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const res = await executeQuery('SELECT forename FROM users WHERE id = $1', [
-      userId,
-    ]);
+    const res = await executeQuery(
+      'SELECT forename, surname FROM users WHERE id = $1',
+      [userId]
+    );
 
     if (res.rows.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ forename: res.rows[0].forename });
+    const record = res.rows[0];
+
+    return NextResponse.json({
+      forename: record.forename,
+      surname: record.surname,
+    });
   } catch (error) {
     console.error('Error fetching user first name:', error);
     return NextResponse.json(

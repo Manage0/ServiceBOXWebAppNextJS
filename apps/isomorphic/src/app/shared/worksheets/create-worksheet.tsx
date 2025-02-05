@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
 import { Form } from '@core/ui/form';
 import { Text, Input, Textarea } from 'rizzui';
 import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
@@ -20,7 +21,7 @@ import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
 import countryOptions from '../countryOptions';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
-import { fetchCompanyData } from '@/utils';
+import { fetchCompanyData, getName } from '@/utils';
 
 const statusOptions = [
   { label: 'Új munkalap', value: 'new' },
@@ -40,6 +41,11 @@ const priorityOptions = [
 ];
 const dummyOptions = [{ label: 'Dummy', value: 'dummy' }];
 
+interface User {
+  surname: string;
+  forename: string;
+}
+
 export default function CreateWorksheet({
   id,
   record,
@@ -47,6 +53,8 @@ export default function CreateWorksheet({
   id?: string;
   record?: WorksheetFormTypes;
 }) {
+  const { data: session } = useSession();
+  const [userName, setUserName] = useState<User | null>(null);
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [siteOptions, setSiteOptions] = useState<
@@ -97,7 +105,12 @@ export default function CreateWorksheet({
       );
 
     fetchCompanyData(setCompanyData);
-  }, []);
+
+    // Fetch user data
+    if (session?.user.id) {
+      getName(session.user.id, setUserName);
+    }
+  }, [session?.user.id]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
     const selectedPartner = partnerOptions.find(
@@ -111,6 +124,10 @@ export default function CreateWorksheet({
       data.company_name = companyData.company_name;
       data.company_address = companyData.address;
       data.company_tax_num = companyData.tax_number;
+    }
+
+    if (userName) {
+      data.creator_name = `${userName.surname} ${userName.forename}`;
     }
 
     toast.success(

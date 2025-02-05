@@ -1,7 +1,6 @@
 
 Empty Required Fields:
 
-creator_name: A validátor szerint ez a mező kötelező, de az értéke üres.
 worksheet_id: A validátor szerint ez a mező kötelező, de az értéke üres.
 Invalid Date Fields:
 

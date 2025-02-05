@@ -55,7 +55,7 @@ export const WorksheetFormSchema = z
     company_address: z.string().nullable().optional(),
     company_tax_num: z.string().nullable().optional(),
     badge: z.string().optional(),
-    creator_name: z.string(),
+    creator_name: z.string().nullable().optional(),
     worksheet_id: z.string(),
   })
   .superRefine((data, ctx) => {
