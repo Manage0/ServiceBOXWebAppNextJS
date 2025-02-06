@@ -58,10 +58,10 @@ export default function CreateWorksheet({
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [siteOptions, setSiteOptions] = useState<
-    { label: string; value: string }[]
+    { label: string; value: number }[]
   >([]);
   const [partnerOptions, setPartnerOptions] = useState<
-    { label: string; value: string }[]
+    { label: string; value: number }[]
   >([]);
   const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
 
@@ -73,7 +73,7 @@ export default function CreateWorksheet({
         if ((data as { error?: string }).error) {
           throw new Error((data as { error: string }).error);
         }
-        const siteData = data as { name: string; site_id: string }[];
+        const siteData = data as { name: string; site_id: number }[];
         const options = siteData.map((site) => ({
           label: site.name,
           value: site.site_id,
@@ -93,7 +93,7 @@ export default function CreateWorksheet({
     fetch('/api/partners')
       .then((response) => response.json())
       .then((data) => {
-        const partnerData = data as { name: string; id: string }[];
+        const partnerData = data as { name: string; id: number }[];
         const options = partnerData.map((partner) => ({
           label: partner.name,
           value: partner.id,
@@ -112,13 +112,18 @@ export default function CreateWorksheet({
     }
   }, [session?.user.id]);
 
-  const onSubmit: SubmitHandler<WorksheetFormTypes> = (data) => {
+  const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
     console.log('createWorksheet data withOUT added stuff ->', data);
+    console.log('partnerOptions:', partnerOptions);
+    console.log('data.partner_id:', data.partner_id);
+
     const selectedPartner = partnerOptions.find(
-      (option) => option.value === String(data.partner_id)
+      (option) => option.value === data.partner_id
     );
     if (selectedPartner) {
       data.partner_name = selectedPartner.label;
+    } else {
+      console.error('Partner not found for partner_id:', data.partner_id);
     }
 
     if (companyData) {
@@ -133,15 +138,32 @@ export default function CreateWorksheet({
 
     data.creation_date = new Date();
 
-    toast.success(
-      <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
-    );
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      console.log('createWorksheet data with added stuff ->', data);
-      setReset(defaultValues);
-    }, 600);
+    try {
+      const response = await fetch('/api/worksheets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit worksheet');
+      }
+
+      toast.success(
+        <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
+      );
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        console.log('createWorksheet data with added stuff ->', data);
+        setReset(defaultValues);
+      }, 600);
+    } catch (error) {
+      console.error('Error submitting worksheet:', error);
+      toast.error('Hiba történt a munkalap beküldése során.');
+    }
   };
 
   return (
