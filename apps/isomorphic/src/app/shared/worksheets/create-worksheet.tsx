@@ -131,6 +131,8 @@ export default function CreateWorksheet({
       data.creator_name = `${userName.surname} ${userName.forename}`;
     }
 
+    data.creation_date = new Date();
+
     toast.success(
       <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
     );
@@ -159,7 +161,7 @@ export default function CreateWorksheet({
               <FormBlockWrapper
                 title={'Munkalap adatok'}
                 description={
-                  'Töltsd ki a munkalap adatait részletesen, ha többen dolgotok egy munkán, add hozzá munkatásaidat is'
+                  'Töltsd ki a munkalap adatait részletesen, ha többen dolgoztok egy munkán, add hozzá munkatásaidat is'
                 }
               >
                 <ControlledSelect
@@ -197,7 +199,7 @@ export default function CreateWorksheet({
                   error={errors.procurement_po?.message}
                 />
                 <ControlledDatePicker
-                  name="creation_date"
+                  name="invoice_date"
                   control={control}
                   label="Bizonylat kelte"
                 />
@@ -362,7 +364,7 @@ export default function CreateWorksheet({
                   label="Visszaérkezés"
                   error={errors?.rearrival_time?.message}
                 />
-                <LabeledInput>
+                {/*<LabeledInput>
                   <Label>
                     <b>Összekapcsolás munkalappal</b>
                   </Label>
@@ -373,7 +375,7 @@ export default function CreateWorksheet({
                     label="Munkalap azonosító"
                     error={errors?.worksheet_id?.message}
                   />
-                </LabeledInput>
+                </LabeledInput>*/}
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Hiba / Munka leírása'}
