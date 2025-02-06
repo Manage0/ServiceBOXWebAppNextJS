@@ -117,6 +117,16 @@ export default function CreateWorksheet({
     console.log('partnerOptions:', partnerOptions);
     console.log('data.partner_id:', data.partner_id);
 
+    if (!data.partner_id) {
+      toast.error('A partner kiválasztása kötelező.');
+      return;
+    }
+
+    if (!data.site_id) {
+      toast.error('A telephely kiválasztása kötelező.');
+      return;
+    }
+
     const selectedPartner = partnerOptions.find(
       (option) => option.value === data.partner_id
     );
@@ -152,7 +162,9 @@ export default function CreateWorksheet({
       }
 
       toast.success(
-        <Text as="b">Worksheet successfully {id ? 'updated' : 'created'}</Text>
+        <Text as="b">
+          Munkalap sikeresen {id ? 'szerkesztve' : 'létrehozva'}
+        </Text>
       );
       setLoading(true);
       setTimeout(() => {

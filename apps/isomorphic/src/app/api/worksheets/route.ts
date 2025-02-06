@@ -31,8 +31,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const data: WorksheetFormTypes =
-      (await request.json()) as WorksheetFormTypes;
+    const data = (await request.json()) as WorksheetFormTypes;
 
     const {
       completion_date,
@@ -62,7 +61,17 @@ export async function POST(request: Request) {
       work_description,
       public_comment,
       private_comment,
+      partner_id,
+      site_id,
     } = data;
+
+    // Ensure partner_id and site_id are not null
+    if (!partner_id) {
+      throw new Error('partner_id is required');
+    }
+    if (!site_id) {
+      throw new Error('site_id is required');
+    }
 
     const query = `
       INSERT INTO worksheets (
@@ -92,9 +101,11 @@ export async function POST(request: Request) {
         issue_description,
         work_description,
         public_comment,
-        private_comment
+        private_comment,
+        partner_id,
+        site_id
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29
       ) RETURNING *;
     `;
 
@@ -126,6 +137,8 @@ export async function POST(request: Request) {
       work_description,
       public_comment,
       private_comment,
+      partner_id,
+      site_id,
     ];
 
     const res = await executeQuery(query, values);
@@ -133,9 +146,8 @@ export async function POST(request: Request) {
     return NextResponse.json(res.rows[0], { status: 201 });
   } catch (error) {
     console.error('Error creating worksheet:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
