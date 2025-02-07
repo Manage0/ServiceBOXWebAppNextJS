@@ -264,30 +264,25 @@ export default function CreateWorksheet({
                   control={control}
                   label="Átadva"
                 />
-                {/*<div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'end',
-                  }}
-                >
+                <div className="col-span-2 flex flex-col">
                   <LabeledInput>
                     <Label>
                       <b>Hozzáférés</b>
                     </Label>
                     <ControlledSelect
-                      options={dummyOptions}
+                      options={countryOptions}
                       name="status"
                       control={control}
+                      isMulti={true}
                       label="Munkatárs"
                       error={errors?.status?.message}
                     />
                   </LabeledInput>
-                  <AddBtn
+                  {/*<AddBtn
                     onClick={() => console.log('Munkatárs hozzáadva')}
                     variant="gray"
-                  />
-                </div>*/}
+                  />*/}
+                </div>
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Partner adatai'}
@@ -449,13 +444,13 @@ export default function CreateWorksheet({
                   control={control}
                   label="Sablon használata"
                   error={errors?.status?.message}
-                />*/}
+                />
                 <AddBtn
                   style={{ alignSelf: 'end' }}
                   className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
                   onClick={() => console.log('Mentve új sablonként')}
                   text="Mentés új sablonként"
-                />
+                />*/}
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Megjegyzések'}

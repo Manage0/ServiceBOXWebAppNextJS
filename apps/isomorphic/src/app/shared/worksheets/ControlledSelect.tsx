@@ -8,6 +8,7 @@ interface ControlledSelectProps {
   label: string;
   options: SelectOption[];
   error?: string;
+  isMulti?: boolean; // Add isMulti prop to support multiple selection
 }
 
 const ControlledSelect = ({
@@ -16,6 +17,7 @@ const ControlledSelect = ({
   label,
   options,
   error,
+  isMulti = false, // Default to single selection
 }: ControlledSelectProps) => (
   <Controller
     name={name}
@@ -26,23 +28,41 @@ const ControlledSelect = ({
         dropdownClassName="!z-10 h-auto"
         inPortal={false}
         options={options}
-        defaultValue={options}
-        value={value}
-        onChange={onChange}
+        defaultValue={isMulti ? [] : undefined} // Default value for multiple selection
+        value={isMulti && !Array.isArray(value) ? [] : value} // Ensure value is an array for multiple selection
+        onChange={(selected) => {
+          if (isMulti) {
+            onChange((selected as string[]).map((option: string) => option));
+          } else {
+            onChange(selected);
+          }
+        }}
         name={name}
         label={label}
         error={error}
+        multiple={isMulti} // Enable multiple selection
         getOptionValue={(option) => option.value}
         getOptionDisplayValue={(option) =>
           renderOptionDisplayValue(option.label as string)
         }
-        displayValue={(selected: string) => {
-          const selectedOption = options.find(
-            (option) => option.value === selected
-          );
-          return selectedOption
-            ? renderOptionDisplayValue(selectedOption.label as string)
-            : '';
+        displayValue={(selected: string | string[]) => {
+          if (Array.isArray(selected)) {
+            return selected
+              .map((value) => {
+                const selectedOption = options.find(
+                  (option) => option.value === value
+                );
+                return selectedOption ? selectedOption.label : '';
+              })
+              .join(', ');
+          } else {
+            const selectedOption = options.find(
+              (option) => option.value === selected
+            );
+            return selectedOption
+              ? renderOptionDisplayValue(selectedOption.label as string)
+              : '';
+          }
         }}
       />
     )}
