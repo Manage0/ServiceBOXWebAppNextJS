@@ -22,6 +22,7 @@ const ControlledSelect = ({
     control={control}
     render={({ field: { name, onChange, value } }) => (
       <Select
+        placeholder=""
         dropdownClassName="!z-10 h-auto"
         inPortal={false}
         options={options}

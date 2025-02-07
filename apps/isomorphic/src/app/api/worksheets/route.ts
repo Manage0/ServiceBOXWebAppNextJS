@@ -63,6 +63,10 @@ export async function POST(request: Request) {
       private_comment,
       partner_id,
       site_id,
+      start_time,
+      arrival_time,
+      departure_time,
+      rearrival_time,
     } = data;
 
     // Ensure partner_id and site_id are not null
@@ -103,9 +107,13 @@ export async function POST(request: Request) {
         public_comment,
         private_comment,
         partner_id,
-        site_id
+        site_id,
+        start_time,
+        arrival_time,
+        departure_time,
+        rearrival_time
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
       ) RETURNING *;
     `;
 
@@ -139,6 +147,10 @@ export async function POST(request: Request) {
       private_comment,
       partner_id,
       site_id,
+      start_time,
+      arrival_time,
+      departure_time,
+      rearrival_time,
     ];
 
     const res = await executeQuery(query, values);

@@ -39,7 +39,19 @@ const priorityOptions = [
   { label: 'Erős', value: 'strong' },
   { label: 'Legerősebb', value: 'strongest' },
 ];
-const dummyOptions = [{ label: 'Dummy', value: 'dummy' }];
+
+const timeOptions = [
+  { label: '08:00', value: '08:00' },
+  { label: '09:00', value: '09:00' },
+  { label: '10:00', value: '10:00' },
+  { label: '11:00', value: '11:00' },
+  { label: '12:00', value: '12:00' },
+  { label: '13:00', value: '13:00' },
+  { label: '14:00', value: '14:00' },
+  { label: '15:00', value: '15:00' },
+  { label: '16:00', value: '16:00' },
+  { label: '17:00', value: '17:00' },
+];
 
 interface User {
   surname: string;
@@ -371,28 +383,28 @@ export default function CreateWorksheet({
                 }
               >
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={timeOptions}
                   name="departure_time"
                   control={control}
                   label="Indulás"
                   error={errors?.departure_time?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={timeOptions}
                   name="arrival_time"
                   control={control}
                   label="Érkezés"
                   error={errors?.arrival_time?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
-                  name="go_time"
+                  options={timeOptions}
+                  name="start_time"
                   control={control}
                   label="Távozás"
                   error={errors?.go_time?.message}
                 />
                 <ControlledSelect
-                  options={dummyOptions}
+                  options={timeOptions}
                   name="rearrival_time"
                   control={control}
                   label="Visszaérkezés"
