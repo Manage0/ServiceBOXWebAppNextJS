@@ -2,8 +2,15 @@ import { useState } from "react";
 import { Input, InputProps } from "rizzui";
 import cn from "../utils/class-names";
 import { PiCalendarBlank, PiCaretDownBold } from "react-icons/pi";
-import ReactDatePicker, { type DatePickerProps as ReactDatePickerProps } from "react-datepicker";
+import ReactDatePicker, {
+  type DatePickerProps as ReactDatePickerProps,
+  setDefaultLocale,
+} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { hu } from "date-fns/locale";
+
+// Set the default locale to Hungarian
+setDefaultLocale("hu");
 
 const calendarContainerClasses = {
   base: "[&.react-datepicker]:shadow-lg [&.react-datepicker]:border-gray-100 [&.react-datepicker]:rounded-md",
@@ -44,7 +51,7 @@ export const DatePicker = ({
   onCalendarClose,
   popperClassName,
   calendarClassName,
-  dateFormat = "d MMMM yyyy",
+  dateFormat = "yyyy. MM. dd.",
   showPopperArrow = false,
   ...props
 }: DatePickerProps) => {
@@ -65,7 +72,10 @@ export const DatePicker = ({
               prefix={<PiCalendarBlank className="w-5 h-5 text-gray-500" />}
               suffix={
                 <PiCaretDownBold
-                  className={cn("h-4 w-4 text-gray-500 transition", isCalenderOpen && "rotate-180")}
+                  className={cn(
+                    "h-4 w-4 text-gray-500 transition",
+                    isCalenderOpen && "rotate-180"
+                  )}
                 />
               }
               {...inputProps}
@@ -89,6 +99,7 @@ export const DatePicker = ({
         popperClassName={cn(popperClasses.base, popperClassName)}
         dateFormat={dateFormat}
         showPopperArrow={showPopperArrow}
+        locale={hu} // Set locale to Hungarian
         {...props}
       />
     </div>
