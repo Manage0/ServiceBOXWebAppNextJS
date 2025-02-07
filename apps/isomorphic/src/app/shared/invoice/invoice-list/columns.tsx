@@ -67,13 +67,16 @@ export const invoiceListColumns = [
     id: 'creation_date',
     size: 200,
     header: 'LÉTREHOZÁS DÁTUMA',
-    cell: ({ row }) => (
-      <DateCell
-        dateFormat="YYYY. MM. DD."
-        timeFormat="hh:mm"
-        date={new Date(row.original.creation_date)}
-      />
-    ),
+    cell: ({ row }) =>
+      row.original.creation_date ? (
+        <DateCell
+          dateFormat="YYYY. MM. DD."
+          timeFormat="hh:mm"
+          date={new Date(row.original.creation_date)}
+        />
+      ) : (
+        <Text>Létrehozási dátum nem elérhető</Text>
+      ),
   }),
   columnHelper.accessor('status', {
     id: 'status',
@@ -92,9 +95,11 @@ export const invoiceListColumns = [
       },
     }) => (
       <TableRowActionGroup
-        editUrl={routes.worksheets.edit(row.original.id)}
+        editUrl={row.original.id ? routes.worksheets.edit(row.original.id) : ''}
         comment={row.original.public_comment}
-        viewUrl={routes.worksheets.details(row.original.id)}
+        viewUrl={
+          row.original.id ? routes.worksheets.details(row.original.id) : ''
+        }
         deletePopoverTitle="Munkalap törlése"
         deletePopoverDescription="Biztosan törölni szeretnéd a munkalapot?"
         onDelete={() => {

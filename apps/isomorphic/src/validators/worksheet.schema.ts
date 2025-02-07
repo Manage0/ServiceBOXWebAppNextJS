@@ -7,6 +7,8 @@ const HUNGARIAN_TAX_NUMBER_REGEX = /^\d{8}-\d-\d{2}$/;
 const EU_TAX_NUMBER_REGEX = /^[A-Z]{2}\d{8,}$/;
 const HUNGARIAN_POSTAL_CODE_REGEX = /^\d{4}$/;
 
+//tbh kéne egy type csak a form submissionnek és egy csak a worksheetnek
+
 // Form Zod validation schema
 export const WorksheetFormSchema = z
   .object({
