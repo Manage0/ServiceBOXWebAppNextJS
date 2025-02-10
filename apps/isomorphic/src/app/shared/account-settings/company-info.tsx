@@ -12,7 +12,7 @@ import {
   CompanyFormTypes,
 } from '@/validators/company-info.schema';
 import { useEffect, useState } from 'react';
-import countryOptions from '../countryOptions';
+import { countryOptions } from '../options';
 import { fetchCompanyData } from '@/utils';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {

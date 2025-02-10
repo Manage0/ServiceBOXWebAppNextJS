@@ -7,8 +7,6 @@ const HUNGARIAN_TAX_NUMBER_REGEX = /^\d{8}-\d-\d{2}$/;
 const EU_TAX_NUMBER_REGEX = /^[A-Z]{2}\d{8,}$/;
 const HUNGARIAN_POSTAL_CODE_REGEX = /^\d{4}$/;
 
-//tbh kéne egy type csak a form submissionnek és egy csak a worksheetnek
-
 // Form Zod validation schema
 export const WorksheetFormSchema = z
   .object({
@@ -73,6 +71,7 @@ export const WorksheetFormSchema = z
     worksheet_id: z.string({
       required_error: 'A munkalap azonosító megadása kötelező.',
     }),
+    assignees: z.array(z.string()).optional(), // Add assignees attribute
   })
   .superRefine((data, ctx) => {
     if (data.tax_num) {
@@ -144,4 +143,5 @@ export const defaultValues: WorksheetFormTypes = {
   badge: '',
   creator_name: '',
   worksheet_id: '',
+  assignees: [], // Add default value for assignees
 };

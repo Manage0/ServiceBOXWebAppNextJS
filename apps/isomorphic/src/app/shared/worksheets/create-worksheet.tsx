@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
 import { Form } from '@core/ui/form';
-import { Text, Input, Textarea } from 'rizzui';
+import { Input, Textarea } from 'rizzui';
 import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
@@ -19,39 +19,14 @@ import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
-import countryOptions from '../countryOptions';
+import {
+  countryOptions,
+  statusOptions,
+  priorityOptions,
+  timeOptions,
+} from '../options';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
 import { fetchCompanyData, getName } from '@/utils';
-
-const statusOptions = [
-  { label: 'Új munkalap', value: 'new' },
-  { label: 'Folyamatban', value: 'pending' },
-  { label: 'Elkészült', value: 'completed' },
-  { label: 'Aláírás alatt', value: 'outforsignature' },
-  { label: 'Vázlat', value: 'draft' },
-  { label: 'Lezárt', value: 'closed' },
-];
-
-const priorityOptions = [
-  { label: 'Leggyengébb', value: 'weakest' },
-  { label: 'Gyenge', value: 'weak' },
-  { label: 'Normál', value: 'normal' },
-  { label: 'Erős', value: 'strong' },
-  { label: 'Legerősebb', value: 'strongest' },
-];
-
-const timeOptions = [
-  { label: '08:00', value: '08:00' },
-  { label: '09:00', value: '09:00' },
-  { label: '10:00', value: '10:00' },
-  { label: '11:00', value: '11:00' },
-  { label: '12:00', value: '12:00' },
-  { label: '13:00', value: '13:00' },
-  { label: '14:00', value: '14:00' },
-  { label: '15:00', value: '15:00' },
-  { label: '16:00', value: '16:00' },
-  { label: '17:00', value: '17:00' },
-];
 
 interface User {
   surname: string;
@@ -74,6 +49,9 @@ export default function CreateWorksheet({
   >([]);
   const [partnerOptions, setPartnerOptions] = useState<
     { label: string; value: number }[]
+  >([]);
+  const [assigneeOptions, setAssigneeOptions] = useState<
+    { label: string; value: string }[]
   >([]);
   const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
 
@@ -115,6 +93,25 @@ export default function CreateWorksheet({
       .catch((error) =>
         console.error('Error fetching partner options:', error)
       );
+
+    // Fetch assignee options
+    fetch('/api/users')
+      .then((response) => response.json())
+      .then((data) => {
+        const userData = data as {
+          id: string;
+          surname: string;
+          forename: string;
+        }[];
+        const options = userData.map((user) => ({
+          label: user.surname + ' ' + user.forename,
+          value: user.id,
+        }));
+        setAssigneeOptions(options);
+      })
+      .catch((error) => {
+        console.error('Error fetching assignee options:', error);
+      });
 
     fetchCompanyData(setCompanyData);
 
@@ -174,9 +171,7 @@ export default function CreateWorksheet({
       }
 
       toast.success(
-        <Text as="b">
-          Munkalap sikeresen {id ? 'szerkesztve' : 'létrehozva'}
-        </Text>
+        <b>Munkalap sikeresen {id ? 'szerkesztve' : 'létrehozva'}</b>
       );
       setLoading(true);
       setTimeout(() => {
@@ -270,12 +265,12 @@ export default function CreateWorksheet({
                       <b>Hozzáférés</b>
                     </Label>
                     <ControlledSelect
-                      options={countryOptions}
-                      name="status"
+                      options={assigneeOptions}
+                      name="assignees"
                       control={control}
                       isMulti={true}
                       label="Munkatárs"
-                      error={errors?.status?.message}
+                      error={errors?.assignees?.message}
                     />
                   </LabeledInput>
                   {/*<AddBtn

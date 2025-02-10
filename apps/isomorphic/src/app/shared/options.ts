@@ -1,6 +1,6 @@
 import { SelectOption } from 'rizzui';
 
-const countryOptions: SelectOption[] = [
+export const countryOptions: SelectOption[] = [
   { value: 'HU', label: 'Magyarország' },
   { value: 'AT', label: 'Ausztria' },
   { value: 'BE', label: 'Belgium' },
@@ -30,4 +30,32 @@ const countryOptions: SelectOption[] = [
   { value: 'SE', label: 'Svédország' },
 ];
 
-export default countryOptions;
+export const statusOptions: SelectOption[] = [
+  { label: 'Új munkalap', value: 'new' },
+  { label: 'Folyamatban', value: 'pending' },
+  { label: 'Elkészült', value: 'completed' },
+  { label: 'Aláírás alatt', value: 'outforsignature' },
+  { label: 'Vázlat', value: 'draft' },
+  { label: 'Lezárt', value: 'closed' },
+];
+
+export const priorityOptions: SelectOption[] = [
+  { label: 'Leggyengébb', value: 'weakest' },
+  { label: 'Gyenge', value: 'weak' },
+  { label: 'Normál', value: 'normal' },
+  { label: 'Erős', value: 'strong' },
+  { label: 'Legerősebb', value: 'strongest' },
+];
+
+export const timeOptions: SelectOption[] = [
+  { label: '08:00', value: '08:00' },
+  { label: '09:00', value: '09:00' },
+  { label: '10:00', value: '10:00' },
+  { label: '11:00', value: '11:00' },
+  { label: '12:00', value: '12:00' },
+  { label: '13:00', value: '13:00' },
+  { label: '14:00', value: '14:00' },
+  { label: '15:00', value: '15:00' },
+  { label: '16:00', value: '16:00' },
+  { label: '17:00', value: '17:00' },
+];

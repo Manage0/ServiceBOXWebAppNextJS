@@ -16,7 +16,7 @@ import {
   PartnerFormSchema,
   defaultValues,
 } from '@/validators/partner.schema';
-import countryOptions from '../countryOptions';
+import { countryOptions } from '../options';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,

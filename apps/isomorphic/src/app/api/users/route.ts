@@ -28,6 +28,27 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function GET() {
+  try {
+    const res = await executeQuery(
+      'SELECT u.id, u.forename, u.surname, u.profile_picture, u.email, u.last_login, u.last_activity, r.name AS role_name FROM users u JOIN roles r ON u.role_id = r.id;'
+    );
+
+    const users = res.rows;
+    if (users.length === 0) {
+      return NextResponse.json({ error: 'users not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}
+
 interface DeleteUsersRequest {
   user_ids: string[];
 }
