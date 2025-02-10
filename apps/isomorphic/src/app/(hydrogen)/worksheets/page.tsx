@@ -5,7 +5,7 @@ import { invoiceData } from '@/data/invoice-data';
 import InvoiceTable from '@/app/shared/invoice/invoice-list/table';
 
 export const metadata = {
-  ...metaObject('Worksheet List'),
+  ...metaObject('Munkalapok'),
 };
 
 export default function AppointmentListPage() {

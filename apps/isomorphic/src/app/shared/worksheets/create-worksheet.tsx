@@ -53,6 +53,9 @@ export default function CreateWorksheet({
   const [assigneeOptions, setAssigneeOptions] = useState<
     { label: string; value: string }[]
   >([]);
+  const [worksheetOptions, setWorksheetOptions] = useState<
+    { label: string; value: number }[]
+  >([]);
   const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
 
   useEffect(() => {
@@ -113,6 +116,21 @@ export default function CreateWorksheet({
         console.error('Error fetching assignee options:', error);
       });
 
+    // Fetch worksheet options
+    fetch('/api/worksheets')
+      .then((response) => response.json())
+      .then((data) => {
+        const worksheetData = data as { id: number; worksheet_id: string }[];
+        const options = worksheetData.map((worksheet) => ({
+          label: worksheet.worksheet_id,
+          value: worksheet.id,
+        }));
+        setWorksheetOptions(options);
+      })
+      .catch((error) => {
+        console.error('Error fetching worksheet options:', error);
+      });
+
     fetchCompanyData(setCompanyData);
 
     // Fetch user data
@@ -168,6 +186,22 @@ export default function CreateWorksheet({
 
       if (!response.ok) {
         throw new Error('Failed to submit worksheet');
+      }
+
+      const result = (await response.json()) as { id: number };
+
+      // Connect with another worksheet if selected
+      if (data.connected_worksheet_id) {
+        await fetch('/api/ws_ws', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            wsid1: result.id,
+            wsid2: data.connected_worksheet_id,
+          }),
+        });
       }
 
       toast.success(
@@ -400,18 +434,18 @@ export default function CreateWorksheet({
                   label="Visszaérkezés"
                   error={errors?.rearrival_time?.message}
                 />
-                {/*<LabeledInput>
+                <LabeledInput>
                   <Label>
                     <b>Összekapcsolás munkalappal</b>
                   </Label>
                   <ControlledSelect
-                    options={dummyOptions}
-                    name="worksheet_id"
+                    options={worksheetOptions}
+                    name="connected_worksheet_id"
                     control={control}
                     label="Munkalap azonosító"
-                    error={errors?.worksheet_id?.message}
+                    error={errors?.connected_worksheet_id?.message}
                   />
-                </LabeledInput>*/}
+                </LabeledInput>
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Hiba / Munka leírása'}

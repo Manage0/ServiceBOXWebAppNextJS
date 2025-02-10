@@ -72,6 +72,7 @@ export const WorksheetFormSchema = z
       required_error: 'A munkalap azonosító megadása kötelező.',
     }),
     assignees: z.array(z.string()).optional(), // Add assignees attribute
+    connected_worksheet_id: z.number().optional(), // Add connected_worksheet_id attribute
   })
   .superRefine((data, ctx) => {
     if (data.tax_num) {
@@ -144,4 +145,5 @@ export const defaultValues: WorksheetFormTypes = {
   creator_name: '',
   worksheet_id: '',
   assignees: [], // Add default value for assignees
+  connected_worksheet_id: undefined, // Add default value for connected_worksheet_id
 };
