@@ -140,3 +140,26 @@ export async function fetchWorksheetOptions(
     toast.error('Error fetching worksheet options');
   }
 }
+
+interface DescriptionTemplateOption {
+  id: string;
+  name: string;
+  issue_description: string;
+  work_description: string;
+}
+
+export async function fetchDescriptionTemplates(
+  setDescriptionTemplates: (
+    descriptiontemplates: DescriptionTemplateOption[]
+  ) => void
+) {
+  try {
+    const response = await fetch('/api/description_templates');
+    const data = await response.json();
+    const descriptiontemplateData = data as DescriptionTemplateOption[];
+    setDescriptionTemplates(descriptiontemplateData);
+  } catch (error) {
+    console.error('Error fetching Descriptiontemplates:', error);
+    toast.error('Error fetching Descriptiontemplates');
+  }
+}

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
 import { Form } from '@core/ui/form';
-import { Input, Textarea } from 'rizzui';
+import { Input, Select, Textarea } from 'rizzui';
 import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
@@ -32,12 +32,20 @@ import {
   fetchSiteOptions,
   fetchAssigneeOptions,
   fetchWorksheetOptions,
+  fetchDescriptionTemplates,
   getName,
 } from '@/utils';
 
 interface User {
   surname: string;
   forename: string;
+}
+
+interface DescriptionTemplateOption {
+  id: string;
+  name: string;
+  issue_description: string;
+  work_description: string;
 }
 
 export default function CreateWorksheet({
@@ -64,17 +72,19 @@ export default function CreateWorksheet({
     { label: string; value: number }[]
   >([]);
   const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
+  const [descriptionTemplates, setDescriptionTemplates] = useState<
+    DescriptionTemplateOption[]
+  >([]);
+  const [selectedDescriptionTemplate, setSelectedDescriptionTemplate] =
+    useState<DescriptionTemplateOption | null>(null);
 
   useEffect(() => {
     fetchSiteOptions(setSiteOptions);
-
     fetchPartnerOptions(setPartnerOptions);
-
     fetchAssigneeOptions(setAssigneeOptions);
-
     fetchWorksheetOptions(setWorksheetOptions);
-
     fetchCompanyData(setCompanyData);
+    fetchDescriptionTemplates(setDescriptionTemplates); // Fetch description templates
 
     // Fetch user data
     if (session?.user.id) {
@@ -172,308 +182,341 @@ export default function CreateWorksheet({
       }}
       className="flex flex-grow flex-col @container [&_label]:font-medium"
     >
-      {({ register, control, watch, formState: { errors } }) => (
-        <>
-          <div className="flex-grow pb-10">
-            <div className="grid grid-cols-1 gap-8 divide-y divide-dashed divide-gray-200 @2xl:gap-10 @3xl:gap-12">
-              <FormBlockWrapper
-                title={'Munkalap adatok'}
-                description={
-                  'Töltsd ki a munkalap adatait részletesen, ha többen dolgoztok egy munkán, add hozzá munkatásaidat is'
-                }
-              >
-                <ControlledSelect
-                  options={statusOptions}
-                  name="status"
-                  control={control}
-                  label="Státusz"
-                  error={errors?.status?.message}
-                />
-                <ControlledSelect
-                  options={priorityOptions}
-                  name="priority"
-                  control={control}
-                  label="Prioritás"
-                  error={errors?.priority?.message}
-                />
-                <Input
-                  label="JIRA Ticket száma"
-                  {...register('jira_ticket_num')}
-                  error={errors.jira_ticket_num?.message}
-                />
-                <Input
-                  label="Munkalap sorszám"
-                  {...register('worksheet_id')}
-                  error={errors.worksheet_id?.message}
-                />
-                <Input
-                  label="Számla sorszám"
-                  {...register('invoice_number')}
-                  error={errors.invoice_number?.message}
-                />
-                <Input
-                  label="Beszerzési PO szám"
-                  {...register('procurement_po')}
-                  error={errors.procurement_po?.message}
-                />
-                <ControlledDatePicker
-                  name="invoice_date"
-                  control={control}
-                  label="Bizonylat kelte"
-                />
-                <ControlledDatePicker
-                  name="deadline_date"
-                  control={control}
-                  label="Vállalási határidő"
-                />
-                <ControlledDatePicker
-                  name="completion_date"
-                  control={control}
-                  label="Elkészült"
-                />
-                <ControlledDatePicker
-                  name="handover_date"
-                  control={control}
-                  label="Átadva"
-                />
-                <div className="col-span-2 flex flex-col">
-                  <LabeledInput>
-                    <Label>
-                      <b>Hozzáférés</b>
-                    </Label>
-                    <ControlledSelect
-                      options={assigneeOptions}
-                      name="assignees"
-                      control={control}
-                      isMulti={true}
-                      label="Munkatárs"
-                      error={errors?.assignees?.message}
-                    />
-                  </LabeledInput>
-                  {/*<AddBtn
-                    onClick={() => console.log('Munkatárs hozzáadva')}
-                    variant="gray"
-                  />*/}
-                </div>
-              </FormBlockWrapper>
-              <FormBlockWrapper
-                title={'Partner adatai'}
-                description={'Válaszd ki, hogy kinek szól a bizonylat'}
-              >
-                <ControlledSelect
-                  options={partnerOptions}
-                  name="partner_id"
-                  control={control}
-                  label="Partner"
-                  error={errors?.partner_id?.message}
-                />
-                <ControlledSelect
-                  options={siteOptions}
-                  name="site_id"
-                  control={control}
-                  label="Telephely"
-                  error={errors?.site_id?.message}
-                />
-                <Input
-                  label="Adószám"
-                  {...register('tax_num')}
-                  error={errors.tax_num?.message}
-                />
-                <Input
-                  label="Irányítószám"
-                  {...register('postal_code')}
-                  error={errors.postal_code?.message}
-                />
-                <ControlledSelect
-                  options={countryOptions}
-                  name="country"
-                  control={control}
-                  label="Ország"
-                  error={errors?.country?.message}
-                />
-                <Input
-                  label="Település"
-                  {...register('city')}
-                  error={errors.city?.message}
-                />
-                <Input
-                  label="Cím"
-                  {...register('address')}
-                  error={errors.address?.message}
-                />
-                <Input
-                  label="Email"
-                  {...register('email')}
-                  error={errors.email?.message}
-                />
-              </FormBlockWrapper>
-              {/*<FormBlockWrapper
-                title={'Eszköz információ'}
-                description={
-                  'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
-                }
-              >
-                <ControlledSelect
-                  options={dummyOptions}
-                  name="status"
-                  control={control}
-                  label="Eszköz neve"
-                  error={errors?.status?.message}
-                />
-                <Input
-                  label="Eszköz azonosítója"
-                  {...register('received_accessories')}
-                  error={errors.received_accessories?.message}
-                />
-                <AddBtn
-                  onClick={() => console.log('Eszköz hozzáadva')}
-                  variant="gray"
-                />
-                <div className="col-span-2">
-                  <Textarea
-                    label="Átvett tartozék"
+      {({ register, control, watch, setValue, formState: { errors } }) => {
+        if (selectedDescriptionTemplate) {
+          setValue(
+            'issue_description',
+            selectedDescriptionTemplate.issue_description
+          );
+          setValue(
+            'work_description',
+            selectedDescriptionTemplate.work_description
+          );
+        }
+
+        return (
+          <>
+            <div className="flex-grow pb-10">
+              <div className="grid grid-cols-1 gap-8 divide-y divide-dashed divide-gray-200 @2xl:gap-10 @3xl:gap-12">
+                <FormBlockWrapper
+                  title={'Munkalap adatok'}
+                  description={
+                    'Töltsd ki a munkalap adatait részletesen, ha többen dolgoztok egy munkán, add hozzá munkatásaidat is'
+                  }
+                >
+                  <ControlledSelect
+                    options={statusOptions}
+                    name="status"
+                    control={control}
+                    label="Státusz"
+                    error={errors?.status?.message}
+                  />
+                  <ControlledSelect
+                    options={priorityOptions}
+                    name="priority"
+                    control={control}
+                    label="Prioritás"
+                    error={errors?.priority?.message}
+                  />
+                  <Input
+                    label="JIRA Ticket száma"
+                    {...register('jira_ticket_num')}
+                    error={errors.jira_ticket_num?.message}
+                  />
+                  <Input
+                    label="Munkalap sorszám"
+                    {...register('worksheet_id')}
+                    error={errors.worksheet_id?.message}
+                  />
+                  <Input
+                    label="Számla sorszám"
+                    {...register('invoice_number')}
+                    error={errors.invoice_number?.message}
+                  />
+                  <Input
+                    label="Beszerzési PO szám"
+                    {...register('procurement_po')}
+                    error={errors.procurement_po?.message}
+                  />
+                  <ControlledDatePicker
+                    name="invoice_date"
+                    control={control}
+                    label="Bizonylat kelte"
+                  />
+                  <ControlledDatePicker
+                    name="deadline_date"
+                    control={control}
+                    label="Vállalási határidő"
+                  />
+                  <ControlledDatePicker
+                    name="completion_date"
+                    control={control}
+                    label="Elkészült"
+                  />
+                  <ControlledDatePicker
+                    name="handover_date"
+                    control={control}
+                    label="Átadva"
+                  />
+                  <div className="col-span-2 flex flex-col">
+                    <LabeledInput>
+                      <Label>
+                        <b>Hozzáférés</b>
+                      </Label>
+                      <ControlledSelect
+                        options={assigneeOptions}
+                        name="assignees"
+                        control={control}
+                        isMulti={true}
+                        label="Munkatárs"
+                        error={errors?.assignees?.message}
+                      />
+                    </LabeledInput>
+                    {/*<AddBtn
+                      onClick={() => console.log('Munkatárs hozzáadva')}
+                      variant="gray"
+                    />*/}
+                  </div>
+                </FormBlockWrapper>
+                <FormBlockWrapper
+                  title={'Partner adatai'}
+                  description={'Válaszd ki, hogy kinek szól a bizonylat'}
+                >
+                  <ControlledSelect
+                    options={partnerOptions}
+                    name="partner_id"
+                    control={control}
+                    label="Partner"
+                    error={errors?.partner_id?.message}
+                  />
+                  <ControlledSelect
+                    options={siteOptions}
+                    name="site_id"
+                    control={control}
+                    label="Telephely"
+                    error={errors?.site_id?.message}
+                  />
+                  <Input
+                    label="Adószám"
+                    {...register('tax_num')}
+                    error={errors.tax_num?.message}
+                  />
+                  <Input
+                    label="Irányítószám"
+                    {...register('postal_code')}
+                    error={errors.postal_code?.message}
+                  />
+                  <ControlledSelect
+                    options={countryOptions}
+                    name="country"
+                    control={control}
+                    label="Ország"
+                    error={errors?.country?.message}
+                  />
+                  <Input
+                    label="Település"
+                    {...register('city')}
+                    error={errors.city?.message}
+                  />
+                  <Input
+                    label="Cím"
+                    {...register('address')}
+                    error={errors.address?.message}
+                  />
+                  <Input
+                    label="Email"
+                    {...register('email')}
+                    error={errors.email?.message}
+                  />
+                </FormBlockWrapper>
+                {/*<FormBlockWrapper
+                  title={'Eszköz információ'}
+                  description={
+                    'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
+                  }
+                >
+                  <ControlledSelect
+                    options={dummyOptions}
+                    name="status"
+                    control={control}
+                    label="Eszköz neve"
+                    error={errors?.status?.message}
+                  />
+                  <Input
+                    label="Eszköz azonosítója"
                     {...register('received_accessories')}
                     error={errors.received_accessories?.message}
-                    textareaClassName="h-20"
-                    className="mb-5 w-full"
                   />
-                  <FileInput
-                    className="w-full"
-                    btnLabel="Mentés a munkalaphoz"
+                  <AddBtn
+                    onClick={() => console.log('Eszköz hozzáadva')}
+                    variant="gray"
                   />
-                </div>
-              </FormBlockWrapper>*/}
-              <FormBlockWrapper
-                title={'Kiszállás'}
-                description={
-                  'Írd be, hogy mennyi időt vett igénybe a szerviz, ha fel szeretnéd osztani a kiszállás költségeit, válaszd ki, hogy melyik munkalappal ossza fel'
-                }
-              >
-                <ControlledSelect
-                  options={timeOptions}
-                  name="departure_time"
-                  control={control}
-                  label="Indulás"
-                  error={errors?.departure_time?.message}
-                />
-                <ControlledSelect
-                  options={timeOptions}
-                  name="arrival_time"
-                  control={control}
-                  label="Érkezés"
-                  error={errors?.arrival_time?.message}
-                />
-                <ControlledSelect
-                  options={timeOptions}
-                  name="start_time"
-                  control={control}
-                  label="Távozás"
-                  error={errors?.go_time?.message}
-                />
-                <ControlledSelect
-                  options={timeOptions}
-                  name="rearrival_time"
-                  control={control}
-                  label="Visszaérkezés"
-                  error={errors?.rearrival_time?.message}
-                />
-                <LabeledInput>
-                  <Label>
-                    <b>Összekapcsolás munkalappal</b>
-                  </Label>
+                  <div className="col-span-2">
+                    <Textarea
+                      label="Átvett tartozék"
+                      {...register('received_accessories')}
+                      error={errors.received_accessories?.message}
+                      textareaClassName="h-20"
+                      className="mb-5 w-full"
+                    />
+                    <FileInput
+                      className="w-full"
+                      btnLabel="Mentés a munkalaphoz"
+                    />
+                  </div>
+                </FormBlockWrapper>*/}
+                <FormBlockWrapper
+                  title={'Kiszállás'}
+                  description={
+                    'Írd be, hogy mennyi időt vett igénybe a szerviz, ha fel szeretnéd osztani a kiszállás költségeit, válaszd ki, hogy melyik munkalappal ossza fel'
+                  }
+                >
                   <ControlledSelect
-                    options={worksheetOptions}
-                    name="connected_worksheet_id"
+                    options={timeOptions}
+                    name="departure_time"
                     control={control}
-                    label="Munkalap azonosító"
-                    error={errors?.connected_worksheet_id?.message}
+                    label="Indulás"
+                    error={errors?.departure_time?.message}
                   />
-                </LabeledInput>
-              </FormBlockWrapper>
-              <FormBlockWrapper
-                title={'Hiba / Munka leírása'}
-                description={
-                  'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
-                }
-              >
-                <Textarea
-                  label="Hiba / Munka oka"
-                  {...register('issue_description')}
-                  error={errors.issue_description?.message}
-                  textareaClassName="h-20"
-                  className="col-span-2"
-                />
-                <Textarea
-                  label="Elvégzett munka leírása"
-                  {...register('work_description')}
-                  error={errors.work_description?.message}
-                  textareaClassName="h-20"
-                  className="col-span-2"
-                />
-                <ControlledSelect
-                  options={countryOptions}
-                  name="status"
-                  control={control}
-                  label="Sablon használata"
-                  error={errors?.status?.message}
-                />
-                <AddBtn
-                  style={{ alignSelf: 'end' }}
-                  className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
-                  onClick={() => console.log('Mentve új sablonként')}
-                  text="Mentés új sablonként"
-                />
-              </FormBlockWrapper>
-              <FormBlockWrapper
-                title={'Megjegyzések'}
-                description={
-                  'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
-                }
-              >
-                <Label>
-                  <b>Nyilvános (nyomtatható) megjegyzés a munkalaphoz</b>
-                </Label>
-                <Textarea
-                  label="Nyilvános megjegyzés"
-                  {...register('public_comment')}
-                  error={errors.public_comment?.message}
-                  textareaClassName="h-20"
-                  className="col-span-2"
-                />
-                {/*<ControlledSelect
-                  options={dummyOptions}
-                  name="status"
-                  control={control}
-                  label="Sablon használata"
-                  error={errors?.status?.message}
-                />*/}
-                <div></div>
-                <Label>
-                  <b>
-                    Belső használatú (nem nyomtatható) megjegyzés a munkalaphoz
-                  </b>
-                </Label>
-                <Textarea
-                  label="Belső megjegyzés"
-                  {...register('private_comment')}
-                  error={errors.private_comment?.message}
-                  textareaClassName="h-20"
-                  className="col-span-2"
-                />
-              </FormBlockWrapper>
+                  <ControlledSelect
+                    options={timeOptions}
+                    name="arrival_time"
+                    control={control}
+                    label="Érkezés"
+                    error={errors?.arrival_time?.message}
+                  />
+                  <ControlledSelect
+                    options={timeOptions}
+                    name="start_time"
+                    control={control}
+                    label="Távozás"
+                    error={errors?.go_time?.message}
+                  />
+                  <ControlledSelect
+                    options={timeOptions}
+                    name="rearrival_time"
+                    control={control}
+                    label="Visszaérkezés"
+                    error={errors?.rearrival_time?.message}
+                  />
+                  <LabeledInput>
+                    <Label>
+                      <b>Összekapcsolás munkalappal</b>
+                    </Label>
+                    <ControlledSelect
+                      options={worksheetOptions}
+                      name="connected_worksheet_id"
+                      control={control}
+                      label="Munkalap azonosító"
+                      error={errors?.connected_worksheet_id?.message}
+                    />
+                  </LabeledInput>
+                </FormBlockWrapper>
+                <FormBlockWrapper
+                  title={'Hiba / Munka leírása'}
+                  description={
+                    'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
+                  }
+                >
+                  <Textarea
+                    label="Hiba / Munka oka"
+                    {...register('issue_description')}
+                    error={errors.issue_description?.message}
+                    textareaClassName="h-20"
+                    className="col-span-2"
+                  />
+                  <Textarea
+                    label="Elvégzett munka leírása"
+                    {...register('work_description')}
+                    error={errors.work_description?.message}
+                    textareaClassName="h-20"
+                    className="col-span-2"
+                  />
+                  <Select
+                    options={descriptionTemplates.map(
+                      (descriptionTemplate) => ({
+                        label: descriptionTemplate.name,
+                        value: descriptionTemplate.id,
+                      })
+                    )}
+                    name="description_template"
+                    label="Sablon használata"
+                    onChange={(selectedDescriptionTemplateId) => {
+                      const descriptionTemplate = descriptionTemplates.find(
+                        (descriptionTemplate) =>
+                          descriptionTemplate.id ===
+                          (selectedDescriptionTemplateId as { value: string })
+                            .value
+                      );
+                      if (descriptionTemplate) {
+                        setSelectedDescriptionTemplate(descriptionTemplate);
+                      }
+                    }}
+                    value={selectedDescriptionTemplate?.name}
+                    placeholder=""
+                  />
+                  <AddBtn
+                    style={{ alignSelf: 'end' }}
+                    className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
+                    onClick={() => console.log('Mentve új sablonként')}
+                    text="Mentés új sablonként"
+                  />
+                </FormBlockWrapper>
+                <FormBlockWrapper
+                  title={'Megjegyzések'}
+                  description={
+                    'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
+                  }
+                >
+                  <Label>
+                    <b>Nyilvános (nyomtatható) megjegyzés a munkalaphoz</b>
+                  </Label>
+                  <Textarea
+                    label="Nyilvános megjegyzés"
+                    {...register('public_comment')}
+                    error={errors.public_comment?.message}
+                    textareaClassName="h-20"
+                    className="col-span-2"
+                  />
+                  {/*<ControlledSelect
+                    options={dummyOptions}
+                    name="status"
+                    control={control}
+                    label="Sablon használata"
+                    error={errors?.status?.message}
+                  />*/}
+                  <div></div>
+                  <Label>
+                    <b>
+                      Belső használatú (nem nyomtatható) megjegyzés a
+                      munkalaphoz
+                    </b>
+                  </Label>
+                  <Textarea
+                    label="Belső megjegyzés"
+                    {...register('private_comment')}
+                    error={errors.private_comment?.message}
+                    textareaClassName="h-20"
+                    className="col-span-2"
+                  />
+                </FormBlockWrapper>
 
-              <AddInvoiceItems
-                watch={watch}
-                control={control}
-                register={register}
-                errors={errors}
-              />
+                <AddInvoiceItems
+                  watch={watch}
+                  control={control}
+                  register={register}
+                  errors={errors}
+                />
+              </div>
             </div>
-          </div>
 
-          <WorksheetFormFooter isLoading={isLoading} submitBtnText={'Mentés'} />
-        </>
-      )}
+            <WorksheetFormFooter
+              isLoading={isLoading}
+              submitBtnText={'Mentés'}
+            />
+          </>
+        );
+      }}
     </Form>
   );
 }
