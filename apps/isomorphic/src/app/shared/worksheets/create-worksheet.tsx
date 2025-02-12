@@ -35,6 +35,8 @@ import {
   fetchDescriptionTemplates,
   getName,
 } from '@/utils';
+import { useModal } from '../modal-views/use-modal';
+import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 
 interface User {
   surname: string;
@@ -55,6 +57,7 @@ export default function CreateWorksheet({
   id?: string;
   record?: WorksheetFormTypes;
 }) {
+  const { openModal } = useModal();
   const { data: session } = useSession();
   const [userName, setUserName] = useState<User | null>(null);
   const [reset, setReset] = useState({});
@@ -458,7 +461,11 @@ export default function CreateWorksheet({
                   <AddBtn
                     style={{ alignSelf: 'end' }}
                     className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
-                    onClick={() => console.log('Mentve új sablonként')}
+                    onClick={() =>
+                      openModal({
+                        view: <SaveTemplateModalView />,
+                      })
+                    }
                     text="Mentés új sablonként"
                   />
                 </FormBlockWrapper>
