@@ -26,7 +26,14 @@ import {
   timeOptions,
 } from '../options';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
-import { fetchCompanyData, getName } from '@/utils';
+import {
+  fetchCompanyData,
+  fetchPartnerOptions,
+  fetchSiteOptions,
+  fetchAssigneeOptions,
+  fetchWorksheetOptions,
+  getName,
+} from '@/utils';
 
 interface User {
   surname: string;
@@ -59,77 +66,13 @@ export default function CreateWorksheet({
   const [companyData, setCompanyData] = useState<CompanyFormTypes | null>(null);
 
   useEffect(() => {
-    // Fetch site options
-    fetch('/api/sites')
-      .then((response) => response.json())
-      .then((data) => {
-        if ((data as { error?: string }).error) {
-          throw new Error((data as { error: string }).error);
-        }
-        const siteData = data as { name: string; site_id: number }[];
-        const options = siteData.map((site) => ({
-          label: site.name,
-          value: site.site_id,
-        }));
-        setSiteOptions(options);
-      })
-      .catch((error) => {
-        console.error('Error fetching site options:', error);
-        if (error instanceof Error) {
-          toast.error('Hiba a telephelyek betöltése során: ' + error.message);
-        } else {
-          toast.error('Hiba a telephelyek betöltése során');
-        }
-      });
+    fetchSiteOptions(setSiteOptions);
 
-    // Fetch partner options
-    fetch('/api/partners')
-      .then((response) => response.json())
-      .then((data) => {
-        const partnerData = data as { name: string; id: number }[];
-        const options = partnerData.map((partner) => ({
-          label: partner.name,
-          value: partner.id,
-        }));
-        setPartnerOptions(options);
-      })
-      .catch((error) =>
-        console.error('Error fetching partner options:', error)
-      );
+    fetchPartnerOptions(setPartnerOptions);
 
-    // Fetch assignee options
-    fetch('/api/users')
-      .then((response) => response.json())
-      .then((data) => {
-        const userData = data as {
-          id: string;
-          surname: string;
-          forename: string;
-        }[];
-        const options = userData.map((user) => ({
-          label: user.surname + ' ' + user.forename,
-          value: user.id,
-        }));
-        setAssigneeOptions(options);
-      })
-      .catch((error) => {
-        console.error('Error fetching assignee options:', error);
-      });
+    fetchAssigneeOptions(setAssigneeOptions);
 
-    // Fetch worksheet options
-    fetch('/api/worksheets')
-      .then((response) => response.json())
-      .then((data) => {
-        const worksheetData = data as { id: number; worksheet_id: string }[];
-        const options = worksheetData.map((worksheet) => ({
-          label: worksheet.worksheet_id,
-          value: worksheet.id,
-        }));
-        setWorksheetOptions(options);
-      })
-      .catch((error) => {
-        console.error('Error fetching worksheet options:', error);
-      });
+    fetchWorksheetOptions(setWorksheetOptions);
 
     fetchCompanyData(setCompanyData);
 
@@ -467,8 +410,8 @@ export default function CreateWorksheet({
                   textareaClassName="h-20"
                   className="col-span-2"
                 />
-                {/*<ControlledSelect
-                  options={dummyOptions}
+                <ControlledSelect
+                  options={countryOptions}
                   name="status"
                   control={control}
                   label="Sablon használata"
@@ -479,7 +422,7 @@ export default function CreateWorksheet({
                   className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
                   onClick={() => console.log('Mentve új sablonként')}
                   text="Mentés új sablonként"
-                />*/}
+                />
               </FormBlockWrapper>
               <FormBlockWrapper
                 title={'Megjegyzések'}
