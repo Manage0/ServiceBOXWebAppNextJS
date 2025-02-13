@@ -25,3 +25,37 @@ export async function GET() {
     );
   }
 }
+
+export async function POST(req: Request) {
+  try {
+    const { name, issue_description, work_description } =
+      (await req.json()) as {
+        name: string;
+        issue_description: string;
+        work_description: string;
+      };
+
+    if (!name) {
+      return NextResponse.json(
+        { error: 'Template name is required' },
+        { status: 400 }
+      );
+    }
+
+    await executeQuery(
+      'INSERT INTO description_templates (name, issue_description, work_description) VALUES ($1, $2, $3);',
+      [name, issue_description, work_description]
+    );
+
+    return NextResponse.json(
+      { message: 'Template successfully created' },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Error creating template:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}

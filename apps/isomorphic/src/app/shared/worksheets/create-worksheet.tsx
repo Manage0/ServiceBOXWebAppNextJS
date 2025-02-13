@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
 import { Form } from '@core/ui/form';
@@ -80,6 +80,9 @@ export default function CreateWorksheet({
   >([]);
   const [selectedDescriptionTemplate, setSelectedDescriptionTemplate] =
     useState<DescriptionTemplateOption | null>(null);
+
+  const prevSelectedDescriptionTemplate =
+    useRef<DescriptionTemplateOption | null>(null);
 
   useEffect(() => {
     fetchSiteOptions(setSiteOptions);
@@ -186,15 +189,22 @@ export default function CreateWorksheet({
       className="flex flex-grow flex-col @container [&_label]:font-medium"
     >
       {({ register, control, watch, setValue, formState: { errors } }) => {
-        if (selectedDescriptionTemplate) {
+        const issueDescription = watch('issue_description');
+        const workDescription = watch('work_description');
+
+        if (
+          selectedDescriptionTemplate !==
+          prevSelectedDescriptionTemplate.current
+        ) {
           setValue(
             'issue_description',
-            selectedDescriptionTemplate.issue_description
+            selectedDescriptionTemplate?.issue_description || ''
           );
           setValue(
             'work_description',
-            selectedDescriptionTemplate.work_description
+            selectedDescriptionTemplate?.work_description || ''
           );
+          prevSelectedDescriptionTemplate.current = selectedDescriptionTemplate;
         }
 
         return (
@@ -458,16 +468,23 @@ export default function CreateWorksheet({
                     value={selectedDescriptionTemplate?.name}
                     placeholder=""
                   />
-                  <AddBtn
-                    style={{ alignSelf: 'end' }}
-                    className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
-                    onClick={() =>
-                      openModal({
-                        view: <SaveTemplateModalView />,
-                      })
-                    }
-                    text="Mentés új sablonként"
-                  />
+                  {issueDescription && workDescription && (
+                    <AddBtn
+                      style={{ alignSelf: 'end' }}
+                      className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
+                      onClick={() =>
+                        openModal({
+                          view: (
+                            <SaveTemplateModalView
+                              issueDescription={issueDescription}
+                              workDescription={workDescription}
+                            />
+                          ),
+                        })
+                      }
+                      text="Mentés új sablonként"
+                    />
+                  )}
                 </FormBlockWrapper>
                 <FormBlockWrapper
                   title={'Megjegyzések'}
