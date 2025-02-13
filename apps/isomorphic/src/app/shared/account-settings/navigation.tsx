@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { Button, Text } from 'rizzui';
 import cn from '@core/utils/class-names';
 import { useScrollableSlider } from '@core/hooks/use-scrollable-slider';
-import { PiCaretLeftBold, PiCaretRightBold, PiPlusBold } from 'react-icons/pi';
+import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
 import { usePathname } from 'next/navigation';
 import { routes } from '@/config/routes';
 import PageHeader from '@/app/shared/page-header';
+import AddBtn from '../add-btn';
 
 export default function ProfileSettingsNav() {
   const pathname = usePathname();
@@ -66,10 +67,7 @@ export default function ProfileSettingsNav() {
             href={routes.logistics.createShipment}
             className="w-full @lg:w-auto"
           >
-            <Button as="span" className="w-full @lg:w-auto">
-              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-              Új szerepkör
-            </Button>
+            <AddBtn text="Új szerepkör" />
           </Link>
         )}
       </PageHeader>
