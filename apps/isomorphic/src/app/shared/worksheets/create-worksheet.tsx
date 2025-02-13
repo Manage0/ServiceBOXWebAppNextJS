@@ -37,6 +37,7 @@ import {
 } from '@/utils';
 import { useModal } from '../modal-views/use-modal';
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
+import CommentSection from './CommentSection';
 
 interface User {
   surname: string;
@@ -486,45 +487,12 @@ export default function CreateWorksheet({
                     />
                   )}
                 </FormBlockWrapper>
-                <FormBlockWrapper
-                  title={'Megjegyzések'}
-                  description={
-                    'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
-                  }
-                >
-                  <Label>
-                    <b>Nyilvános (nyomtatható) megjegyzés a munkalaphoz</b>
-                  </Label>
-                  <Textarea
-                    label="Nyilvános megjegyzés"
-                    {...register('public_comment')}
-                    error={errors.public_comment?.message}
-                    textareaClassName="h-20"
-                    className="col-span-2"
-                  />
-                  {/*<ControlledSelect
-                    options={dummyOptions}
-                    name="status"
-                    control={control}
-                    label="Sablon használata"
-                    error={errors?.status?.message}
-                  />*/}
-                  <div></div>
-                  <Label>
-                    <b>
-                      Belső használatú (nem nyomtatható) megjegyzés a
-                      munkalaphoz
-                    </b>
-                  </Label>
-                  <Textarea
-                    label="Belső megjegyzés"
-                    {...register('private_comment')}
-                    error={errors.private_comment?.message}
-                    textareaClassName="h-20"
-                    className="col-span-2"
-                  />
-                </FormBlockWrapper>
-
+                <CommentSection
+                  register={register}
+                  errors={errors}
+                  setValue={setValue}
+                  watch={watch}
+                />
                 <AddInvoiceItems
                   watch={watch}
                   control={control}

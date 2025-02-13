@@ -163,3 +163,24 @@ export async function fetchDescriptionTemplates(
     toast.error('Error fetching Descriptiontemplates');
   }
 }
+
+interface CommentTemplateOption {
+  id: string;
+  name: string;
+  public_comment: string;
+  private_comment: string;
+}
+
+export async function fetchCommentTemplates(
+  setCommentTemplates: (commentTemplates: CommentTemplateOption[]) => void
+) {
+  try {
+    const response = await fetch('/api/comment_templates');
+    const data = await response.json();
+    const commentTemplateData = data as CommentTemplateOption[];
+    setCommentTemplates(commentTemplateData);
+  } catch (error) {
+    console.error('Error fetching Comment Templates:', error);
+    toast.error('Error fetching Comment Templates');
+  }
+}
