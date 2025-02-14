@@ -58,6 +58,9 @@ export default function CreateWorksheet({
   id?: string;
   record?: WorksheetFormTypes;
 }) {
+  /*useEffect(() => {
+    alert(JSON.stringify({ id, record }));
+  }, [id, record]);*/
   const { openModal } = useModal();
   const { data: session } = useSession();
   const [userName, setUserName] = useState<User | null>(null);
@@ -100,6 +103,7 @@ export default function CreateWorksheet({
   }, [session?.user.id]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
+    alert(JSON.stringify(data));
     console.log('createWorksheet data withOUT added stuff ->', data);
     console.log('partnerOptions:', partnerOptions);
     console.log('data.partner_id:', data.partner_id);
@@ -179,9 +183,18 @@ export default function CreateWorksheet({
     }
   };
 
+  if (
+    !siteOptions.length ||
+    !partnerOptions.length ||
+    !assigneeOptions.length ||
+    !companyData
+  ) {
+    return <div>Betöltés...</div>;
+  }
+
   return (
     <Form<WorksheetFormTypes>
-      validationSchema={WorksheetFormSchema}
+      //validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
@@ -192,7 +205,6 @@ export default function CreateWorksheet({
       {({ register, control, watch, setValue, formState: { errors } }) => {
         const issueDescription = watch('issue_description');
         const workDescription = watch('work_description');
-
         if (
           selectedDescriptionTemplate !==
           prevSelectedDescriptionTemplate.current
