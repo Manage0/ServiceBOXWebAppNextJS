@@ -104,7 +104,7 @@ export default function CreateWorksheet({
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
     alert(JSON.stringify(data));
-    console.log('createWorksheet data withOUT added stuff ->', data);
+    console.log('Worksheet submission data ->', data);
     console.log('partnerOptions:', partnerOptions);
     console.log('data.partner_id:', data.partner_id);
 
@@ -140,8 +140,15 @@ export default function CreateWorksheet({
     data.creation_date = new Date();
 
     try {
-      const response = await fetch('/api/worksheets', {
-        method: 'POST',
+      const isUpdating = Boolean(record); // If `record` exists, update instead of create
+      const apiMethod = isUpdating ? 'PUT' : 'POST';
+      const apiUrl =
+        isUpdating && record
+          ? `/api/worksheets/${record.id}`
+          : '/api/worksheets';
+
+      const response = await fetch(apiUrl, {
+        method: apiMethod,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -149,12 +156,13 @@ export default function CreateWorksheet({
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit worksheet');
+        throw new Error(
+          `Failed to ${isUpdating ? 'update' : 'create'} worksheet`
+        );
       }
 
       const result = (await response.json()) as { id: number };
 
-      // Connect with another worksheet if selected
       if (data.connected_worksheet_id) {
         await fetch('/api/ws_ws', {
           method: 'POST',
@@ -162,19 +170,19 @@ export default function CreateWorksheet({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            wsid1: result.id,
+            wsid1: record?.id ?? result.id, // Use existing ID if updating
             wsid2: data.connected_worksheet_id,
           }),
         });
       }
 
       toast.success(
-        <b>Munkalap sikeresen {id ? 'szerkesztve' : 'létrehozva'}</b>
+        <b>Munkalap sikeresen {isUpdating ? 'szerkesztve' : 'létrehozva'}</b>
       );
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        console.log('createWorksheet data with added stuff ->', data);
+        console.log('Worksheet data after submission ->', data);
         setReset(defaultValues);
       }, 600);
     } catch (error) {
@@ -194,7 +202,7 @@ export default function CreateWorksheet({
 
   return (
     <Form<WorksheetFormTypes>
-      //validationSchema={WorksheetFormSchema}
+      validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
