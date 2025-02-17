@@ -103,7 +103,6 @@ export default function CreateWorksheet({
   }, [session?.user.id]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
-    alert(JSON.stringify(data));
     console.log('Worksheet submission data ->', data);
     console.log('partnerOptions:', partnerOptions);
     console.log('data.partner_id:', data.partner_id);

@@ -57,7 +57,6 @@ export default async function InvoiceEditPage({
 
   return (
     <>
-      <div>{JSON.stringify(worksheetData)}</div>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
       <CreateWorksheet id={id} record={worksheetData} />
     </>
