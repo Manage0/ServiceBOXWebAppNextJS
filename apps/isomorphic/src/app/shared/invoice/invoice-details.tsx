@@ -7,7 +7,7 @@ import { ReactBarcode } from 'react-jsbarcode';
 import { usePathname } from 'next/navigation';
 import InvoiceDates from './InvoiceDates';
 import RepairDetails from './RepairDetails';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import jsPDF from 'jspdf';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
@@ -160,12 +160,22 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
     }
   };*/
 
+  useEffect(() => {
+    if (record.signage && sigCanvasRef.current) {
+      // Load the signature into the canvas
+      sigCanvasRef.current.fromDataURL(record.signage);
+
+      // Disable drawing on the canvas
+      sigCanvasRef.current.off();
+    }
+  }, [record.signage, sigCanvasRef]);
+
   if (!record) {
     return <>Nincs elérhető adat</>;
   }
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
-      <div>{JSON.stringify(record)}</div>
+      <div>{/*JSON.stringify(record)*/}</div>
       <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
         <Image
           src={'/BBOXLogo.png'}
