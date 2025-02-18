@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PiDownloadSimpleBold } from 'react-icons/pi';
 import InvoiceDetails from '@/app/shared/invoice/invoice-details';
 import PrintButton from '@/app/shared/print-button';
@@ -13,6 +13,7 @@ import DownloadBtn from '@/app/shared/download-btn';
 import Image from 'next/image';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
+import ReactSignatureCanvas from 'react-signature-canvas';
 
 // Fetch the worksheet data just like in the InvoiceEditPage
 async function fetchWorksheetData(id: string): Promise<any> {
@@ -77,6 +78,21 @@ async function fetchWorksheetData(id: string): Promise<any> {
   return data;
 }
 
+async function updateWorksheetSignature(id: string, signature: string) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/api/worksheets/update`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id,
+      signage: signature,
+      signage_date: new Date().toISOString(),
+    }),
+  });
+
+  return res.ok;
+}
+
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
   const invoiceId = pathname.split('/').pop(); // Extract the last part of the pathname
@@ -85,6 +101,7 @@ export default function InvoiceDetailsPage() {
   const [worksheetData, setWorksheetData] = useState<WorksheetFormTypes | null>(
     null
   );
+  const sigCanvasRef = useRef<ReactSignatureCanvas | null>(null);
 
   // Fetch worksheet data when the component mounts
   useEffect(() => {
@@ -99,23 +116,46 @@ export default function InvoiceDetailsPage() {
     }
   }, [invoiceId]);
 
+  const handleSign = async () => {
+    if (!sigCanvasRef.current) return;
+
+    const signatureDataUrl = sigCanvasRef.current.toDataURL('image/png');
+    if (!signatureDataUrl || sigCanvasRef.current.isEmpty()) {
+      alert('Please add a signature before signing.');
+      return;
+    }
+
+    const success = await updateWorksheetSignature(
+      invoiceId!,
+      signatureDataUrl
+    );
+    if (success) {
+      alert('Successfully signed the worksheet.');
+    } else {
+      alert('Failed to sign the worksheet.');
+    }
+  };
+
   if (!worksheetData) {
     return <div>Loading...</div>; // Or you can return a loading spinner or some placeholder content
   }
 
   return (
     <>
-      <Button className="w-30 mx-auto my-5 flex items-center justify-center space-x-1.5 border-custom-green @lg:w-auto">
+      <Button
+        onClick={handleSign}
+        className="w-30 mx-auto my-5 flex items-center justify-center space-x-1.5 border-custom-green @lg:w-auto"
+      >
         <Image
           src={'/SignWhite.svg'}
-          alt="Users icon"
+          alt="Sign"
           width={17}
           height={17}
           className="me-1.5"
         />
         Aláír
       </Button>
-      <InvoiceDetails record={worksheetData} />
+      <InvoiceDetails record={worksheetData} sigCanvasRef={sigCanvasRef} />
     </>
   );
 }

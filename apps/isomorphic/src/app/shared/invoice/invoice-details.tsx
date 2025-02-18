@@ -142,9 +142,11 @@ function getFormattedNow(): string {
     .replace(',', ' -'); // Ensure correct format
 }
 
-const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ record }) => {
+const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
+  record,
+  sigCanvasRef,
+}) => {
   const pathname = usePathname();
-  const sigCanvasRef = useRef(null);
   /*const savePDF = () => {
     const sigCanvas = sigCanvasRef.current;
     if (sigCanvas !== null && !sigCanvas.isEmpty()) {
@@ -157,6 +159,10 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ record }) => {
       alert('Please add a signature before saving.');
     }
   };*/
+
+  if (!record) {
+    return <>Nincs elérhető adat</>;
+  }
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
       <div>{JSON.stringify(record)}</div>
