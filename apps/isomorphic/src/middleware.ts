@@ -8,7 +8,7 @@ export default withAuth({
 });
 
 export const config = {
-  // restricted routes
+  // restricted routes || I think it's a todo to restrict the new ones
   matcher: [
     '/',
     '/logistics/:path*',

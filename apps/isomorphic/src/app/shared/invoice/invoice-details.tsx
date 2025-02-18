@@ -10,6 +10,7 @@ import RepairDetails from './RepairDetails';
 import React, { useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import jsPDF from 'jspdf';
+import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 
 const invoiceItems = [
   {
@@ -114,7 +115,34 @@ function InvoiceDetailsListTable() {
   );
 }
 
-export default function InvoiceDetails() {
+interface InvoiceDetailsProps {
+  record: WorksheetFormTypes | any; // Declare the record prop type
+}
+
+function formatDate(date: Date | string): string {
+  if (!date) return 'N/A'; // Handle missing dates
+  const d = new Date(date); // Ensure it's a Date object
+  return new Intl.DateTimeFormat('hu-HU', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(d);
+}
+
+function getFormattedNow(): string {
+  return new Intl.DateTimeFormat('hu-HU', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+    .format(new Date())
+    .replace(',', ' -'); // Ensure correct format
+}
+
+const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ record }) => {
   const pathname = usePathname();
   const sigCanvasRef = useRef(null);
   /*const savePDF = () => {
@@ -131,6 +159,7 @@ export default function InvoiceDetails() {
   };*/
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
+      <div>{JSON.stringify(record)}</div>
       <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
         <Image
           src={'/BBOXLogo.png'}
@@ -144,7 +173,7 @@ export default function InvoiceDetails() {
           Munkalap
         </div>
         <div className="mb-4 md:mb-0">
-          <Title as="h6">{pathname.split('/').pop()}</Title>
+          <Title as="h6">{record.worksheet_id}</Title>
           <Text className="mt-0.5 text-gray-500">Bizonylatszám</Text>
         </div>
       </div>
@@ -155,12 +184,12 @@ export default function InvoiceDetails() {
             Kiállító
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            BBOX Solutions Kft.
+            {record.company_name}
           </Text>
-          <Text className="mb-1.5">Gyár u. 2</Text>
-          <Text className="mb-1.5">Budaörs</Text>
-          <Text className="mb-1.5">2024</Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">HU24227436</Text>
+          <Text className="mb-1.5">{record.address}</Text>
+          <Text className="mb-1.5">{record.city}</Text>
+          <Text className="mb-1.5">{record.postal_code}</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">{record.company_tax_num}</Text>
         </div>
 
         <div className="mt-4 xs:mt-0">
@@ -168,12 +197,12 @@ export default function InvoiceDetails() {
             Partner
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            Paprikasoft Kft.
+            {record.partner_name}
           </Text>
-          <Text className="mb-1.5">Aradi vértanúk útja 36.</Text>
-          <Text className="mb-1.5">Siófok</Text>
-          <Text className="mb-1.5">8600</Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">HU16726478</Text>
+          <Text className="mb-1.5">{record.partner_address}</Text>
+          <Text className="mb-1.5">{record.partner_city}</Text>
+          <Text className="mb-1.5">{record.partner_postal_code}</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">{record.partner_tax_num}</Text>
         </div>
 
         <div className="mt-4 xs:mt-0">
@@ -181,26 +210,29 @@ export default function InvoiceDetails() {
             Telephely
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            Paprikasoft Siófok
+            {record.site.name}
           </Text>
-          <Text className="mb-1.5">Bajcsy-Zsilinszky u. 212.</Text>
-          <Text className="mb-1.5">Siófok</Text>
-          <Text className="mb-1.5">8600</Text>
+          <Text className="mb-1.5">{record.site.address}</Text>
+          <Text className="mb-1.5">{record.site.city}</Text>
+          <Text className="mb-1.5">{record.site.postal_code}</Text>
         </div>
 
-        <div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
+        {/*<div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
           <ReactBarcode
             value="ABC123"
             options={{ format: 'code128', displayValue: false }}
           />
-        </div>
+        </div>*/}
       </div>
       <InvoiceDates
         dates={[
-          { label: 'Bizonylat kelte', value: '2024.10.02.' },
-          { label: 'Vállalási határidő', value: '2024.10.02.' },
-          { label: 'Elkészült', value: '2024.10.02.' },
-          { label: 'Átadva', value: '2024.10.02.' },
+          { label: 'Bizonylat kelte', value: formatDate(record.invoice_date) },
+          {
+            label: 'Vállalási határidő',
+            value: formatDate(record.deadline_date),
+          },
+          { label: 'Elkészült', value: formatDate(record.completion_date) },
+          { label: 'Átadva', value: formatDate(record.handover_date) },
         ]}
       />
       <RepairDetails
@@ -211,23 +243,22 @@ export default function InvoiceDetails() {
             value: 'A256 Pénztárgép Epson TM-T810F nyomtatóval',
           },
           { label: 'Eszköz azonosító', value: 'AZ3600622' },
-          { label: 'Munka megnevezése', value: '#02 Kassza cseréje' },
-          { label: 'Szerelő', value: 'Szabó Attila' },
-          { label: 'JIRA Ticket', value: 'INC-94' },
+          { label: 'Munka megnevezése', value: record.work_description },
+          { label: 'Szerelő', value: record.creator_name },
+          { label: 'JIRA Ticket', value: record.jira_ticket_num },
           {
             label: 'Hiba / Munka leírása',
-            value:
-              "HRS és Levi's kérése: #2 kassza cseréje utáni helyszíni ügyelet\n\nElvégzett munka leírása: Az előző napon a #2 kasszát cseréltük, másnapra kértek helyszíni felügyeletet, amíg elvégzik távolról a beállításokat.\nElőző munkalap: 17159",
+            value: record.issue_description,
           },
         ]}
       />
 
       <InvoiceDates
         dates={[
-          { label: 'Indulás', value: '13:30' },
-          { label: 'Érkezés', value: '14:00' },
-          { label: 'Távozás', value: '17:50' },
-          { label: 'Visszaérkezés', value: '18:20' },
+          { label: 'Indulás', value: record.start_time },
+          { label: 'Érkezés', value: record.arrival_time },
+          { label: 'Távozás', value: record.departure_time },
+          { label: 'Visszaérkezés', value: record.rearrival_time },
         ]}
       />
 
@@ -239,14 +270,7 @@ export default function InvoiceDetails() {
         >
           Megjegyzés
         </Title>
-        <Text className="ml-16 leading-[1.7]">
-          Tájékoztatjuk Önt, hogy a jelen dokumentumban feltűntetett személyes
-          adatokat a BBOX Solutions Kft. mint adatkezelő, az Adatkezelési
-          tájékoztatójában foglaltak szerint megfelelően kezeli. A teljes
-          vételár kifizetéséig a felsorolt termékek a BBOX Solutions Kft.
-          tulajdonsát képezil. Kérjük igazolja vissza a munkát és aláírtan
-          lepecsételve részünkre a munkalapot.
-        </Text>
+        <Text className="ml-16 leading-[1.7]">{record.public_comment}</Text>
       </div>
       <div className="flex flex-col-reverse items-start justify-between border-t border-gray-300 pb-4 pt-8 xs:flex-row">
         {/* API
@@ -282,9 +306,10 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
             />
           </div>
           <div className="flex w-full flex-row justify-between text-sm">
-            <p className="text-gray-600">Aláírva: 2024.11.02. - 16:44</p>
+            <p className="text-gray-600">Aláírva: {getFormattedNow()}</p>
             <p className="text-gray-600">
-              Aláíró neve: <span className="font-bold">Dávid Gábor</span>
+              Aláíró neve:{' '}
+              <span className="font-bold">{record.partner.contact_person}</span>
             </p>
           </div>
         </div>
@@ -351,4 +376,6 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
       </div>*/}
     </div>
   );
-}
+};
+
+export default InvoiceDetails;
