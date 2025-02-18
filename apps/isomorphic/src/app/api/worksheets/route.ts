@@ -68,6 +68,7 @@ export async function POST(request: Request) {
       departure_time,
       rearrival_time,
       assignees, // Add assignees to destructured data
+      devices, // Add devices to destructured data
     } = data;
 
     // Ensure partner_id and site_id are not null
@@ -170,6 +171,21 @@ export async function POST(request: Request) {
       });
 
       await Promise.all(assigneeQueries);
+    }
+
+    // Insert devices into ws_device table
+    if (devices && devices.length > 0) {
+      const deviceQueries = devices.map((device) => {
+        return executeQuery(
+          `
+          INSERT INTO ws_device (wsid, device_id, device_name)
+          VALUES ($1, $2, $3);
+        `,
+          [worksheetId, device.id, device.name]
+        );
+      });
+
+      await Promise.all(deviceQueries);
     }
 
     return NextResponse.json(res.rows[0], { status: 201 });

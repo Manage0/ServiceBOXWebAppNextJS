@@ -10,6 +10,14 @@ const HUNGARIAN_POSTAL_CODE_REGEX = /^\d{4}$/;
 // Form Zod validation schema
 export const WorksheetFormSchema = z
   .object({
+    devices: z
+      .array(
+        z.object({
+          name: z.string().min(1, { message: 'Eszköz neve kötelező.' }),
+          id: z.string().min(1, { message: 'Eszköz azonosítója kötelező.' }),
+        })
+      )
+      .optional(),
     completion_date: z.date({ required_error: 'A befejezés dátuma kötelező.' }),
     start_time: z.string().optional(),
     arrival_time: z.string().optional(),

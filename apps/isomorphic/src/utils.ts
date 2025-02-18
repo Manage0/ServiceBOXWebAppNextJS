@@ -184,3 +184,23 @@ export async function fetchCommentTemplates(
     toast.error('Error fetching Comment Templates');
   }
 }
+
+export async function fetchProductOptions(
+  setProductOptions: (options: { label: string; value: number }[]) => void
+) {
+  try {
+    const response = await fetch('/api/products');
+    const data = await response.json();
+
+    const productData = data as { id: number; name: string }[];
+
+    const options = productData.map((product) => ({
+      label: product.name,
+      value: product.id,
+    }));
+    setProductOptions(options);
+  } catch (error) {
+    console.error('Error fetching product options:', error);
+    toast.error('Error fetching product options');
+  }
+}

@@ -34,10 +34,12 @@ import {
   fetchWorksheetOptions,
   fetchDescriptionTemplates,
   getName,
+  fetchProductOptions, // New fetch function for products
 } from '@/utils';
 import { useModal } from '../modal-views/use-modal';
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 import CommentSection from './CommentSection';
+import DevicesForm from './DevicesForm';
 
 interface User {
   surname: string;
@@ -58,9 +60,6 @@ export default function CreateWorksheet({
   id?: string;
   record?: WorksheetFormTypes;
 }) {
-  /*useEffect(() => {
-    alert(JSON.stringify({ id, record }));
-  }, [id, record]);*/
   const { openModal } = useModal();
   const { data: session } = useSession();
   const [userName, setUserName] = useState<User | null>(null);
@@ -82,6 +81,9 @@ export default function CreateWorksheet({
   const [descriptionTemplates, setDescriptionTemplates] = useState<
     DescriptionTemplateOption[]
   >([]);
+  const [productOptions, setProductOptions] = useState<
+    { label: string; value: number }[]
+  >([]); // New state for product options
   const [selectedDescriptionTemplate, setSelectedDescriptionTemplate] =
     useState<DescriptionTemplateOption | null>(null);
 
@@ -95,6 +97,7 @@ export default function CreateWorksheet({
     fetchWorksheetOptions(setWorksheetOptions);
     fetchCompanyData(setCompanyData);
     fetchDescriptionTemplates(setDescriptionTemplates); // Fetch description templates
+    fetchProductOptions(setProductOptions); // Fetch product options
 
     // Fetch user data
     if (session?.user.id) {
@@ -194,7 +197,8 @@ export default function CreateWorksheet({
     !siteOptions.length ||
     !partnerOptions.length ||
     !assigneeOptions.length ||
-    !companyData
+    !companyData ||
+    !productOptions.length
   ) {
     return <div>Betöltés...</div>;
   }
@@ -362,27 +366,17 @@ export default function CreateWorksheet({
                     error={errors.email?.message}
                   />
                 </FormBlockWrapper>
-                {/*<FormBlockWrapper
+                <FormBlockWrapper
                   title={'Eszköz információ'}
                   description={
                     'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
                   }
                 >
-                  <ControlledSelect
-                    options={dummyOptions}
-                    name="status"
+                  <DevicesForm
                     control={control}
-                    label="Eszköz neve"
-                    error={errors?.status?.message}
-                  />
-                  <Input
-                    label="Eszköz azonosítója"
-                    {...register('received_accessories')}
-                    error={errors.received_accessories?.message}
-                  />
-                  <AddBtn
-                    onClick={() => console.log('Eszköz hozzáadva')}
-                    variant="gray"
+                    productOptions={productOptions}
+                    errors={errors}
+                    register={register}
                   />
                   <div className="col-span-2">
                     <Textarea
@@ -392,12 +386,12 @@ export default function CreateWorksheet({
                       textareaClassName="h-20"
                       className="mb-5 w-full"
                     />
-                    <FileInput
+                    {/*<FileInput
                       className="w-full"
                       btnLabel="Mentés a munkalaphoz"
-                    />
+                    />*/}
                   </div>
-                </FormBlockWrapper>*/}
+                </FormBlockWrapper>
                 <FormBlockWrapper
                   title={'Kiszállás'}
                   description={
