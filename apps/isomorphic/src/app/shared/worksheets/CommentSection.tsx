@@ -12,7 +12,6 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
-import { useModal } from '@/app/shared/modal-views/use-modal'; // Assuming modal hook
 import SaveCommentTemplateModalView from '../account-settings/modal/add-comment-template';
 import AddBtn from '../add-btn';
 
@@ -44,8 +43,6 @@ export default function CommentSection({
   const prevSelectedCommentTemplate = useRef<CommentTemplateOption | null>(
     null
   );
-
-  const { openModal } = useModal(); // Using modal hook to open modal
 
   useEffect(() => {
     fetchCommentTemplates(setCommentTemplates);
@@ -108,15 +105,11 @@ export default function CommentSection({
       {publicComment && privateComment && (
         <AddBtn
           text="Mentés új sablonként"
-          onClick={() =>
-            openModal({
-              view: (
-                <SaveCommentTemplateModalView
-                  publicComment={publicComment}
-                  privateComment={privateComment}
-                />
-              ),
-            })
+          modalView={
+            <SaveCommentTemplateModalView
+              publicComment={publicComment}
+              privateComment={privateComment}
+            />
           }
           className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
           style={{ alignSelf: 'end' }}

@@ -1,8 +1,9 @@
 import cn from '@core/utils/class-names';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { PiPlusBold } from 'react-icons/pi';
 import { Button } from 'rizzui';
 import Link from 'next/link';
+import { useModal } from './modal-views/use-modal';
 
 interface AddBtnProps {
   onClick?: () => void;
@@ -11,6 +12,7 @@ interface AddBtnProps {
   href?: string;
   className?: string;
   style?: { [key: string]: string };
+  modalView?: ReactNode;
 }
 
 const AddBtn: React.FC<AddBtnProps> = ({
@@ -20,7 +22,9 @@ const AddBtn: React.FC<AddBtnProps> = ({
   href,
   style = {},
   className = '',
+  modalView,
 }) => {
+  const { openModal } = useModal();
   const button = (
     <Button
       style={style}
@@ -30,7 +34,7 @@ const AddBtn: React.FC<AddBtnProps> = ({
           'border-gray-300 bg-white text-black hover:bg-gray-100',
         className
       )}
-      onClick={onClick}
+      onClick={modalView ? () => openModal({ view: modalView }) : onClick}
     >
       <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
       {text}

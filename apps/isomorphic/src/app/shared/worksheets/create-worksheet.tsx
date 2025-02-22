@@ -36,7 +36,6 @@ import {
   getName,
   fetchProductOptions, // New fetch function for products
 } from '@/utils';
-import { useModal } from '../modal-views/use-modal';
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 import CommentSection from './CommentSection';
 import DevicesForm from './DevicesForm';
@@ -60,7 +59,6 @@ export default function CreateWorksheet({
   id?: string;
   record?: WorksheetFormTypes;
 }) {
-  const { openModal } = useModal();
   const { data: session } = useSession();
   const [userName, setUserName] = useState<User | null>(null);
   const [reset, setReset] = useState({});
@@ -486,15 +484,11 @@ export default function CreateWorksheet({
                     <AddBtn
                       style={{ alignSelf: 'end' }}
                       className="ml-3.5 w-full max-w-[200px] @lg:w-auto"
-                      onClick={() =>
-                        openModal({
-                          view: (
-                            <SaveTemplateModalView
-                              issueDescription={issueDescription}
-                              workDescription={workDescription}
-                            />
-                          ),
-                        })
+                      modalView={
+                        <SaveTemplateModalView
+                          issueDescription={issueDescription}
+                          workDescription={workDescription}
+                        />
                       }
                       text="Mentés új sablonként"
                     />
