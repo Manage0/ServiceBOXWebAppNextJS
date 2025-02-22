@@ -6,8 +6,8 @@ import StatusField from '@core/components/controlled-table/status-field';
 import { type Table as ReactTableType } from '@tanstack/react-table';
 import { PiMagnifyingGlassBold, PiTrashDuotone } from 'react-icons/pi';
 import { rolesList } from '@/data/roles-permissions';
-import ModalButton from '@/app/shared/modal-button';
 import CreateUser from '../create-user';
+import AddBtn from '../../add-btn';
 
 const statusOptions = [
   {
@@ -107,10 +107,9 @@ export default function Filters<TData extends Record<string, any>>({
           className="order-3 h-9 w-full @2xl:order-2 @2xl:ms-auto @2xl:h-auto @2xl:max-w-60 @4xl:order-3"
         />
         <Box className="order-2 ms-4 @2xl:order-3 @2xl:ms-0 @4xl:order-4 @4xl:shrink-0">
-          <ModalButton
-            label="Add New User"
-            view={<CreateUser />}
-            customSize="600px"
+          <AddBtn
+            text="Add New User"
+            modalView={<CreateUser />}
             className="mt-0"
           />
         </Box>

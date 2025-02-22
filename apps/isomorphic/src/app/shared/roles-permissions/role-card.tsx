@@ -7,9 +7,9 @@ import cn from '@core/utils/class-names';
 import UserCog from '@core/components/icons/user-cog';
 import { ROLES } from '@/config/constants';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import ModalButton from '@/app/shared/modal-button';
 import EditRole from '@/app/shared/roles-permissions/edit-role';
 import CreateUser from '@/app/shared/roles-permissions/create-user';
+import AddBtn from '../add-btn';
 
 type User = {
   id: number;
@@ -123,12 +123,9 @@ export default function RoleCard({
         </div>
         <span>Total {users.length} users</span>
       </div>
-      <ModalButton
-        customSize="700px"
-        variant="outline"
-        label="Edit Role"
-        icon={<UserCog className="h-5 w-5" />}
-        view={<EditRole />}
+      <AddBtn
+        text="Edit Role"
+        modalView={<EditRole />}
         className="items-center gap-1 text-gray-800 @lg:w-full lg:mt-6"
       />
     </div>
