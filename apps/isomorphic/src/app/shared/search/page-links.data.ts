@@ -48,10 +48,6 @@ export const pageLinks = [
     href: routes.support.inbox,
   },
   {
-    name: 'Support Snippets',
-    href: routes.support.snippets,
-  },
-  {
     name: 'Support Templates',
     href: routes.support.templates,
   },
