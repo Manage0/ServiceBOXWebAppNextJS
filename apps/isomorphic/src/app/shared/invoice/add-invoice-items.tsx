@@ -46,7 +46,7 @@ function QuantityInput({
 
   return (
     <Input
-      label="Quantity"
+      label="Mennyiség"
       type="number"
       min={1}
       name={name}
@@ -88,8 +88,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
     name: 'items',
   });
   const shippingCost = watch('shipping') as number;
-  const discount = watch('discount') as number;
-  const taxes = watch('taxes') as number;
+  const taxes = 27;
 
   function calculateSubTotal(): number {
     let subTotal = 0;
@@ -201,45 +200,19 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                   error={errors?.items?.[index]?.price?.message}
                   className="w-full"
                 />
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={[
-                        { value: 'HUF', label: 'forint' },
-                        { value: 'EUR', label: 'euró' },
-                      ]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
-                      label="Pénznem"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      /*getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }*/
-                    />
-                  )}
-                />
                 <Textarea
                   label="Megjegyzés számlán és bizonylaton"
                   {...register('toAddress')}
                   error={errors.toAddress?.message}
                   textareaClassName="h-20"
-                  className="col-span-2"
+                  className="col-span-3"
                 />
                 <Textarea
-                  label="Egyéb mejegyzés (belső használat)"
+                  label="Egyéb megjegyzés (belső használat)"
                   {...register('toAddress')}
                   error={errors.toAddress?.message}
                   textareaClassName="h-20"
-                  className="col-span-2"
+                  className="col-span-3"
                 />
               </div>
               <Button
@@ -275,7 +248,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
             <Text className="flex items-center justify-between font-bold">
               27% összege:{' '}
               <Text as="span" className="font-medium text-red">
-                {shippingCost ? `${shippingCost} HUF` : '--'}
+                {calculateSubTotal() * 0.27 + ' HUF'}
               </Text>
             </Text>
             <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
@@ -288,7 +261,6 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                 {calculateTotalPrice(
                   calculateSubTotal(),
                   shippingCost,
-                  discount,
                   taxes
                 ) ?? '--'}
               </Text>
