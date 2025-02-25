@@ -153,8 +153,11 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
 
       // Disable drawing on the canvas
       sigCanvasRef.current.off();
+    } else if (pathname.includes('worksheets')) {
+      // Disable drawing on the canvas if opened from the internal system
+      sigCanvasRef.current.off();
     }
-  }, [record.signage, sigCanvasRef]);
+  }, [record.signage, sigCanvasRef, pathname]);
 
   if (!record) {
     return <>Nincs elérhető adat</>;
@@ -308,11 +311,18 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
             />
           </div>
           <div className="flex w-full flex-row justify-between text-sm">
-            <p className="text-gray-600">Aláírva: {getFormattedNow()}</p>
             <p className="text-gray-600">
-              Aláíró neve:{' '}
-              <span className="font-bold">{record.partner.contact_person}</span>
+              Aláírva:{' '}
+              {record.signage ? getFormattedNow() : 'Még nincs aláírva'}
             </p>
+            {record.signage && (
+              <p className="text-gray-600">
+                Aláíró neve:{' '}
+                <span className="font-bold">
+                  {record.signing_person || record.partner.contact_person}
+                </span>
+              </p>
+            )}
           </div>
         </div>
         {/**

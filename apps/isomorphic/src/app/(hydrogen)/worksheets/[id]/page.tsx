@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { PiDownloadSimpleBold } from 'react-icons/pi';
 import InvoiceDetails from '@/app/shared/invoice/invoice-details';
 import PrintButton from '@/app/shared/print-button';
@@ -12,8 +13,10 @@ import DownloadBtn from '@/app/shared/download-btn';
 import Image from 'next/image';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
-import { useEffect, useRef, useState } from 'react';
 import ReactSignatureCanvas from 'react-signature-canvas';
+import SignatureModal from './SignatureModal';
+import { useModal } from '@/app/shared/modal-views/use-modal';
+import toast from 'react-hot-toast';
 
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
@@ -115,7 +118,11 @@ export default function InvoiceDetailsPage() {
     }
   }, [invoiceId]);
 
-  async function updateWorksheetSignature(id: string, signature: string) {
+  async function updateWorksheetSignature(
+    id: string,
+    signature: string,
+    signingPerson: string
+  ) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const res = await fetch(`${baseUrl}/api/worksheets/update`, {
       method: 'PATCH',
@@ -124,31 +131,28 @@ export default function InvoiceDetailsPage() {
         id,
         signage: signature,
         signage_date: new Date().toISOString(),
+        signing_person: signingPerson,
       }),
     });
 
     return res.ok;
   }
 
-  const handleSign = async () => {
-    if (!sigCanvasRef.current) return;
-
-    const signatureDataUrl = sigCanvasRef.current.toDataURL('image/png');
-    if (!signatureDataUrl || sigCanvasRef.current.isEmpty()) {
-      alert('Please add a signature before signing.');
-      return;
-    }
-
+  const handleSign = async (signature: string, signingPerson: string) => {
     const success = await updateWorksheetSignature(
       invoiceId!,
-      signatureDataUrl
+      signature,
+      signingPerson
     );
     if (success) {
-      alert('Successfully signed the worksheet.');
+      toast.success('Munkalap sikeresen aláírva');
+      window.location.reload();
     } else {
-      alert('Failed to sign the worksheet.');
+      toast.error('Hiba a munkalap aláírása közben');
     }
   };
+
+  const { openModal } = useModal();
 
   if (!worksheetData) {
     return <div>Loading...</div>; // Or you can return a loading spinner or some placeholder content
@@ -174,19 +178,25 @@ export default function InvoiceDetailsPage() {
             }}
             size="md"
           />
-          <Button
-            className="w-full border-custom-green @lg:w-auto"
-            onClick={handleSign}
-          >
-            <Image
-              src={'/SignWhite.svg'}
-              alt="Users icon"
-              width={17}
-              height={17}
-              className="me-1.5"
-            />
-            Aláír
-          </Button>
+          {!worksheetData.signage && (
+            <Button
+              className="w-full border-custom-green @lg:w-auto"
+              onClick={() =>
+                openModal({
+                  view: <SignatureModal onSave={handleSign} />,
+                })
+              }
+            >
+              <Image
+                src={'/SignWhite.svg'}
+                alt="Users icon"
+                width={17}
+                height={17}
+                className="me-1.5"
+              />
+              Aláír
+            </Button>
+          )}
         </div>
       </PageHeader>
 
