@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const res = await executeQuery(
-      'SELECT site_id, name, external_id, country, postal_code, city, address FROM sites;'
-    );
+    const res = await executeQuery('SELECT * FROM sites;');
 
     const sites = res.rows;
 

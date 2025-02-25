@@ -65,6 +65,9 @@ export default function CreateWorksheet({
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [siteOptions, setSiteOptions] = useState<
+    { label: string; value: number; partner_id: number }[]
+  >([]);
+  const [filteredSiteOptions, setFilteredSiteOptions] = useState<
     { label: string; value: number }[]
   >([]);
   const [partnerOptions, setPartnerOptions] = useState<
@@ -204,6 +207,8 @@ export default function CreateWorksheet({
     }
   };
 
+  const prevSelectedPartnerId = useRef<number | null>(null);
+
   if (
     !siteOptions.length ||
     !partnerOptions.length ||
@@ -228,6 +233,20 @@ export default function CreateWorksheet({
       {({ register, control, watch, setValue, formState: { errors } }) => {
         const issueDescription = watch('issue_description');
         const workDescription = watch('work_description');
+        const selectedPartnerId = watch('partner_id');
+
+        if (selectedPartnerId !== prevSelectedPartnerId.current) {
+          if (selectedPartnerId) {
+            const filteredSites = siteOptions.filter(
+              (site) => site.partner_id === selectedPartnerId
+            );
+            setFilteredSiteOptions(filteredSites);
+          } else {
+            setFilteredSiteOptions([]);
+          }
+          prevSelectedPartnerId.current = selectedPartnerId;
+        }
+
         if (
           selectedDescriptionTemplate !==
           prevSelectedDescriptionTemplate.current
@@ -339,7 +358,7 @@ export default function CreateWorksheet({
                     error={errors?.partner_id?.message}
                   />
                   <ControlledSelect
-                    options={siteOptions}
+                    options={filteredSiteOptions}
                     name="site_id"
                     control={control}
                     label="Telephely"

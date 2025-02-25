@@ -54,7 +54,9 @@ export async function getName(userId: string, setter: (user: User) => void) {
 }
 
 export async function fetchSiteOptions(
-  setSiteOptions: (options: { label: string; value: number }[]) => void
+  setSiteOptions: (
+    options: { label: string; value: number; partner_id: number }[]
+  ) => void
 ) {
   try {
     const response = await fetch('/api/sites');
@@ -64,10 +66,15 @@ export async function fetchSiteOptions(
       throw new Error((data as { error: string }).error);
     }
 
-    const siteData = data as { name: string; site_id: number }[];
+    const siteData = data as {
+      name: string;
+      site_id: number;
+      partner_id: number;
+    }[];
     const options = siteData.map((site) => ({
       label: site.name,
       value: site.site_id,
+      partner_id: site.partner_id,
     }));
     setSiteOptions(options);
   } catch (error) {
