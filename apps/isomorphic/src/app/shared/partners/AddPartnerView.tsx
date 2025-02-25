@@ -17,6 +17,7 @@ import {
   defaultValues,
 } from '@/validators/partner.schema';
 import { countryOptions } from '../options';
+import { routes } from '@/config/routes';
 
 const Select = dynamic(() => import('rizzui').then((mod) => mod.Select), {
   ssr: false,
@@ -119,6 +120,8 @@ export default function AddPartnerView({
         if (partnerData) {
           // Reload the page to reflect the changes
           window.location.reload();
+        } else {
+          window.location.replace('/partners');
         }
       } else {
         const errorData = (await res.json()) as { error: string };
