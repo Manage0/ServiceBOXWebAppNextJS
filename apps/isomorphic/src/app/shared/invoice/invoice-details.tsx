@@ -81,20 +81,6 @@ const columns = [
     key: 'quantity',
     width: 100,
   },
-  {
-    title: 'Egységár',
-    dataIndex: 'unitPrice',
-    key: 'unitPrice',
-    width: 100,
-    render: (value: string) => <Text className="font-medium">${value}</Text>,
-  },
-  {
-    title: 'Összesen',
-    dataIndex: 'total',
-    key: 'total',
-    width: 150,
-    render: (value: string) => <Text className="font-medium">${value}</Text>,
-  },
 ];
 
 function InvoiceDetailsListTable() {
@@ -338,58 +324,7 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
             Save as PDF
           </button>
         </div> */}
-
-        {/* Invoice Summary Section */}
-        <div className="w-full max-w-sm">
-          <div className="flex items-center justify-between border-b border-gray-300 pb-3.5 lg:pb-5">
-            <span className="text-sm text-gray-600">
-              Nettó számla érték (ÁFA nélkül):
-            </span>
-            <span className="text-sm font-semibold">177 100 HUF</span>
-          </div>
-          <div className="flex items-center justify-between border-b border-gray-300 py-3.5 lg:py-5">
-            <span className="text-sm text-gray-600">27% összege:</span>
-            <span className="text-sm font-semibold">47 817 HUF</span>
-          </div>
-          <div className="flex items-center justify-between pt-4 text-lg font-semibold text-gray-900 lg:pt-5">
-            <span>Összesen:</span>
-            <span className="text-emerald-600">224 917 HUF</span>
-          </div>
-        </div>
       </div>
-
-      {/*<div className="flex flex-col-reverse items-start justify-between border-t border-muted pb-4 pt-8 xs:flex-row">
-        <div>SIGN HERE</div>
-        <div className="w-full max-w-sm">
-          <Text className="flex items-center justify-between border-b border-muted pb-3.5 lg:pb-5">
-            Subtotal:{' '}
-            <Text as="span" className="font-semibold">
-              $700
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-muted py-3.5 lg:py-5">
-            Shipping:{' '}
-            <Text as="span" className="font-semibold">
-              $142
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-muted py-3.5 lg:py-5">
-            Discount:{' '}
-            <Text as="span" className="font-semibold">
-              $250
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-muted py-3.5 lg:py-5">
-            Taxes:
-            <Text as="span" className="font-semibold">
-              15%
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between pt-4 text-base font-semibold text-gray-900 lg:pt-5">
-            Total: <Text as="span">$659.5</Text>
-          </Text>
-        </div>
-      </div>*/}
     </div>
   );
 };

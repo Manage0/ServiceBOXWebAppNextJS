@@ -53,16 +53,6 @@ export const invoiceListColumns = [
     header: 'VEVŐ',
     cell: ({ row }) => row.original.partner_name,
   }),
-  columnHelper.accessor('total_price', {
-    id: 'total_price',
-    size: 150,
-    header: 'ÖSSZEG',
-    cell: ({ row }) => (
-      <Text className="text-sm font-medium">
-        {row.original.total_price} HUF
-      </Text>
-    ),
-  }),
   columnHelper.accessor('creation_date', {
     id: 'creation_date',
     size: 200,
