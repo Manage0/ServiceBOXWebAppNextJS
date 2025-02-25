@@ -34,7 +34,8 @@ import {
   fetchWorksheetOptions,
   fetchDescriptionTemplates,
   getName,
-  fetchProductOptions, // New fetch function for products
+  fetchProducts,
+  fetchProductOptions, // Updated fetch function for products
 } from '@/utils';
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 import CommentSection from './CommentSection';
@@ -79,6 +80,17 @@ export default function CreateWorksheet({
   const [descriptionTemplates, setDescriptionTemplates] = useState<
     DescriptionTemplateOption[]
   >([]);
+  const [products, setProducts] = useState<
+    {
+      id: number;
+      name: string;
+      stock: number;
+      status: string;
+      image?: string;
+      category: string;
+      measure: string;
+    }[]
+  >([]); // New state for products
   const [productOptions, setProductOptions] = useState<
     { label: string; value: number }[]
   >([]); // New state for product options
@@ -95,7 +107,8 @@ export default function CreateWorksheet({
     fetchWorksheetOptions(setWorksheetOptions);
     fetchCompanyData(setCompanyData);
     fetchDescriptionTemplates(setDescriptionTemplates); // Fetch description templates
-    fetchProductOptions(setProductOptions); // Fetch product options
+    fetchProducts(setProducts); // Fetch products
+    fetchProductOptions(setProductOptions);
 
     // Fetch user data
     if (session?.user.id) {
@@ -196,6 +209,7 @@ export default function CreateWorksheet({
     !partnerOptions.length ||
     !assigneeOptions.length ||
     !companyData ||
+    !products.length ||
     !productOptions.length
   ) {
     return <div>Betöltés...</div>;
@@ -505,6 +519,8 @@ export default function CreateWorksheet({
                   control={control}
                   register={register}
                   errors={errors}
+                  products={products} // Pass products to AddInvoiceItems
+                  setValue={setValue}
                 />
               </div>
             </div>

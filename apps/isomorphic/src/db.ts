@@ -18,6 +18,8 @@ export const executeQuery = async (query: string, params: any[] = []) => {
     return result;
   } catch (error) {
     console.error('Database query error:', error);
+    console.error('Query:', query);
+    console.error('Params:', params);
     throw error;
   } finally {
     client.release(); // Release the connection back to the pool

@@ -1,13 +1,19 @@
 'use client';
 
-import { Text, Button, Input, Textarea, ActionIcon, Select } from 'rizzui';
+import {
+  Text,
+  Button,
+  Input,
+  Textarea,
+  ActionIcon,
+  Select,
+  SelectOption,
+} from 'rizzui';
 import { useFieldArray, Controller } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { calculateTotalPrice } from '@core/utils/calculate-total-price';
 import { PiMinusBold, PiPlusBold, PiTrashBold } from 'react-icons/pi';
 import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 
-// quantity component for invoice
 function QuantityInput({
   name,
   error,
@@ -81,24 +87,23 @@ function QuantityInput({
   );
 }
 
-// multiple invoice items generate component
-export function AddInvoiceItems({ watch, register, control, errors }: any) {
+export function AddInvoiceItems({
+  watch,
+  register,
+  control,
+  errors,
+  setValue,
+  products,
+}: any) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'items',
+    name: 'products',
   });
-  const shippingCost = watch('shipping') as number;
-  const taxes = 27;
 
-  function calculateSubTotal(): number {
-    let subTotal = 0;
-    fields.forEach((_, index) => {
-      const itemPrice = watch(`items.${index}.price`) as number;
-      const itemQuantity = watch(`items.${index}.quantity`) as number;
-      subTotal += itemPrice * itemQuantity;
-    });
-    return subTotal as number;
-  }
+  const productOptions = products.map((product: any) => ({
+    value: product.id,
+    label: product.name,
+  }));
 
   return (
     <FormBlockWrapper
@@ -110,15 +115,13 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
     >
       <div className="col-span-2 @container">
         {fields.map((field: any, index) => {
-          const priceValue = watch(
-            `items.${index}.price`,
-            field.price ?? 0
-          ) as number;
+          const selectedProduct = products.find(
+            (product: any) => product.id === watch(`products.${index}.id`)
+          );
 
-          const quantityValue = watch(
-            `items.${index}.quantity`,
-            field.quantity ?? 1
-          ) as number;
+          if (selectedProduct) {
+            setValue(`products.${index}.measure`, selectedProduct.measure);
+          }
 
           return (
             <div
@@ -127,90 +130,64 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
             >
               <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
                 <Controller
-                  name="status"
+                  name={`products.${index}.product_name`}
                   control={control}
                   render={({ field: { name, onChange, value } }) => (
                     <Select
                       dropdownClassName="!z-10 h-auto"
                       inPortal={false}
-                      options={[
-                        { value: 'item1', label: 'Termék 1' },
-                        { value: 'item2', label: 'Termék 2' },
-                      ]}
-                      value={value}
-                      onChange={onChange}
+                      options={productOptions}
+                      value={productOptions.find(
+                        (option: { value: number }) =>
+                          option.value === watch(`products.${index}.id`)
+                      )}
+                      onChange={(selectedOption: SelectOption) => {
+                        onChange(selectedOption.label);
+                        setValue(`products.${index}.id`, selectedOption.value);
+                      }}
                       name={name}
                       label="Termék"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      /*getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }*/
+                      error={errors?.products?.[index]?.product_name?.message}
                     />
                   )}
                 />
                 <Controller
-                  name={`items.${index}.quantity`}
+                  name={`products.${index}.amount`}
                   control={control}
                   render={({ field: { name, onChange, value } }) => (
                     <QuantityInput
                       name={name}
                       onChange={(value) => onChange(value)}
-                      defaultValue={field.quantity ?? value}
-                      error={errors?.items?.[index]?.quantity?.message}
+                      defaultValue={field.amount ?? value}
+                      error={errors?.products?.[index]?.amount?.message}
                     />
                   )}
                 />
                 <Controller
-                  name="status"
+                  name={`products.${index}.measure`}
                   control={control}
-                  render={({ field: { name, onChange, value } }) => (
-                    <Select
-                      dropdownClassName="!z-10 h-auto"
-                      inPortal={false}
-                      options={[
-                        { value: 'db', label: 'DB' },
-                        { value: 'köteg', label: 'Köteg' },
-                      ]}
-                      value={value}
-                      onChange={onChange}
-                      name={name}
+                  render={({ field: { name, value } }) => (
+                    <Input
                       label="Menny. egység"
-                      error={errors?.status?.message}
-                      getOptionValue={(option) => option.value}
-                      /*getOptionDisplayValue={(option) =>
-                        renderOptionDisplayValue(option.value as string)
-                      }
-                      displayValue={(selected: string) =>
-                        renderOptionDisplayValue(selected)
-                      }*/
+                      name={name}
+                      value={value}
+                      disabled
+                      className="w-full"
+                      error={errors?.products?.[index]?.measure?.message}
                     />
                   )}
                 />
-                <Input
-                  label="Ár"
-                  type="number"
-                  prefix={'$'}
-                  placeholder="100"
-                  {...register(`items.${index}.price`)}
-                  defaultValue={field.price}
-                  error={errors?.items?.[index]?.price?.message}
-                  className="w-full"
-                />
                 <Textarea
                   label="Megjegyzés számlán és bizonylaton"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register(`products.${index}.public_comment`)}
+                  error={errors?.products?.[index]?.public_comment?.message}
                   textareaClassName="h-20"
                   className="col-span-3"
                 />
                 <Textarea
                   label="Egyéb megjegyzés (belső használat)"
-                  {...register('toAddress')}
-                  error={errors.toAddress?.message}
+                  {...register(`products.${index}.private_comment`)}
+                  error={errors?.products?.[index]?.private_comment?.message}
                   textareaClassName="h-20"
                   className="col-span-3"
                 />
@@ -230,42 +207,21 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
         <div className="flex w-full flex-col items-start justify-between @4xl:flex-row @4xl:pt-6">
           <Button
             onClick={() =>
-              append({ item: '', description: '', quantity: 1, price: '' })
+              append({
+                id: '',
+                product_name: '',
+                amount: 1,
+                measure: '',
+                price: 0,
+                public_comment: '',
+                private_comment: '',
+              })
             }
             variant="flat"
             className="-mt-2 mb-7 w-full bg-custom-green text-white @4xl:mb-0 @4xl:mt-0 @4xl:w-auto"
           >
             <PiPlusBold className="me-1.5 h-4 w-4" /> Termék hozzáadása
           </Button>
-
-          <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
-            <Text className="flex items-center justify-between font-bold">
-              Nettó számla érték (ÁFA nélkül):{' '}
-              <Text as="span" className="font-medium text-gray-700">
-                {calculateSubTotal()} HUF
-              </Text>
-            </Text>
-            <Text className="flex items-center justify-between font-bold">
-              27% összege:{' '}
-              <Text as="span" className="font-medium text-red">
-                {calculateSubTotal() * 0.27 + ' HUF'}
-              </Text>
-            </Text>
-            <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
-              Összesen:{' '}
-              <Text
-                as="span"
-                className="font-lexend-bold text-right text-2xl font-bold leading-8 tracking-normal text-custom-green opacity-100"
-              >
-                $
-                {calculateTotalPrice(
-                  calculateSubTotal(),
-                  shippingCost,
-                  taxes
-                ) ?? '--'}
-              </Text>
-            </Text>
-          </div>
         </div>
       </div>
     </FormBlockWrapper>

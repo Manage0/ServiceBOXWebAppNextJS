@@ -31,8 +31,6 @@ export const WorksheetFormSchema = z
     }),
     site_id: z.number({ required_error: 'Telephely kiválasztása kötelező.' }),
     partner_id: z.number({ required_error: 'Partner kiválasztása kötelező.' }),
-    netto_price: z.number().optional(),
-    total_price: z.number().optional(),
     creation_date: z
       .date({ required_error: 'A létrehozás dátuma kötelező.' })
       .optional(),
@@ -81,6 +79,18 @@ export const WorksheetFormSchema = z
     }),
     assignees: z.array(z.string()).optional(), // Add assignees attribute
     connected_worksheet_id: z.number().optional(), // Add connected_worksheet_id attribute
+    products: z
+      .array(
+        z.object({
+          id: z.number(),
+          product_name: z.string(),
+          amount: z.number(),
+          measure: z.string(),
+          private_comment: z.string().optional(),
+          public_comment: z.string().optional(),
+        })
+      )
+      .optional(), // Add products attribute
   })
   .superRefine((data, ctx) => {
     if (data.tax_num) {
@@ -121,8 +131,6 @@ export const defaultValues: WorksheetFormTypes = {
   priority: 'normal',
   site_id: 1,
   partner_id: 1,
-  netto_price: undefined,
-  total_price: undefined,
   creation_date: new Date(),
   status: 'new',
   invoice_date: new Date(),
@@ -154,4 +162,5 @@ export const defaultValues: WorksheetFormTypes = {
   worksheet_id: '',
   assignees: [], // Add default value for assignees
   connected_worksheet_id: undefined, // Add default value for connected_worksheet_id
+  products: [], // Add default value for products
 };

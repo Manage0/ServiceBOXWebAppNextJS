@@ -204,3 +204,39 @@ export async function fetchProductOptions(
     toast.error('Error fetching product options');
   }
 }
+
+export async function fetchProducts(
+  setProducts: (
+    products: {
+      id: number;
+      name: string;
+      stock: number;
+      price: number;
+      status: string;
+      image?: string;
+      category: string;
+      measure: string;
+    }[]
+  ) => void
+) {
+  try {
+    const response = await fetch('/api/products');
+    const data = await response.json();
+
+    const productData = data as {
+      id: number;
+      name: string;
+      stock: number;
+      price: number;
+      status: string;
+      image?: string;
+      category: string;
+      measure: string;
+    }[];
+
+    setProducts(productData);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    toast.error('Error fetching products');
+  }
+}

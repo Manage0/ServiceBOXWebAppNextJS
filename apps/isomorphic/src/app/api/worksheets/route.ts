@@ -69,6 +69,7 @@ export async function POST(request: Request) {
       rearrival_time,
       assignees, // Add assignees to destructured data
       devices, // Add devices to destructured data
+      products, // Add products to destructured data
     } = data;
 
     // Ensure partner_id and site_id are not null
@@ -186,6 +187,34 @@ export async function POST(request: Request) {
       });
 
       await Promise.all(deviceQueries);
+    }
+
+    // Insert products into ws_product table
+    if (products && products.length > 0) {
+      const productQueries = products.map((product) => {
+        return executeQuery(
+          `
+          INSERT INTO ws_product (
+            wsid,
+            amount,
+            private_comment,
+            product_name,
+            measure,
+            public_comment
+          ) VALUES ($1, $2, $3, $4, $5, $6);
+        `,
+          [
+            worksheetId,
+            product.amount,
+            product.private_comment,
+            product.product_name,
+            product.measure,
+            product.public_comment,
+          ]
+        );
+      });
+
+      await Promise.all(productQueries);
     }
 
     return NextResponse.json(res.rows[0], { status: 201 });
