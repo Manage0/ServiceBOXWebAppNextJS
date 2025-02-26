@@ -73,7 +73,20 @@ export const statusOptions = [
   },
 ];
 
-export function renderOptionDisplayValue(value: string) {
+export function renderOptionDisplayValue(
+  value: string,
+  isGreen: boolean = false
+) {
+  if (isGreen) {
+    return (
+      <div className="flex items-center">
+        <Badge color="success" renderAsDot />
+        <Text className="ms-2 font-medium capitalize text-green-dark">
+          {value}
+        </Text>
+      </div>
+    );
+  }
   switch (value.toLowerCase()) {
     case 'pending':
       return (

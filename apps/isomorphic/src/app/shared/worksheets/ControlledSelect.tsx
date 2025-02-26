@@ -45,9 +45,12 @@ const ControlledSelect = ({
         error={error}
         multiple={isMulti} // Enable multiple selection
         getOptionValue={(option) => option.value}
-        getOptionDisplayValue={(option) =>
-          renderOptionDisplayValue(option.label as string)
-        }
+        getOptionDisplayValue={(option) => {
+          const isSelected = isMulti
+            ? (value as string[]).includes(option.value as string)
+            : value === option.value;
+          return renderOptionDisplayValue(option.label as string, isSelected);
+        }}
         displayValue={(selected: string | string[]) => {
           if (Array.isArray(selected)) {
             return selected
