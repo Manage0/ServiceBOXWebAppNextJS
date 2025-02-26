@@ -32,17 +32,15 @@ export default function CoworkersPageHeader({
 }: CoworkersPageHeaderProps) {
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-      <div className="mt-4 flex flex-col items-center gap-3 @sm:flex-row @lg:mt-0">
-        <AddBtn
-          modalView={
-            <AddTeamMemberModalView
-              isLoading={isLoading}
-              setLoading={setLoading}
-            />
-          }
-          text="Új munkatárs"
-        />
-      </div>
+      <AddBtn
+        modalView={
+          <AddTeamMemberModalView
+            isLoading={isLoading}
+            setLoading={setLoading}
+          />
+        }
+        text="Új munkatárs"
+      />
     </PageHeader>
   );
 }
