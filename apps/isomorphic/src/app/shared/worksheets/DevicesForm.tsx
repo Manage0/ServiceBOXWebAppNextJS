@@ -22,6 +22,7 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
           key={device.id}
           className="mt-4 grid grid-cols-3 items-center gap-4"
         >
+          {/*JSON.stringify(device)*/}
           {/* ControlledSelect for device name */}
           <ControlledSelect
             name={`devices[${index}].name`} // Unique name for each device
@@ -32,10 +33,10 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
           />
           {/* Input for device id */}
           <Input
-            name={`devices[${index}].id`} // Unique name for each device
+            name={`devices[${index}].device_id`} // Unique name for each device
             label="Eszköz azonosítója"
-            error={errors?.devices?.[index]?.id?.message} // Handle error for each device
-            {...register(`devices[${index}].id`)}
+            error={errors?.devices?.[index]?.device_id?.message} // Handle error for each device
+            {...register(`devices[${index}].device_id`)}
           />
           {/* Trash icon to remove device */}
           <FaTrash
@@ -48,7 +49,7 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
 
       {/* Button to add a new device */}
       <AddBtn
-        onClick={() => append({ name: '', id: '' })} // Add a new empty device object
+        onClick={() => append({ id: '', device_id: '', name: '' })} // Add a new empty device object
         className="mt-4"
         variant="gray"
       />

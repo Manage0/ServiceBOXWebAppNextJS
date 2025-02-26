@@ -14,7 +14,9 @@ export const WorksheetFormSchema = z
       .array(
         z.object({
           name: z.string().min(1, { message: 'Eszköz neve kötelező.' }),
-          id: z.string().min(1, { message: 'Eszköz azonosítója kötelező.' }),
+          device_id: z
+            .string()
+            .min(1, { message: 'Eszköz azonosítója kötelező.' }),
         })
       )
       .optional(),

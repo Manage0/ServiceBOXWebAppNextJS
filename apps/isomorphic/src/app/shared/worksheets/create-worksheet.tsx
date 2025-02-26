@@ -218,7 +218,9 @@ export default function CreateWorksheet({
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        console.log('Worksheet data after submission ->', data);
+        if (record) {
+          window.location.reload();
+        }
         setReset(defaultValues);
       }, 600);
     } catch (error) {
@@ -228,6 +230,9 @@ export default function CreateWorksheet({
   };
 
   const prevSelectedPartnerId = useRef<number | null>(null);
+
+  // Use useRef to avoid constant updates
+  const prevDevicesRef = useRef(record?.devices);
 
   if (
     !siteOptions.length ||
@@ -242,7 +247,7 @@ export default function CreateWorksheet({
 
   return (
     <Form<WorksheetFormTypes>
-      validationSchema={WorksheetFormSchema}
+      //validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
@@ -299,6 +304,13 @@ export default function CreateWorksheet({
           );
           prevSelectedDescriptionTemplate.current = selectedDescriptionTemplate;
         }
+
+        setTimeout(() => {
+          if (record?.devices && prevDevicesRef.current !== undefined) {
+            setValue('devices', record.devices);
+            prevDevicesRef.current = undefined;
+          }
+        }, 500);
 
         return (
           <>

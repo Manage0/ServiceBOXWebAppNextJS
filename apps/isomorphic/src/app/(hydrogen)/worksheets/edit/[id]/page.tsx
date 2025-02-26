@@ -8,7 +8,7 @@ import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 export const metadata = {
   ...metaObject('Munkalap szerkesztése'),
 };
-//
+
 async function fetchWorksheetData(id: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL; // Ensure this is set in your environment variables
   const res = await fetch(`${baseUrl}/api/worksheets/get`, {
@@ -28,6 +28,20 @@ async function fetchWorksheetData(id: string) {
   data.completion_date = new Date(data.completion_date);
   data.invoice_date = new Date(data.invoice_date);
   data.handover_date = new Date(data.handover_date);
+
+  // Fetch devices for the worksheet
+  const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ worksheet_id: id }),
+    cache: 'no-store',
+  });
+  const devicesData = await devicesRes.json();
+  if (devicesRes.ok) {
+    data.devices = devicesData;
+  }
 
   return data;
 }

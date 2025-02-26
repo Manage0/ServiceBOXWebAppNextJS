@@ -182,7 +182,7 @@ export async function POST(request: Request) {
           INSERT INTO ws_device (wsid, device_id, device_name)
           VALUES ($1, $2, $3);
         `,
-          [worksheetId, device.id, device.name]
+          [worksheetId, device.device_id, device.name]
         );
       });
 

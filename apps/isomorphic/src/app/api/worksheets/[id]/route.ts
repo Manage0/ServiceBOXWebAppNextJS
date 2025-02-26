@@ -72,6 +72,7 @@ export async function PUT(
       departure_time,
       rearrival_time,
       assignees, // Handle assignees separately
+      devices, // Handle devices separately
     } = data;
 
     const query = `
@@ -146,6 +147,22 @@ export async function PUT(
       });
 
       await Promise.all(assigneeQueries);
+    }
+
+    // Update devices in ws_device table
+    if (devices && devices.length > 0) {
+      // Remove existing devices
+      await executeQuery('DELETE FROM ws_device WHERE wsid = $1;', [id]);
+
+      // Insert updated devices
+      const deviceQueries = devices.map((device) => {
+        return executeQuery(
+          'INSERT INTO ws_device (wsid, device_id, device_name) VALUES ($1, $2, $3);',
+          [id, device.device_id, device.name]
+        );
+      });
+
+      await Promise.all(deviceQueries);
     }
 
     return NextResponse.json(res.rows[0], { status: 200 });
