@@ -111,7 +111,7 @@ export function AddInvoiceItems({
       description={
         'Add hozzá a termékeket és szolgáltatásokat amit az elvégzett munka során felhasználtál'
       }
-      className="pt-7 @2xl:pt-9 @3xl:pt-11"
+      className="pt-5 @2xl:pt-9 @3xl:pt-11"
     >
       <div className="col-span-2 @container">
         {fields.map((field: any, index) => {

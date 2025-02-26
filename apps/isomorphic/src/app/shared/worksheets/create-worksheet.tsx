@@ -384,6 +384,7 @@ export default function CreateWorksheet({
                 <FormBlockWrapper
                   title={'Partner adatai'}
                   description={'Válaszd ki, hogy kinek szól a bizonylat'}
+                  className="pt-5"
                 >
                   <ControlledSelect
                     options={partnerOptions}
@@ -443,6 +444,7 @@ export default function CreateWorksheet({
                   description={
                     'Írd le, hogy melyik eszköz(ök)ről szól a munkalap'
                   }
+                  className="pt-5"
                 >
                   <DevicesForm
                     control={control}
@@ -469,6 +471,7 @@ export default function CreateWorksheet({
                   description={
                     'Írd be, hogy mennyi időt vett igénybe a szerviz, ha fel szeretnéd osztani a kiszállás költségeit, válaszd ki, hogy melyik munkalappal ossza fel'
                   }
+                  className="pt-5"
                 >
                   <ControlledSelect
                     options={timeOptions}
@@ -516,6 +519,7 @@ export default function CreateWorksheet({
                   description={
                     'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
                   }
+                  className="pt-5"
                 >
                   <Textarea
                     label="Hiba / Munka oka"

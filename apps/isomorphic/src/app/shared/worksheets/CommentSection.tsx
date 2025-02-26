@@ -69,6 +69,7 @@ export default function CommentSection({
       description={
         'Írd ide a feladat leírását és minden hozzá kapcsolódó információt'
       }
+      className="pt-5"
     >
       <Label>
         <b>Nyilvános (nyomtatható) megjegyzés a munkalaphoz</b>
