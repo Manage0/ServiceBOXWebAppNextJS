@@ -9,6 +9,7 @@ interface ControlledSelectProps {
   options: SelectOption[];
   error?: string;
   isMulti?: boolean; // Add isMulti prop to support multiple selection
+  disabled?: boolean;
 }
 
 const ControlledSelect = ({
@@ -18,12 +19,14 @@ const ControlledSelect = ({
   options,
   error,
   isMulti = false, // Default to single selection
+  disabled = false,
 }: ControlledSelectProps) => (
   <Controller
     name={name}
     control={control}
     render={({ field: { name, onChange, value } }) => (
       <Select
+        disabled={disabled}
         placeholder=""
         dropdownClassName="!z-10 h-auto"
         inPortal={false}

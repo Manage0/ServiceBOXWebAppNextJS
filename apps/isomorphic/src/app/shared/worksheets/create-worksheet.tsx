@@ -53,6 +53,19 @@ interface DescriptionTemplateOption {
   work_description: string;
 }
 
+export interface PartnerOption {
+  label: string;
+  value: number;
+  name: string;
+  id: number | string;
+  tax_num: string;
+  postal_code: string;
+  country: string;
+  city: string;
+  address: string;
+  email: string;
+}
+
 export default function CreateWorksheet({
   id,
   record,
@@ -70,9 +83,7 @@ export default function CreateWorksheet({
   const [filteredSiteOptions, setFilteredSiteOptions] = useState<
     { label: string; value: number }[]
   >([]);
-  const [partnerOptions, setPartnerOptions] = useState<
-    { label: string; value: number }[]
-  >([]);
+  const [partnerOptions, setPartnerOptions] = useState<PartnerOption[]>([]);
   const [assigneeOptions, setAssigneeOptions] = useState<
     { label: string; value: string }[]
   >([]);
@@ -139,6 +150,12 @@ export default function CreateWorksheet({
     );
     if (selectedPartner) {
       data.partner_name = selectedPartner.label;
+      data.tax_num = selectedPartner.tax_num;
+      data.postal_code = selectedPartner.postal_code;
+      data.country = selectedPartner.country;
+      data.city = selectedPartner.city;
+      data.address = selectedPartner.address;
+      data.email = selectedPartner.email;
     } else {
       console.error('Partner not found for partner_id:', data.partner_id);
     }
@@ -241,8 +258,26 @@ export default function CreateWorksheet({
               (site) => site.partner_id === selectedPartnerId
             );
             setFilteredSiteOptions(filteredSites);
+
+            const selectedPartner = partnerOptions.find(
+              (option) => option.value === selectedPartnerId
+            );
+            if (selectedPartner) {
+              setValue('tax_num', selectedPartner.tax_num);
+              setValue('postal_code', selectedPartner.postal_code);
+              setValue('country', selectedPartner.country);
+              setValue('city', selectedPartner.city);
+              setValue('address', selectedPartner.address);
+              setValue('email', selectedPartner.email);
+            }
           } else {
             setFilteredSiteOptions([]);
+            setValue('tax_num', '');
+            setValue('postal_code', '');
+            setValue('country', '');
+            setValue('city', '');
+            setValue('address', '');
+            setValue('email', '');
           }
           prevSelectedPartnerId.current = selectedPartnerId;
         }
@@ -368,11 +403,13 @@ export default function CreateWorksheet({
                     label="Adószám"
                     {...register('tax_num')}
                     error={errors.tax_num?.message}
+                    disabled
                   />
                   <Input
                     label="Irányítószám"
                     {...register('postal_code')}
                     error={errors.postal_code?.message}
+                    disabled
                   />
                   <ControlledSelect
                     options={countryOptions}
@@ -380,21 +417,25 @@ export default function CreateWorksheet({
                     control={control}
                     label="Ország"
                     error={errors?.country?.message}
+                    disabled
                   />
                   <Input
                     label="Település"
                     {...register('city')}
                     error={errors.city?.message}
+                    disabled
                   />
                   <Input
                     label="Cím"
                     {...register('address')}
                     error={errors.address?.message}
+                    disabled
                   />
                   <Input
                     label="Email"
                     {...register('email')}
                     error={errors.email?.message}
+                    disabled
                   />
                 </FormBlockWrapper>
                 <FormBlockWrapper

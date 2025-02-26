@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 import { CompanyFormTypes } from './validators/company-info.schema';
+import { PartnerOption } from './app/shared/worksheets/create-worksheet';
 
 // Fetch company data
 export const fetchCompanyData = async (
@@ -88,16 +89,17 @@ export async function fetchSiteOptions(
 }
 
 export async function fetchPartnerOptions(
-  setPartnerOptions: (options: { label: string; value: number }[]) => void
+  setPartnerOptions: (options: PartnerOption[]) => void
 ) {
   try {
     const response = await fetch('/api/partners');
     const data = await response.json();
 
-    const partnerData = data as { name: string; id: number }[];
+    const partnerData = data as PartnerOption[];
     const options = partnerData.map((partner) => ({
+      ...partner,
       label: partner.name,
-      value: partner.id,
+      value: Number(partner.id),
     }));
     setPartnerOptions(options);
   } catch (error) {
