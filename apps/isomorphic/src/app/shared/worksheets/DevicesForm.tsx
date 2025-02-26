@@ -2,10 +2,11 @@ import { useFieldArray } from 'react-hook-form'; // To handle dynamic fields
 import ControlledSelect from './ControlledSelect';
 import { Input, SelectOption } from 'rizzui';
 import AddBtn from '../add-btn';
+import { FaTrash } from 'react-icons/fa'; // Import trash icon
 
 const DevicesForm = ({ control, productOptions, errors, register }: any) => {
   // Use useFieldArray to dynamically add/remove device fields
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'devices', // devices will be part of the form data
   });
@@ -15,9 +16,12 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
   });
 
   return (
-    <div>
+    <div className="col-span-2">
       {fields.map((device, index) => (
-        <div key={device.id} className="flex flex-col gap-4">
+        <div
+          key={device.id}
+          className="mt-4 grid grid-cols-3 items-center gap-4"
+        >
           {/* ControlledSelect for device name */}
           <ControlledSelect
             name={`devices[${index}].name`} // Unique name for each device
@@ -32,6 +36,12 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
             label="Eszköz azonosítója"
             error={errors?.devices?.[index]?.id?.message} // Handle error for each device
             {...register(`devices[${index}].id`)}
+          />
+          {/* Trash icon to remove device */}
+          <FaTrash
+            className="relative mt-5 cursor-pointer text-gray-500"
+            onClick={() => remove(index)}
+            style={{ alignSelf: 'center' }}
           />
         </div>
       ))}
