@@ -78,7 +78,7 @@ export const WorksheetFormSchema = z
       required_error: 'A munkalap azonosító megadása kötelező.',
     }),
     assignees: z.array(z.string()).optional(), // Add assignees attribute
-    connected_worksheet_id: z.number().optional(), // Add connected_worksheet_id attribute
+    connected_worksheet_ids: z.array(z.number()).optional(), // Refactor to accept multiple connected worksheet IDs
     products: z
       .array(
         z.object({
@@ -161,6 +161,6 @@ export const defaultValues: WorksheetFormTypes = {
   creator_name: '',
   worksheet_id: '',
   assignees: [], // Add default value for assignees
-  connected_worksheet_id: undefined, // Add default value for connected_worksheet_id
+  connected_worksheet_ids: [], // Refactor to accept multiple connected worksheet IDs
   products: [], // Add default value for products
 };

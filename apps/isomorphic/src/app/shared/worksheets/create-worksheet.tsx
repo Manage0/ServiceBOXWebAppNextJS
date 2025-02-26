@@ -196,7 +196,10 @@ export default function CreateWorksheet({
 
       const result = (await response.json()) as { id: number };
 
-      if (data.connected_worksheet_id) {
+      if (
+        data.connected_worksheet_ids &&
+        data.connected_worksheet_ids.length > 0
+      ) {
         await fetch('/api/ws_ws', {
           method: 'POST',
           headers: {
@@ -204,7 +207,7 @@ export default function CreateWorksheet({
           },
           body: JSON.stringify({
             wsid1: record?.id ?? result.id, // Use existing ID if updating
-            wsid2: data.connected_worksheet_id,
+            wsid2: data.connected_worksheet_ids,
           }),
         });
       }
@@ -507,10 +510,11 @@ export default function CreateWorksheet({
                     </Label>
                     <ControlledSelect
                       options={worksheetOptions}
-                      name="connected_worksheet_id"
+                      name="connected_worksheet_ids"
                       control={control}
-                      label="Munkalap azonosító"
-                      error={errors?.connected_worksheet_id?.message}
+                      isMulti={true}
+                      label="Munkalap azonosítók"
+                      error={errors?.connected_worksheet_ids?.message}
                     />
                   </LabeledInput>
                 </FormBlockWrapper>

@@ -3,59 +3,52 @@ import { executeQuery } from '@/db';
 
 interface WsWsRequest {
   wsid1: number;
-  wsid2: number;
+  wsid2: number[];
 }
 
 export async function POST(req: NextRequest) {
   try {
     const { wsid1, wsid2 } = (await req.json()) as WsWsRequest;
 
-    if (wsid1 === wsid2) {
+    if (wsid2.includes(wsid1)) {
       return NextResponse.json(
-        { error: 'wsid1 and wsid2 cannot be the same' },
+        { error: 'wsid1 cannot be in wsid2' },
         { status: 400 }
       );
     }
 
-    // Check if a connection already exists for wsid1
-    const existingConnectionQuery = `
+    // Delete existing connections for wsid1
+    const deleteQuery = `
+      DELETE FROM ws_ws WHERE wsid1 = $1;
+    `;
+    await executeQuery(deleteQuery, [wsid1]);
+
+    // Check existing connections
+    const checkQuery = `
       SELECT wsid2 FROM ws_ws WHERE wsid1 = $1;
     `;
-    const existingConnectionRes = await executeQuery(existingConnectionQuery, [
-      wsid1,
-    ]);
+    const existingConnections = await executeQuery(checkQuery, [wsid1]);
+    const existingWsids = existingConnections.rows.map(
+      (row: { wsid2: number }) => row.wsid2
+    );
 
-    if (existingConnectionRes.rows.length > 0) {
-      const currentWsid2 = existingConnectionRes.rows[0].wsid2;
-
-      // If the connection has changed, update it
-      if (currentWsid2 !== wsid2) {
-        const updateQuery = `
-          UPDATE ws_ws
-          SET wsid2 = $1
-          WHERE wsid1 = $2
-          RETURNING id;
-        `;
-        const updateRes = await executeQuery(updateQuery, [wsid2, wsid1]);
-        return NextResponse.json(updateRes.rows[0], { status: 200 });
-      } else {
-        // Connection already exists and hasn't changed
-        return NextResponse.json(
-          { message: 'No changes needed' },
-          { status: 200 }
-        );
-      }
-    }
-
-    // If no existing connection, insert a new one
+    // Insert new connections if they don't already exist
     const insertQuery = `
       INSERT INTO ws_ws (wsid1, wsid2)
       VALUES ($1, $2)
       RETURNING id;
     `;
-    const insertRes = await executeQuery(insertQuery, [wsid1, wsid2]);
 
-    return NextResponse.json(insertRes.rows[0], { status: 201 });
+    const insertPromises = wsid2
+      .filter((id) => !existingWsids.includes(id))
+      .map((id) => executeQuery(insertQuery, [wsid1, id]));
+
+    const insertResults = await Promise.all(insertPromises);
+
+    return NextResponse.json(
+      insertResults.map((res) => res.rows[0]),
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error handling ws_ws connection:', error);
     return NextResponse.json(
