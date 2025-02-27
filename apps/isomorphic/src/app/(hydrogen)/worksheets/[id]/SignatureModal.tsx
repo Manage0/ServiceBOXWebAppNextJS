@@ -72,6 +72,8 @@ export default function SignatureModal({ onSave }: SignatureModalProps) {
           ref={sigCanvasRef}
           penColor="black"
           canvasProps={{
+            width: 500,
+            height: 192,
             className:
               'signatureCanvas w-full h-48 border border-gray-300 bg-gray-100',
           }}
