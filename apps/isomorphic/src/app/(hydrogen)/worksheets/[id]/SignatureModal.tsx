@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Input, Button, Title } from 'rizzui';
 import ReactSignatureCanvas from 'react-signature-canvas';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -13,6 +13,12 @@ interface SignatureModalProps {
 export default function SignatureModal({ onSave }: SignatureModalProps) {
   const sigCanvasRef = useRef<ReactSignatureCanvas | null>(null);
   const [signingPerson, setSigningPerson] = useState('');
+
+  useEffect(() => {
+    if (sigCanvasRef.current) {
+      sigCanvasRef.current.clear();
+    }
+  }, []);
 
   const handleSave = () => {
     if (!sigCanvasRef.current) return;
