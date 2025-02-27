@@ -43,6 +43,20 @@ async function fetchWorksheetData(id: string) {
     data.devices = devicesData;
   }
 
+  // Fetch products for the worksheet
+  const productsRes = await fetch(`${baseUrl}/api/products/get`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ worksheet_id: id }),
+    cache: 'no-store',
+  });
+  const productsData = await productsRes.json();
+  if (productsRes.ok) {
+    data.products = productsData;
+  }
+
   return data;
 }
 

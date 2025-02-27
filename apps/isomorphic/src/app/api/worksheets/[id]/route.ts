@@ -73,6 +73,7 @@ export async function PUT(
       rearrival_time,
       assignees, // Handle assignees separately
       devices, // Handle devices separately
+      products, // Handle products separately
     } = data;
 
     const query = `
@@ -163,6 +164,29 @@ export async function PUT(
       });
 
       await Promise.all(deviceQueries);
+    }
+
+    // Update products in ws_product table
+    if (products && products.length > 0) {
+      // Remove existing products
+      await executeQuery('DELETE FROM ws_product WHERE wsid = $1;', [id]);
+
+      // Insert updated products
+      const productQueries = products.map((product) => {
+        return executeQuery(
+          'INSERT INTO ws_product (wsid, product_name, amount, measure, public_comment, private_comment) VALUES ($1, $2, $3, $4, $5, $6);',
+          [
+            id,
+            product.product_name,
+            product.amount,
+            product.measure,
+            product.public_comment,
+            product.private_comment,
+          ]
+        );
+      });
+
+      await Promise.all(productQueries);
     }
 
     return NextResponse.json(res.rows[0], { status: 200 });

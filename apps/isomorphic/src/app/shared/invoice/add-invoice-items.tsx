@@ -138,8 +138,11 @@ export function AddInvoiceItems({
                       inPortal={false}
                       options={productOptions}
                       value={productOptions.find(
-                        (option: { value: number }) =>
-                          option.value === watch(`products.${index}.id`)
+                        (option: { value: number }) => {
+                          const selected =
+                            option.value === watch(`products.${index}.id`);
+                          return selected;
+                        }
                       )}
                       onChange={(selectedOption: SelectOption) => {
                         onChange(selectedOption.label);

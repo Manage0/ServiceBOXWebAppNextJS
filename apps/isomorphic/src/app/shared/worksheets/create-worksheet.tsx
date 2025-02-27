@@ -233,6 +233,7 @@ export default function CreateWorksheet({
 
   // Use useRef to avoid constant updates
   const prevDevicesRef = useRef(record?.devices);
+  const prevProductsRef = useRef(record?.products);
 
   if (
     !siteOptions.length ||
@@ -309,6 +310,10 @@ export default function CreateWorksheet({
           if (record?.devices && prevDevicesRef.current !== undefined) {
             setValue('devices', record.devices);
             prevDevicesRef.current = undefined;
+          }
+          if (record?.products && prevProductsRef.current !== undefined) {
+            setValue('products', record.products);
+            prevProductsRef.current = undefined;
           }
         }, 500);
 
