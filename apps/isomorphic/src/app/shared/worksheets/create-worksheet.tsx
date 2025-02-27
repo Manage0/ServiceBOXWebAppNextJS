@@ -64,6 +64,7 @@ export interface PartnerOption {
   city: string;
   address: string;
   email: string;
+  contact_person: string;
 }
 
 export default function CreateWorksheet({

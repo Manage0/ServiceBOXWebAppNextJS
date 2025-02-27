@@ -17,6 +17,7 @@ import ReactSignatureCanvas from 'react-signature-canvas';
 import SignatureModal from './SignatureModal';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import toast from 'react-hot-toast';
+import SendModal from '../SendModal';
 
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
@@ -190,7 +191,14 @@ export default function InvoiceDetailsPage() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <Button className="w-full border-custom-green bg-white text-custom-green hover:bg-custom-green hover:text-white @lg:w-auto">
+          <Button
+            onClick={() =>
+              openModal({
+                view: <SendModal />,
+              })
+            }
+            className="w-full border-custom-green bg-white text-custom-green hover:bg-custom-green hover:text-white @lg:w-auto"
+          >
             <Image
               src={'/Send.svg'}
               alt="Users icon"
