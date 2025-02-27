@@ -12,42 +12,6 @@ import SignatureCanvas from 'react-signature-canvas';
 import jsPDF from 'jspdf';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 
-const invoiceItems = [
-  {
-    id: '1',
-    product: {
-      title: 'ChawkBazar Laravel Flutter Mobile App',
-      description:
-        'Along With Wordpress Themes & Plugins, We always try to use latest trending techs like React, Next Js, Gatsby Js, GraphQl, Shopify etc to make our products special.',
-    },
-    quantity: 2,
-    unitPrice: 100,
-    total: 200,
-  },
-  {
-    id: '2',
-    product: {
-      title: 'Borobazar React Next Grocery Template',
-      description:
-        'Our rich tech choice will help you to build high performance applications. We are also known to provide great customer supports to our customers.',
-    },
-    quantity: 2,
-    unitPrice: 100,
-    total: 200,
-  },
-  {
-    id: '3',
-    product: {
-      title: 'Superprops React Modern Landing Page Template',
-      description:
-        'Our rich tech choice will help you to build high performance applications. We are also known to provide great customer supports to our customers.',
-    },
-    quantity: 3,
-    unitPrice: 100,
-    total: 300,
-  },
-];
-
 const columns = [
   {
     title: '#',
@@ -57,40 +21,39 @@ const columns = [
   },
   {
     title: 'Tétel',
-    dataIndex: 'product',
-    key: 'product',
+    dataIndex: 'product_name',
+    key: 'product_name',
     width: 500,
-    render: (product: any) => (
+    render: (product_name: string, record: any) => (
       <>
         <Title as="h6" className="mb-0.5 text-sm font-medium">
-          {product.title}
+          {product_name}
         </Title>
         <Text
           as="p"
           className="max-w-[500px] overflow-hidden truncate text-sm text-gray-500"
         >
-          {product.description}
+          {record.public_comment}
         </Text>
       </>
     ),
   },
-
   {
     title: 'Mennyiség',
-    dataIndex: 'quantity',
-    key: 'quantity',
+    dataIndex: 'amount',
+    key: 'amount',
     width: 100,
   },
 ];
 
-function InvoiceDetailsListTable() {
+function InvoiceDetailsListTable({ products }: { products: any[] }) {
   return (
     <React.Fragment>
       <h2 className="mb-8 ml-16 text-left font-lexend text-[18px] font-bold tracking-normal text-[#333333] opacity-100">
         Felhasznált anyagok, szolgáltatások
       </h2>
       <Table
-        data={invoiceItems}
+        data={products}
         columns={columns}
         variant="minimal"
         rowKey={(record: any) => record.id}
@@ -268,7 +231,7 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
         ]}
       />
 
-      <InvoiceDetailsListTable />
+      <InvoiceDetailsListTable products={record.products || []} />
       <div className="mb-8 mr-16 mt-6 pe-4 xs:mt-0">
         <Title
           as="h6"
