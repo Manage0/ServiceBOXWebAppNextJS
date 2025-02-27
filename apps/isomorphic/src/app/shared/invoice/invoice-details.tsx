@@ -145,7 +145,6 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
       alert('Please add a signature before saving.');
     }
   };*/
-
   useEffect(() => {
     if (record.signage && sigCanvasRef.current) {
       // Load the signature into the canvas
@@ -162,6 +161,7 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
   if (!record) {
     return <>Nincs elérhető adat</>;
   }
+
   return (
     <div className="w-full rounded-xl border border-muted p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
       <div>{/*JSON.stringify(record)*/}</div>
@@ -243,11 +243,10 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
       <RepairDetails
         title="Javítás"
         details={[
-          {
-            label: 'Eszköz neve',
-            value: 'A256 Pénztárgép Epson TM-T810F nyomtatóval',
-          },
-          { label: 'Eszköz azonosító', value: 'AZ3600622' },
+          ...record.devices.flatMap((device: any) => [
+            { label: 'Eszköz neve', value: device.name },
+            { label: 'Eszköz azonosító', value: device.device_id },
+          ]),
           { label: 'Munka megnevezése', value: record.work_description },
           { label: 'Szerelő', value: record.creator_name },
           { label: 'JIRA Ticket', value: record.jira_ticket_num },
@@ -278,26 +277,6 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
         <Text className="ml-16 leading-[1.7]">{record.public_comment}</Text>
       </div>
       <div className="flex flex-col-reverse items-start justify-between border-t border-gray-300 pb-4 pt-8 xs:flex-row">
-        {/* API
-
-All API methods require a ref to the SignatureCanvas in order to use and are instance methods of the ref.
-
-<SignatureCanvas ref={(ref) => { this.sigCanvas = ref }} />
-
-    isEmpty() : boolean, self-explanatory
-    clear() : void, clears the canvas using the backgroundColor prop
-    fromDataURL(base64String, options) : void, writes a base64 image to canvas
-    toDataURL(mimetype, encoderOptions): base64string, returns the signature image as a data URL
-    fromData(pointGroupArray): void, draws signature image from an array of point groups
-    toData(): pointGroupArray, returns signature image as an array of point groups
-    off(): void, unbinds all event handlers
-    on(): void, rebinds all event handlers
-    getCanvas(): canvas, returns the underlying canvas ref. Allows you to modify the canvas however you want or call methods such as toDataURL()
-    getTrimmedCanvas(): canvas, creates a copy of the canvas and returns a trimmed version of it, with all whitespace removed.
-    getSignaturePad(): SignaturePad, returns the underlying SignaturePad reference.
-
-The API methods are mostly just wrappers around signature_pad's API. on() and off() will, in addition, bind/unbind the window resize event handler. getCanvas(), getTrimmedCanvas(), and getSignaturePad() are new. */}
-        {/* Signature Section */}
         <div className="mr-20 flex w-full flex-col items-start">
           <div className="mb-4 flex h-32 w-full items-center justify-center bg-gray-100">
             <SignatureCanvas
@@ -325,15 +304,6 @@ The API methods are mostly just wrappers around signature_pad's API. on() and of
             )}
           </div>
         </div>
-        {/**
-        <div>
-          <button
-            onClick={savePDF}
-            className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Save as PDF
-          </button>
-        </div> */}
       </div>
     </div>
   );

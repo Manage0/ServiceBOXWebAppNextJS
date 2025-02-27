@@ -75,6 +75,20 @@ async function fetchWorksheetData(id: string): Promise<any> {
 
   data.site = exactSite;
 
+  // Fetch devices for the worksheet
+  const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ worksheet_id: id }),
+    cache: 'no-store',
+  });
+  const devicesData = await devicesRes.json();
+  if (devicesRes.ok) {
+    data.devices = devicesData;
+  }
+
   return data;
 }
 
