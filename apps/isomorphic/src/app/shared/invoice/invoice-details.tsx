@@ -243,10 +243,12 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
       <RepairDetails
         title="Javítás"
         details={[
-          ...record.devices.flatMap((device: any) => [
-            { label: 'Eszköz neve', value: device.name },
-            { label: 'Eszköz azonosító', value: device.device_id },
-          ]),
+          ...(record.devices
+            ? record.devices.flatMap((device: any) => [
+                { label: 'Eszköz neve', value: device.name },
+                { label: 'Eszköz azonosító', value: device.device_id },
+              ])
+            : []),
           { label: 'Munka megnevezése', value: record.work_description },
           { label: 'Szerelő', value: record.creator_name },
           { label: 'JIRA Ticket', value: record.jira_ticket_num },
