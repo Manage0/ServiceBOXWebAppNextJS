@@ -72,7 +72,8 @@ export default function InvoiceTable({
             value: partner.name,
           })
         );
-        setPartners(partnerOptions);
+        // Add "Összes" option
+        setPartners([{ label: 'Összes', value: 'Összes' }, ...partnerOptions]);
       } catch (error) {
         console.error('Error fetching partners:', error);
       }
@@ -84,10 +85,15 @@ export default function InvoiceTable({
 
   const handleFilterChange = (selectedPartner: string | null) => {
     if (selectedPartner) {
-      const filtered = allData.filter(
-        (worksheet) => worksheet.partner_name === selectedPartner
-      );
-      setData(filtered);
+      if (selectedPartner === 'Összes') {
+        // If "Összes" is selected, show all data
+        setData(allData);
+      } else {
+        const filtered = allData.filter(
+          (worksheet) => worksheet.partner_name === selectedPartner
+        );
+        setData(filtered);
+      }
     } else {
       setData(allData);
     }
