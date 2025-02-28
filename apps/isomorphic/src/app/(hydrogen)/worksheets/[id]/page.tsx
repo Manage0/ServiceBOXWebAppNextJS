@@ -194,7 +194,7 @@ export default function InvoiceDetailsPage() {
           <Button
             onClick={() =>
               openModal({
-                view: <SendModal />,
+                view: <SendModal worksheetId={invoiceId || ''} />,
               })
             }
             className="w-full border-custom-green bg-white text-custom-green hover:bg-custom-green hover:text-white @lg:w-auto"

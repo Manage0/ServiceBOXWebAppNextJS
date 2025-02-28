@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { fetchPartnerOptions } from '@/utils';
 import { PartnerOption } from '@/app/shared/worksheets/create-worksheet';
 
-export default function SendModal() {
+export default function SendModal({ worksheetId }: { worksheetId: string }) {
   const [signingPerson, setSigningPerson] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [partner, setPartner] = useState<number | undefined>();
@@ -33,13 +33,30 @@ export default function SendModal() {
     }
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const selectedPartner = partnerOptions.find(
       (option) => option.value === partner
     )?.label;
-    alert(
-      `Partner: ${selectedPartner}\nKapcsolattartó: ${signingPerson}\nEmail: ${email}`
-    );
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, worksheetId }),
+      });
+
+      if (res.ok) {
+        toast.success('Email sikeresen elküldve');
+        onClose();
+      } else {
+        toast.error('Failed to send email');
+      }
+    } catch (error) {
+      toast.error('Failed to send email');
+      console.error('Error sending email:', error);
+    }
   };
 
   return (

@@ -6,9 +6,5 @@ export const metadata = {
 };
 
 export default function CoworkersPage() {
-  return (
-    <>
-      <CoworkersDashboard />
-    </>
-  );
+  return <CoworkersDashboard />;
 }
