@@ -53,6 +53,7 @@ async function fetchWorksheetData(id: string): Promise<any> {
   data.partner_tax_num = dataPartner.tax_num;
   data.partner_postal_code = dataPartner.postal_code;
   data.partner_contact_person = dataPartner.contact_person;
+  data.email = dataPartner.email;
 
   const sitesRes = await fetch(`${baseUrl}/api/sites`, {
     method: 'GET',
@@ -105,7 +106,8 @@ async function fetchWorksheetData(id: string): Promise<any> {
 async function updateWorksheetSignature(
   id: string,
   signature: string,
-  signingPerson: string
+  signingPerson: string,
+  email: string
 ) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/api/worksheets/update`, {
@@ -116,6 +118,7 @@ async function updateWorksheetSignature(
       signage: signature,
       signage_date: new Date().toISOString(),
       signing_person: signingPerson,
+      email,
     }),
   });
 
@@ -153,11 +156,13 @@ export default function InvoiceDetailsPage() {
     }
 
     const signingPerson = worksheetData.signing_person || ''; // Ensure signing_person is a string
+    const email = worksheetData.email || ''; // Ensure email is a string
 
     const success = await updateWorksheetSignature(
       invoiceId!,
       signatureDataUrl,
-      signingPerson
+      signingPerson,
+      email
     );
     if (success) {
       alert('Munkalap sikeresen aláírva.');
