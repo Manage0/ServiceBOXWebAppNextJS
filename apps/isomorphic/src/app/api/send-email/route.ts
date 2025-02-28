@@ -1,15 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { executeQuery } from '@/db';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
-  const { email, worksheetId } = (await req.json()) as {
+  const { email, worksheetId, signingPerson } = (await req.json()) as {
     email: string;
     worksheetId: string;
+    signingPerson: string;
   };
 
-  if (!email || !worksheetId) {
+  if (!email || !worksheetId || !signingPerson) {
     return NextResponse.json(
-      { message: 'Missing email or worksheet ID' },
+      { message: 'Missing email, worksheet ID, or signing person' },
       { status: 400 }
     );
   }
@@ -31,14 +33,23 @@ export async function POST(req: NextRequest) {
 
   try {
     await transporter.sendMail(mailOptions);
+
+    // Update the signing_person on the worksheet
+    const updateQuery = `
+      UPDATE worksheets
+      SET signing_person = $1
+      WHERE id = $2
+    `;
+    await executeQuery(updateQuery, [signingPerson, worksheetId]);
+
     return NextResponse.json(
-      { message: 'Email sent successfully' },
+      { message: 'Email sent and signing person updated successfully' },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email or updating worksheet:', error);
     return NextResponse.json(
-      { message: 'Error sending email' },
+      { message: 'Error sending email or updating worksheet' },
       { status: 500 }
     );
   }

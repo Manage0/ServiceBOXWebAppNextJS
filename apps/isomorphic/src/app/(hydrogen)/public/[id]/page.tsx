@@ -15,7 +15,6 @@ import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
 import ReactSignatureCanvas from 'react-signature-canvas';
 
-// Fetch the worksheet data just like in the InvoiceEditPage
 async function fetchWorksheetData(id: string): Promise<any> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/api/worksheets/get`, {
@@ -24,7 +23,7 @@ async function fetchWorksheetData(id: string): Promise<any> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ id }),
-    cache: 'no-store', // Ensures fresh data is always fetched
+    cache: 'no-store',
   });
 
   const data: any = (await res.json()) as WorksheetFormTypes;
@@ -32,7 +31,6 @@ async function fetchWorksheetData(id: string): Promise<any> {
     return null;
   }
 
-  // Convert dates
   data.deadline_date = new Date(data.deadline_date);
   data.completion_date = new Date(data.completion_date);
   data.invoice_date = new Date(data.invoice_date);
@@ -44,7 +42,7 @@ async function fetchWorksheetData(id: string): Promise<any> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ id: data.partner_id }),
-    cache: 'no-store', // Ensures fresh data is always fetched
+    cache: 'no-store',
   });
 
   const dataPartner: PartnerFormTypes =
@@ -61,7 +59,7 @@ async function fetchWorksheetData(id: string): Promise<any> {
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'no-store', // Ensures fresh data is always fetched
+    cache: 'no-store',
   });
 
   const dataSite: any[] = (await sitesRes.json()) as any[];
@@ -75,7 +73,6 @@ async function fetchWorksheetData(id: string): Promise<any> {
 
   data.site = exactSite;
 
-  // Fetch devices for the worksheet
   const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
     method: 'POST',
     headers: {
@@ -89,7 +86,6 @@ async function fetchWorksheetData(id: string): Promise<any> {
     data.devices = devicesData;
   }
 
-  // Fetch products for the worksheet
   const productsRes = await fetch(`${baseUrl}/api/products/get`, {
     method: 'POST',
     headers: {
@@ -106,7 +102,11 @@ async function fetchWorksheetData(id: string): Promise<any> {
   return data;
 }
 
-async function updateWorksheetSignature(id: string, signature: string) {
+async function updateWorksheetSignature(
+  id: string,
+  signature: string,
+  signingPerson: string
+) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/api/worksheets/update`, {
     method: 'PATCH',
@@ -115,6 +115,7 @@ async function updateWorksheetSignature(id: string, signature: string) {
       id,
       signage: signature,
       signage_date: new Date().toISOString(),
+      signing_person: signingPerson,
     }),
   });
 
@@ -123,15 +124,13 @@ async function updateWorksheetSignature(id: string, signature: string) {
 
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
-  const invoiceId = pathname.split('/').pop(); // Extract the last part of the pathname
+  const invoiceId = pathname.split('/').pop();
 
-  // Define worksheetData state with type
   const [worksheetData, setWorksheetData] = useState<WorksheetFormTypes | null>(
     null
   );
   const sigCanvasRef = useRef<ReactSignatureCanvas | null>(null);
 
-  // Fetch worksheet data when the component mounts
   useEffect(() => {
     if (invoiceId) {
       fetchWorksheetData(invoiceId).then((data) => {
@@ -145,27 +144,30 @@ export default function InvoiceDetailsPage() {
   }, [invoiceId]);
 
   const handleSign = async () => {
-    if (!sigCanvasRef.current) return;
+    if (!sigCanvasRef.current || !worksheetData) return;
 
     const signatureDataUrl = sigCanvasRef.current.toDataURL('image/png');
     if (!signatureDataUrl || sigCanvasRef.current.isEmpty()) {
-      alert('Please add a signature before signing.');
+      alert('Kérlek írd alá a munkalapot.');
       return;
     }
 
+    const signingPerson = worksheetData.signing_person || ''; // Ensure signing_person is a string
+
     const success = await updateWorksheetSignature(
       invoiceId!,
-      signatureDataUrl
+      signatureDataUrl,
+      signingPerson
     );
     if (success) {
-      alert('Successfully signed the worksheet.');
+      alert('Munkalap sikeresen aláírva.');
     } else {
-      alert('Failed to sign the worksheet.');
+      alert('Hiba a munkalap aláírása közben.');
     }
   };
 
   if (!worksheetData) {
-    return <div>Loading...</div>; // Or you can return a loading spinner or some placeholder content
+    return <div>Betöltés...</div>;
   }
 
   return (

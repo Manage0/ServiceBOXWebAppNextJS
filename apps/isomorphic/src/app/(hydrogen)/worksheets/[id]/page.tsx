@@ -184,7 +184,7 @@ export default function InvoiceDetailsPage() {
   const { openModal } = useModal();
 
   if (!worksheetData) {
-    return <div>Loading...</div>; // Or you can return a loading spinner or some placeholder content
+    return <div>Betöltés...</div>; // Or you can return a loading spinner or some placeholder content
   }
 
   return (

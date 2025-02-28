@@ -44,7 +44,7 @@ export default function SendModal({ worksheetId }: { worksheetId: string }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, worksheetId }),
+        body: JSON.stringify({ email, worksheetId, signingPerson }),
       });
 
       if (res.ok) {

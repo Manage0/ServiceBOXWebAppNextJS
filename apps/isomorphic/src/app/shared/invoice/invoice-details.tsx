@@ -105,7 +105,7 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
       pdf.addImage(signatureDataUrl, 'PNG', 10, 20, 180, 50); // Adjust position and size
       pdf.save('signature.pdf');
     } else {
-      alert('Please add a signature before saving.');
+      alert('Kérlek írd alá a munkalapot.');
     }
   };*/
   useEffect(() => {
