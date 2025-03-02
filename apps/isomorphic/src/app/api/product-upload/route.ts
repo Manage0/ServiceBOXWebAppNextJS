@@ -1,9 +1,6 @@
 import { executeQuery } from '@/db';
 import { NextRequest, NextResponse } from 'next/server';
 
-const AUTH_USER = 'servicebox@bbox.hu';
-const AUTH_PASS = 'pUqkiT3HlzGSIml';
-
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Basic ')) {
@@ -16,7 +13,10 @@ export async function POST(req: NextRequest) {
   );
   const [username, password] = credentials.split(':');
 
-  if (username !== AUTH_USER || password !== AUTH_PASS) {
+  if (
+    username !== process.env.AUTH_USER ||
+    password !== process.env.AUTH_PASS
+  ) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
