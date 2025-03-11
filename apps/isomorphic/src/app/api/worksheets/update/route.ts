@@ -48,6 +48,24 @@ async function fetchPartnerData(
   return data;
 }
 
+async function fetchLogo(): Promise<string | null> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/api/worksheets/logo`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  const data = (await res.json()) as { image: string };
+  return data.image;
+}
+
 async function fetchSiteData(siteId: string): Promise<any | null> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/api/sites/get`, {
@@ -104,6 +122,25 @@ async function fetchProductsData(worksheet_id: string): Promise<any | null> {
   return data;
 }
 
+async function generatePDF(htmlContent: string): Promise<Buffer> {
+  console.log('connect');
+  const browser = await puppeteer.connect({
+    browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}`,
+  });
+  console.log('newPage');
+  const page = await browser.newPage();
+  await page.setJavaScriptEnabled(false); // Disable JavaScript
+  console.log('waiting for new page to initialize');
+  console.log('setContent');
+  await page.setContent(htmlContent, {
+    waitUntil: 'networkidle2',
+  });
+  console.log('pdf');
+  const pdfBuffer = await page.pdf();
+  console.log('close');
+  await browser.close();
+  return Buffer.from(pdfBuffer);
+}
 export async function PATCH(req: NextRequest) {
   try {
     const { signage, signage_date, signing_person, id, email } =
@@ -194,8 +231,15 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
+    const BBOXLOGO = await fetchLogo();
+    if (!BBOXLOGO) {
+      return NextResponse.json(
+        { error: 'Failed to fetch logo' },
+        { status: 500 }
+      );
+    }
+
     // Generate HTML content for the PDF
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const htmlContent = `
 <html>
 <head>
@@ -431,7 +475,7 @@ export async function PATCH(req: NextRequest) {
 <body>
   <div class="container">
     <div class="header">
-      <img alt="BBOX logo" src="${baseUrl}/BBOXLogo.png">
+      <img alt="BBOX logo" src="${BBOXLOGO}">
       <div class="header-title">Munkalap</div>
       <div class="header-info">
         <h6>${worksheetData.worksheet_id}</h6>
@@ -574,12 +618,13 @@ export async function PATCH(req: NextRequest) {
 </html>
 `;
 
-    // Generate PDF
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(htmlContent);
-    const pdfBuffer = await page.pdf();
-    await browser.close();
+    let pdfBuffer;
+    try {
+      pdfBuffer = await generatePDF(htmlContent);
+    } catch (error) {
+      console.error('Error generating PDF, retrying...', error);
+      pdfBuffer = await generatePDF(htmlContent);
+    }
 
     // Send email with PDF attachment
     const transporter = nodemailer.createTransport({
@@ -598,7 +643,7 @@ export async function PATCH(req: NextRequest) {
       attachments: [
         {
           filename: `worksheet-${worksheet.id}.pdf`,
-          content: Buffer.from(pdfBuffer),
+          content: pdfBuffer,
         },
       ],
     };
