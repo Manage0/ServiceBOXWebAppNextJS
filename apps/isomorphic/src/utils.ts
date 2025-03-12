@@ -249,3 +249,104 @@ export async function fetchProducts(
     toast.error('Error fetching products');
   }
 }
+
+export const fetchInitialData = async (
+  setSiteOptions: (
+    options: { label: string; value: number; partner_id: number }[]
+  ) => void,
+  setPartnerOptions: (options: PartnerOption[]) => void,
+  setAssigneeOptions: (options: { label: string; value: string }[]) => void,
+  setWorksheetOptions: (options: { label: string; value: number }[]) => void,
+  setCompanyData: (arg0: {
+    company_name: string;
+    country: string;
+    postal_code: string;
+    city: string;
+    address: string;
+    tax_number: string;
+    email: string;
+    eu_tax_number?: string | undefined;
+  }) => void,
+  setDescriptionTemplates: (
+    descriptiontemplates: DescriptionTemplateOption[]
+  ) => void,
+  setProducts: (
+    products: {
+      id: number;
+      name: string;
+      stock: number;
+      price: number;
+      status: string;
+      image?: string;
+      category: string;
+      measure: string;
+    }[]
+  ) => void,
+  setProductOptions: (options: { label: string; value: number }[]) => void,
+  session: any,
+  setUserName: (user: User) => void
+) => {
+  await Promise.all([
+    fetchSiteOptions(setSiteOptions),
+    fetchPartnerOptions(setPartnerOptions),
+    fetchAssigneeOptions(setAssigneeOptions),
+    fetchWorksheetOptions(setWorksheetOptions),
+    fetchCompanyData(setCompanyData),
+    fetchDescriptionTemplates(setDescriptionTemplates),
+    fetchProducts(setProducts),
+    fetchProductOptions(setProductOptions),
+  ]);
+
+  if (session?.user.id) {
+    getName(session.user.id, setUserName);
+  }
+};
+
+export const handlePartnerChange = (
+  selectedPartnerId: number | null,
+  siteOptions: any[],
+  partnerOptions: PartnerOption[],
+  setFilteredSiteOptions: Function,
+  setValue: Function
+) => {
+  if (selectedPartnerId) {
+    const filteredSites = siteOptions.filter(
+      (site) => site.partner_id === selectedPartnerId
+    );
+    setFilteredSiteOptions(filteredSites);
+
+    const selectedPartner = partnerOptions.find(
+      (option) => option.value === selectedPartnerId
+    );
+    if (selectedPartner) {
+      setValue('tax_num', selectedPartner.tax_num);
+      setValue('postal_code', selectedPartner.postal_code);
+      setValue('country', selectedPartner.country);
+      setValue('city', selectedPartner.city);
+      setValue('address', selectedPartner.address);
+      setValue('email', selectedPartner.email);
+    }
+  } else {
+    setFilteredSiteOptions([]);
+    setValue('tax_num', '');
+    setValue('postal_code', '');
+    setValue('country', '');
+    setValue('city', '');
+    setValue('address', '');
+    setValue('email', '');
+  }
+};
+
+export const handleTemplateChange = (
+  selectedDescriptionTemplate: any,
+  setValue: Function
+) => {
+  setValue(
+    'issue_description',
+    selectedDescriptionTemplate?.issue_description || ''
+  );
+  setValue(
+    'work_description',
+    selectedDescriptionTemplate?.work_description || ''
+  );
+};

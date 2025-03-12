@@ -27,15 +27,9 @@ import {
 } from '../options';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
 import {
-  fetchCompanyData,
-  fetchPartnerOptions,
-  fetchSiteOptions,
-  fetchAssigneeOptions,
-  fetchWorksheetOptions,
-  fetchDescriptionTemplates,
-  getName,
-  fetchProducts,
-  fetchProductOptions, // Updated fetch function for products
+  fetchInitialData,
+  handlePartnerChange,
+  handleTemplateChange,
 } from '@/utils';
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 import CommentSection from './CommentSection';
@@ -116,20 +110,19 @@ export default function CreateWorksheet({
     useRef<DescriptionTemplateOption | null>(null);
 
   useEffect(() => {
-    fetchSiteOptions(setSiteOptions);
-    fetchPartnerOptions(setPartnerOptions);
-    fetchAssigneeOptions(setAssigneeOptions);
-    fetchWorksheetOptions(setWorksheetOptions);
-    fetchCompanyData(setCompanyData);
-    fetchDescriptionTemplates(setDescriptionTemplates); // Fetch description templates
-    fetchProducts(setProducts); // Fetch products
-    fetchProductOptions(setProductOptions);
-
-    // Fetch user data
-    if (session?.user.id) {
-      getName(session.user.id, setUserName);
-    }
-  }, [session?.user.id]);
+    fetchInitialData(
+      setSiteOptions,
+      setPartnerOptions,
+      setAssigneeOptions,
+      setWorksheetOptions,
+      setCompanyData,
+      setDescriptionTemplates,
+      setProducts,
+      setProductOptions,
+      session,
+      setUserName
+    );
+  }, [session, session?.user?.id]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
     console.log('Worksheet submission data ->', data);
@@ -263,32 +256,13 @@ export default function CreateWorksheet({
         const selectedPartnerId = watch('partner_id');
 
         if (selectedPartnerId !== prevSelectedPartnerId.current) {
-          if (selectedPartnerId) {
-            const filteredSites = siteOptions.filter(
-              (site) => site.partner_id === selectedPartnerId
-            );
-            setFilteredSiteOptions(filteredSites);
-
-            const selectedPartner = partnerOptions.find(
-              (option) => option.value === selectedPartnerId
-            );
-            if (selectedPartner) {
-              setValue('tax_num', selectedPartner.tax_num);
-              setValue('postal_code', selectedPartner.postal_code);
-              setValue('country', selectedPartner.country);
-              setValue('city', selectedPartner.city);
-              setValue('address', selectedPartner.address);
-              setValue('email', selectedPartner.email);
-            }
-          } else {
-            setFilteredSiteOptions([]);
-            setValue('tax_num', '');
-            setValue('postal_code', '');
-            setValue('country', '');
-            setValue('city', '');
-            setValue('address', '');
-            setValue('email', '');
-          }
+          handlePartnerChange(
+            selectedPartnerId,
+            siteOptions,
+            partnerOptions,
+            setFilteredSiteOptions,
+            setValue
+          );
           prevSelectedPartnerId.current = selectedPartnerId;
         }
 
@@ -296,14 +270,7 @@ export default function CreateWorksheet({
           selectedDescriptionTemplate !==
           prevSelectedDescriptionTemplate.current
         ) {
-          setValue(
-            'issue_description',
-            selectedDescriptionTemplate?.issue_description || ''
-          );
-          setValue(
-            'work_description',
-            selectedDescriptionTemplate?.work_description || ''
-          );
+          handleTemplateChange(selectedDescriptionTemplate, setValue);
           prevSelectedDescriptionTemplate.current = selectedDescriptionTemplate;
         }
 
