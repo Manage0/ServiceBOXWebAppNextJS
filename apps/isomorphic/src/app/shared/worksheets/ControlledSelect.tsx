@@ -10,6 +10,7 @@ interface ControlledSelectProps {
   error?: string;
   isMulti?: boolean; // Add isMulti prop to support multiple selection
   disabled?: boolean;
+  searchable?: boolean;
 }
 
 const ControlledSelect = ({
@@ -20,12 +21,17 @@ const ControlledSelect = ({
   error,
   isMulti = false, // Default to single selection
   disabled = false,
+  searchable = false,
 }: ControlledSelectProps) => (
   <Controller
     name={name}
     control={control}
     render={({ field: { name, onChange, value } }) => (
       <Select
+        searchable={searchable}
+        searchPlaceHolder="Keresés..."
+        searchType="text"
+        searchByKey="label"
         disabled={disabled}
         placeholder=""
         dropdownClassName="!z-10 h-auto"

@@ -25,6 +25,7 @@ const DevicesForm = ({ control, productOptions, errors, register }: any) => {
           {/*JSON.stringify(device)*/}
           {/* ControlledSelect for device name */}
           <ControlledSelect
+            searchable={true}
             name={`devices[${index}].name`} // Unique name for each device
             control={control}
             label="Eszköz neve"
