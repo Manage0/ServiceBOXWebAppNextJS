@@ -180,6 +180,24 @@ export default function CreateWorksheet({
         }),
       });
 
+      // Notify assignees if the status has changed
+      if (record && record.status !== data.status) {
+        const assignee_ids = assigneeOptions.map((assignee) => assignee.value);
+
+        await fetch('/api/notify-assignees', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userIds: assignee_ids,
+            worksheetId: record.id,
+            newStatus: data.status,
+            changingPerson: session?.user?.email,
+          }),
+        });
+      }
+
       toast.success(
         <b>Munkalap sikeresen {isUpdating ? 'szerkesztve' : 'létrehozva'}</b>
       );
