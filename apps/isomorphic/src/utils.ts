@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { CompanyFormTypes } from './validators/company-info.schema';
-import { PartnerOption } from './app/shared/worksheets/create-worksheet';
+import { PartnerOption } from './types';
 
 // Fetch company data
 export const fetchCompanyData = async (

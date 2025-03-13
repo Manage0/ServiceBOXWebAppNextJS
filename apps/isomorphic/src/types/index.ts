@@ -64,3 +64,28 @@ export type Product = {
   sizes?: number[];
 };
 
+export interface User {
+  surname: string;
+  forename: string;
+}
+
+export interface DescriptionTemplateOption {
+  id: string;
+  name: string;
+  issue_description: string;
+  work_description: string;
+}
+
+export interface PartnerOption {
+  label: string;
+  value: number;
+  name: string;
+  id: number | string;
+  tax_num: string;
+  postal_code: string;
+  country: string;
+  city: string;
+  address: string;
+  email: string;
+  contact_person: string;
+}

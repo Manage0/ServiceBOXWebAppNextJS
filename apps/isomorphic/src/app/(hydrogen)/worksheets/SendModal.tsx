@@ -5,7 +5,7 @@ import { Input, Button, Title, Select } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import toast from 'react-hot-toast';
 import { fetchPartnerOptions } from '@/utils';
-import { PartnerOption } from '@/app/shared/worksheets/create-worksheet';
+import { PartnerOption } from '@/types';
 
 export default function SendModal({ worksheetId }: { worksheetId: string }) {
   const [signingPerson, setSigningPerson] = useState<string>('');
@@ -86,6 +86,10 @@ export default function SendModal({ worksheetId }: { worksheetId: string }) {
           </button>
         </div>
         <Select
+          searchable={true}
+          searchPlaceHolder="Keresés..."
+          searchType="text"
+          searchByKey="label"
           label="Partner"
           value={partner}
           onChange={handlePartnerChange}

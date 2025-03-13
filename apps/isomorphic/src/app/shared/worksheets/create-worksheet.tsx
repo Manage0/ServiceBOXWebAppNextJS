@@ -34,32 +34,7 @@ import {
 import SaveTemplateModalView from '../account-settings/modal/add-description-template';
 import CommentSection from './CommentSection';
 import DevicesForm from './DevicesForm';
-
-interface User {
-  surname: string;
-  forename: string;
-}
-
-interface DescriptionTemplateOption {
-  id: string;
-  name: string;
-  issue_description: string;
-  work_description: string;
-}
-
-export interface PartnerOption {
-  label: string;
-  value: number;
-  name: string;
-  id: number | string;
-  tax_num: string;
-  postal_code: string;
-  country: string;
-  city: string;
-  address: string;
-  email: string;
-  contact_person: string;
-}
+import { DescriptionTemplateOption, PartnerOption, User } from '@/types';
 
 export default function CreateWorksheet({
   id,
