@@ -194,21 +194,16 @@ export default function CreateWorksheet({
 
       const result = (await response.json()) as { id: number };
 
-      if (
-        data.connected_worksheet_ids &&
-        data.connected_worksheet_ids.length > 0
-      ) {
-        await fetch('/api/ws_ws', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            wsid1: record?.id ?? result.id, // Use existing ID if updating
-            wsid2: data.connected_worksheet_ids,
-          }),
-        });
-      }
+      await fetch('/api/ws_ws', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wsid1: record?.id ?? result.id, // Use existing ID if updating
+          wsid2: data.connected_worksheet_ids,
+        }),
+      });
 
       toast.success(
         <b>Munkalap sikeresen {isUpdating ? 'szerkesztve' : 'létrehozva'}</b>
