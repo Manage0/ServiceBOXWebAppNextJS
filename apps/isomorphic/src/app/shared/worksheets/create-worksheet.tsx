@@ -181,17 +181,21 @@ export default function CreateWorksheet({
       });
 
       // Notify assignees if the status has changed
-      if (record && record.status !== data.status) {
-        const assignee_ids = assigneeOptions.map((assignee) => assignee.value);
-
+      if (
+        (record &&
+          record.status !== data.status &&
+          data.assignees &&
+          data.assignees.length) ||
+        (!record && data.assignees && data.assignees.length)
+      ) {
         await fetch('/api/notify-assignees', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userIds: assignee_ids,
-            worksheetId: record.id,
+            userIds: data.assignees,
+            worksheetId: record?.id ?? result.id,
             newStatus: data.status,
             changingPerson: session?.user?.email,
           }),
