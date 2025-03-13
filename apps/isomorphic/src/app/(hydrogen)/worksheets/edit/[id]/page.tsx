@@ -57,6 +57,21 @@ async function fetchWorksheetData(id: string) {
     data.products = productsData;
   }
 
+  // Fetch connected worksheets for the worksheet
+  const connectedWorksheetsRes = await fetch(`${baseUrl}/api/ws_ws/get`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ worksheet_id: id }),
+    cache: 'no-store',
+  });
+  const connectedWorksheetsData: { id: number }[] =
+    (await connectedWorksheetsRes.json()) as { id: number }[];
+  if (connectedWorksheetsRes.ok) {
+    data.connected_worksheet_ids = connectedWorksheetsData;
+  }
+
   return data;
 }
 

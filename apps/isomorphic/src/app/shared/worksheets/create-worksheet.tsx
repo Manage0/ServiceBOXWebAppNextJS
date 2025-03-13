@@ -122,7 +122,11 @@ export default function CreateWorksheet({
       session,
       setUserName
     );
-  }, [session, session?.user?.id]);
+
+    if (record) {
+      setReset(record);
+    }
+  }, [session, session?.user?.id, record]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
     console.log('Worksheet submission data ->', data);
@@ -282,6 +286,9 @@ export default function CreateWorksheet({
           if (record?.products && prevProductsRef.current !== undefined) {
             setValue('products', record.products);
             prevProductsRef.current = undefined;
+          }
+          if (record?.connected_worksheet_ids) {
+            setValue('connected_worksheet_ids', record.connected_worksheet_ids);
           }
         }, 500);
 
