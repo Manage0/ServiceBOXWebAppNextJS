@@ -6,12 +6,20 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import toast from 'react-hot-toast';
 import { fetchPartnerOptions } from '@/utils';
 import { PartnerOption } from '@/types';
+import { useSession } from 'next-auth/react';
 
-export default function SendModal({ worksheetId }: { worksheetId: string }) {
+export default function SendModal({
+  worksheetId,
+  assignees,
+}: {
+  worksheetId: string;
+  assignees: string[] | undefined;
+}) {
   const [signingPerson, setSigningPerson] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [partner, setPartner] = useState<number | undefined>();
   const [partnerOptions, setPartnerOptions] = useState<PartnerOption[]>([]);
+  const { data: session } = useSession();
 
   useEffect(() => {
     fetchPartnerOptions(setPartnerOptions).catch((error) => {
@@ -48,8 +56,39 @@ export default function SendModal({ worksheetId }: { worksheetId: string }) {
       });
 
       if (res.ok) {
-        toast.success('Email sikeresen elküldve');
-        onClose();
+        // Change the status of the worksheet to "outforsignature"
+        const updateRes = await fetch(`/api/updateStatus/${worksheetId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: 'outforsignature' }),
+        });
+
+        if (updateRes.ok && assignees) {
+          // Notify assignees
+          const notifyRes = await fetch('/api/notify-assignees', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userIds: assignees, // Replace with actual assignee IDs
+              worksheetId,
+              newStatus: 'outforsignature',
+              changingPerson: session?.user?.email,
+            }),
+          });
+
+          if (notifyRes.ok) {
+            toast.success('Email sikeresen elküldve és státusz frissítve');
+            onClose();
+          } else {
+            toast.error('Failed to notify assignees');
+          }
+        } else {
+          toast.error('Failed to update worksheet status');
+        }
       } else {
         toast.error('Failed to send email');
       }
