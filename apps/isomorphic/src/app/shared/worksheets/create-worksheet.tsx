@@ -377,6 +377,7 @@ export default function CreateWorksheet({
                   className="pt-5"
                 >
                   <ControlledSelect
+                    searchable={true}
                     options={partnerOptions}
                     name="partner_id"
                     control={control}
@@ -384,6 +385,7 @@ export default function CreateWorksheet({
                     error={errors?.partner_id?.message}
                   />
                   <ControlledSelect
+                    searchable={true}
                     options={filteredSiteOptions}
                     name="site_id"
                     control={control}

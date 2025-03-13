@@ -134,6 +134,10 @@ export function AddInvoiceItems({
                   control={control}
                   render={({ field: { name, onChange, value } }) => (
                     <Select
+                      searchable={true}
+                      searchPlaceHolder="Keresés..."
+                      searchType="text"
+                      searchByKey="label"
                       dropdownClassName="!z-10 h-auto"
                       inPortal={false}
                       options={productOptions}
