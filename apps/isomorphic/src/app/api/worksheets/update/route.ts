@@ -141,6 +141,7 @@ async function generatePDF(htmlContent: string): Promise<Buffer> {
   await browser.close();
   return Buffer.from(pdfBuffer);
 }
+
 export async function PATCH(req: NextRequest) {
   try {
     const { signage, signage_date, signing_person, id, email } =
@@ -166,11 +167,11 @@ export async function PATCH(req: NextRequest) {
     }
 
     const query = `
-      UPDATE worksheets
-      SET signage = $1, signage_date = $2, signing_person = $3
-      WHERE id = $4
-      RETURNING *;
-    `;
+    UPDATE worksheets
+    SET signage = $1, signage_date = $2, signing_person = $3, status = 'closed'
+    WHERE id = $4
+    RETURNING *;
+  `;
 
     const res = await executeQuery(query, [
       signage,
