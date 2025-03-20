@@ -150,7 +150,8 @@ export default function InvoiceDetailsPage() {
   async function updateWorksheetSignature(
     id: string,
     signature: string,
-    signingPerson: string
+    signingPerson: string,
+    assignees: string[]
   ) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     const res = await fetch(`${baseUrl}/api/worksheets/update`, {
@@ -168,14 +169,31 @@ export default function InvoiceDetailsPage() {
       return false;
     }
 
+    if (Array.isArray(assignees) && assignees.length > 0) {
+      // Notify assignees
+      const notifyRes = await fetch(`${baseUrl}/api/notify-assignees`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userIds: assignees,
+          worksheetId: id,
+          newStatus: 'closed',
+          changingPerson: 'blank as from public page',
+        }),
+      });
+      return notifyRes.ok;
+    }
+
     return true;
   }
 
   const handleSign = async (signature: string, signingPerson: string) => {
+    const assignees = worksheetData?.assignees || []; // Ensure assignees is an array
     const success = await updateWorksheetSignature(
       invoiceId!,
       signature,
-      signingPerson
+      signingPerson,
+      assignees
     );
     if (success) {
       toast.success('Munkalap sikeresen aláírva');
