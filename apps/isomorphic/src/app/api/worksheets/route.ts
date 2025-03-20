@@ -69,6 +69,7 @@ export async function POST(request: Request) {
       assignees, // Add assignees to destructured data
       devices, // Add devices to destructured data
       products, // Add products to destructured data
+      received_accessories, // Add received_accessories to destructured data
     } = data;
 
     // Ensure partner_id and site_id are not null
@@ -112,9 +113,10 @@ export async function POST(request: Request) {
         start_time,
         arrival_time,
         departure_time,
-        rearrival_time
+        rearrival_time,
+        received_accessories -- Add received_accessories to the query
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
       ) RETURNING id;
     `;
 
@@ -151,6 +153,7 @@ export async function POST(request: Request) {
       arrival_time,
       departure_time,
       rearrival_time,
+      received_accessories, // Add received_accessories to the values array
     ];
 
     const res = await executeQuery(query, values);
