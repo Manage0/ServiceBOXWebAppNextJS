@@ -210,6 +210,37 @@ export default function InvoiceDetailsPage() {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    if (!invoiceId) return;
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const res = await fetch(`${baseUrl}/api/worksheets/download-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: invoiceId }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Hiba a PDF letöltése közben');
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `worksheet_${invoiceId}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      toast.success('PDF sikeresen letöltve');
+    } catch (error) {
+      console.error(error);
+      toast.error('Hiba a PDF letöltése közben');
+    }
+  };
+
   const { openModal } = useModal();
 
   if (!worksheetData) {
@@ -240,14 +271,12 @@ export default function InvoiceDetailsPage() {
               height={17}
               className="me-1.5"
             />
-            Elküldve
+            {worksheetData.status === 'outforsignature' ||
+            worksheetData.status === 'closed'
+              ? 'Elküldve'
+              : 'Küldés'}
           </Button>
-          <DownloadBtn
-            onExport={() => {
-              alert('Letöltés');
-            }}
-            size="md"
-          />
+          <DownloadBtn onExport={handleDownloadPDF} size="md" />
           {!worksheetData.signage && (
             <Button
               className="w-full border-custom-green @lg:w-auto"
