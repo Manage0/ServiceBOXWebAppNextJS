@@ -70,6 +70,7 @@ export async function PUT(
       arrival_time,
       departure_time,
       rearrival_time,
+      received_accessories, // Handle received_accessories
       assignees, // Handle assignees separately
       devices, // Handle devices separately
       products, // Handle products separately
@@ -85,8 +86,8 @@ SET completion_date = $1, handover_date = $2, priority = $3, status = $4,
     procurement_po = $19, issue_description = $20, work_description = $21, 
     public_comment = $22, private_comment = $23, partner_id = $24, 
     site_id = $25, start_time = $26, arrival_time = $27, departure_time = $28, 
-    rearrival_time = $29
-      WHERE id = $30
+    rearrival_time = $29, received_accessories = $30
+      WHERE id = $31
       RETURNING *;
     `;
 
@@ -120,6 +121,7 @@ SET completion_date = $1, handover_date = $2, priority = $3, status = $4,
       arrival_time,
       departure_time,
       rearrival_time,
+      received_accessories, // Add received_accessories to the values array
       id,
     ];
 
