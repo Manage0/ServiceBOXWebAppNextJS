@@ -168,6 +168,12 @@ export default function InvoiceDetailsPage() {
   const handleSign = async () => {
     if (!sigCanvasRef.current || !worksheetData) return;
 
+    // Prevent signing if the worksheet's status is "closed"
+    if (worksheetData.status === 'closed') {
+      alert('A munkalap már lezárt állapotban van, nem írható alá.');
+      return;
+    }
+
     const signatureDataUrl = sigCanvasRef.current.toDataURL('image/png');
     if (!signatureDataUrl || sigCanvasRef.current.isEmpty()) {
       alert('Kérlek írd alá a munkalapot.');

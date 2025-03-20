@@ -188,6 +188,13 @@ export default function InvoiceDetailsPage() {
   }
 
   const handleSign = async (signature: string, signingPerson: string) => {
+    if (!worksheetData) return;
+
+    // Prevent signing if the worksheet's status is "closed"
+    if (worksheetData.status === 'closed') {
+      alert('A munkalap már lezárt állapotban van, nem írható alá.');
+      return;
+    }
     const assignees = worksheetData?.assignees || []; // Ensure assignees is an array
     const success = await updateWorksheetSignature(
       invoiceId!,

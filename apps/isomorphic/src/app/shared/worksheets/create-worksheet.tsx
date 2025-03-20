@@ -102,6 +102,11 @@ export default function CreateWorksheet({
     data
   ) => {
     console.log('data', data);
+    // Prevent submission if the worksheet's status is "closed"
+    if (record?.status === 'closed') {
+      toast.error('A lezárt munkalap nem módosítható.');
+      return;
+    }
     if (!data.partner_id) {
       toast.error('A partner kiválasztása kötelező.');
       return;
