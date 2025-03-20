@@ -46,7 +46,6 @@ export async function PUT(
       priority,
       status,
       invoice_date,
-      signage_date,
       deadline_date,
       country,
       postal_code,
@@ -78,16 +77,16 @@ export async function PUT(
 
     const query = `
       UPDATE worksheets
-      SET completion_date = $1, handover_date = $2, priority = $3, status = $4, 
-          invoice_date = $5, signage_date = $6, deadline_date = $7, country = $8, 
-          postal_code = $9, city = $10, address = $11, tax_num = $12, email = $13, 
-          partner_name = $14, company_name = $15, company_address = $16, 
-          company_tax_num = $17, jira_ticket_num = $18, invoice_number = $19, 
-          procurement_po = $20, issue_description = $21, work_description = $22, 
-          public_comment = $23, private_comment = $24, partner_id = $25, 
-          site_id = $26, start_time = $27, arrival_time = $28, departure_time = $29, 
-          rearrival_time = $30
-      WHERE id = $31
+SET completion_date = $1, handover_date = $2, priority = $3, status = $4, 
+    invoice_date = $5, deadline_date = $6, country = $7, 
+    postal_code = $8, city = $9, address = $10, tax_num = $11, email = $12, 
+    partner_name = $13, company_name = $14, company_address = $15, 
+    company_tax_num = $16, jira_ticket_num = $17, invoice_number = $18, 
+    procurement_po = $19, issue_description = $20, work_description = $21, 
+    public_comment = $22, private_comment = $23, partner_id = $24, 
+    site_id = $25, start_time = $26, arrival_time = $27, departure_time = $28, 
+    rearrival_time = $29
+      WHERE id = $30
       RETURNING *;
     `;
 
@@ -97,7 +96,6 @@ export async function PUT(
       priority,
       status,
       invoice_date,
-      signage_date,
       deadline_date,
       country,
       postal_code,

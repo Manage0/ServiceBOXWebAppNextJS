@@ -350,3 +350,11 @@ export const handleTemplateChange = (
     selectedDescriptionTemplate?.work_description || ''
   );
 };
+
+export function getCETDate() {
+  const now = new Date();
+  const cetDate = new Date(
+    now.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
+  );
+  return cetDate;
+}

@@ -159,12 +159,16 @@ export default function InvoiceDetailsPage() {
       body: JSON.stringify({
         id,
         signage: signature,
-        signage_date: new Date().toISOString(),
         signing_person: signingPerson,
       }),
     });
 
-    return res.ok;
+    if (!res.ok) {
+      toast.error('Hiba a munkalap aláírása közben');
+      return false;
+    }
+
+    return true;
   }
 
   const handleSign = async (signature: string, signingPerson: string) => {

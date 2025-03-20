@@ -117,7 +117,6 @@ async function updateWorksheetSignature(
     body: JSON.stringify({
       id,
       signage: signature,
-      signage_date: new Date().toISOString(),
       signing_person: signingPerson,
       email,
     }),
@@ -127,19 +126,22 @@ async function updateWorksheetSignature(
     return false;
   }
 
-  // Notify assignees
-  const notifyRes = await fetch(`${baseUrl}/api/notify-assignees`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      userIds: assignees,
-      worksheetId: id,
-      newStatus: 'closed',
-      changingPerson: 'blank as from public page',
-    }),
-  });
+  if (Array.isArray(assignees) && assignees.length > 0) {
+    // Notify assignees
+    const notifyRes = await fetch(`${baseUrl}/api/notify-assignees`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userIds: assignees,
+        worksheetId: id,
+        newStatus: 'closed',
+        changingPerson: 'blank as from public page',
+      }),
+    });
+    return notifyRes.ok;
+  }
 
-  return notifyRes.ok;
+  return true;
 }
 
 export default function InvoiceDetailsPage() {

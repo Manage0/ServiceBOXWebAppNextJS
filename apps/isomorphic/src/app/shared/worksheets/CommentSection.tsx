@@ -11,7 +11,10 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import { WorksheetFormTypes } from '@/validators/worksheet.schema';
+import {
+  WorksheetFormTypes,
+  WorksheetFormTypesREALLYFORTHEFORM,
+} from '@/validators/worksheet.schema';
 import SaveCommentTemplateModalView from '../account-settings/modal/add-comment-template';
 import AddBtn from '../add-btn';
 
@@ -23,10 +26,10 @@ interface CommentTemplateOption {
 }
 
 interface CommentSectionProps {
-  register: UseFormRegister<WorksheetFormTypes>;
-  errors: FieldErrors<WorksheetFormTypes>;
-  setValue: UseFormSetValue<WorksheetFormTypes>;
-  watch: UseFormWatch<WorksheetFormTypes>;
+  register: UseFormRegister<WorksheetFormTypesREALLYFORTHEFORM>;
+  errors: FieldErrors<WorksheetFormTypesREALLYFORTHEFORM>;
+  setValue: UseFormSetValue<WorksheetFormTypesREALLYFORTHEFORM>;
+  watch: UseFormWatch<WorksheetFormTypesREALLYFORTHEFORM>;
 }
 
 export default function CommentSection({

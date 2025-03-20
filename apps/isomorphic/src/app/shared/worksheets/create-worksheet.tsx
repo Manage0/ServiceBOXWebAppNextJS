@@ -9,8 +9,9 @@ import { FormBlockWrapper } from '@/app/shared/invoice/form-utils';
 import { AddInvoiceItems } from '@/app/shared/invoice/add-invoice-items';
 import { toast } from 'react-hot-toast';
 import {
-  WorksheetFormTypes,
   WorksheetFormSchema,
+  WorksheetFormTypes,
+  WorksheetFormTypesREALLYFORTHEFORM,
   defaultValues,
 } from '@/validators/worksheet.schema';
 import { Label, LabeledInput } from '../account-settings/personal-info';
@@ -19,12 +20,7 @@ import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
-import {
-  countryOptions,
-  statusOptions,
-  priorityOptions,
-  timeOptions,
-} from '../options';
+import { statusOptions, priorityOptions, timeOptions } from '../options';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
 import {
   fetchInitialData,
@@ -35,12 +31,11 @@ import SaveTemplateModalView from '../account-settings/modal/add-description-tem
 import CommentSection from './CommentSection';
 import DevicesForm from './DevicesForm';
 import { DescriptionTemplateOption, PartnerOption, User } from '@/types';
+import PartnerSection from './PartnerSection';
 
 export default function CreateWorksheet({
-  id,
   record,
 }: {
-  id?: string;
   record?: WorksheetFormTypes;
 }) {
   const { data: session } = useSession();
@@ -103,11 +98,10 @@ export default function CreateWorksheet({
     }
   }, [session, session?.user?.id, record]);
 
-  const onSubmit: SubmitHandler<WorksheetFormTypes> = async (data) => {
-    console.log('Worksheet submission data ->', data);
-    console.log('partnerOptions:', partnerOptions);
-    console.log('data.partner_id:', data.partner_id);
-
+  const onSubmit: SubmitHandler<WorksheetFormTypesREALLYFORTHEFORM> = async (
+    data
+  ) => {
+    console.log('data', data);
     if (!data.partner_id) {
       toast.error('A partner kiválasztása kötelező.');
       return;
@@ -142,8 +136,6 @@ export default function CreateWorksheet({
     if (userName) {
       data.creator_name = `${userName.surname} ${userName.forename}`;
     }
-
-    data.creation_date = new Date();
 
     try {
       const isUpdating = Boolean(record); // If `record` exists, update instead of create
@@ -237,8 +229,8 @@ export default function CreateWorksheet({
   }
 
   return (
-    <Form<WorksheetFormTypes>
-      //validationSchema={WorksheetFormSchema}
+    <Form<WorksheetFormTypesREALLYFORTHEFORM>
+      validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
@@ -368,66 +360,13 @@ export default function CreateWorksheet({
                     />*/}
                   </div>
                 </FormBlockWrapper>
-                <FormBlockWrapper
-                  title={'Partner adatai'}
-                  description={'Válaszd ki, hogy kinek szól a bizonylat'}
-                  className="pt-5"
-                >
-                  <ControlledSelect
-                    searchable={true}
-                    options={partnerOptions}
-                    name="partner_id"
-                    control={control}
-                    label="Partner"
-                    error={errors?.partner_id?.message}
-                  />
-                  <ControlledSelect
-                    searchable={true}
-                    options={filteredSiteOptions}
-                    name="site_id"
-                    control={control}
-                    label="Telephely"
-                    error={errors?.site_id?.message}
-                  />
-                  <Input
-                    label="Adószám"
-                    {...register('tax_num')}
-                    error={errors.tax_num?.message}
-                    disabled
-                  />
-                  <Input
-                    label="Irányítószám"
-                    {...register('postal_code')}
-                    error={errors.postal_code?.message}
-                    disabled
-                  />
-                  <ControlledSelect
-                    options={countryOptions}
-                    name="country"
-                    control={control}
-                    label="Ország"
-                    error={errors?.country?.message}
-                    disabled
-                  />
-                  <Input
-                    label="Település"
-                    {...register('city')}
-                    error={errors.city?.message}
-                    disabled
-                  />
-                  <Input
-                    label="Cím"
-                    {...register('address')}
-                    error={errors.address?.message}
-                    disabled
-                  />
-                  <Input
-                    label="Email"
-                    {...register('email')}
-                    error={errors.email?.message}
-                    disabled
-                  />
-                </FormBlockWrapper>
+                <PartnerSection
+                  partnerOptions={partnerOptions}
+                  control={control}
+                  errors={errors}
+                  filteredSiteOptions={filteredSiteOptions}
+                  register={register}
+                />
                 <FormBlockWrapper
                   title={'Eszköz információ'}
                   description={

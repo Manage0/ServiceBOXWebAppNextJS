@@ -101,7 +101,7 @@ export default async function InvoiceEditPage({
   return (
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      <CreateWorksheet id={id} record={worksheetData} />
+      <CreateWorksheet record={worksheetData} />
     </>
   );
 }

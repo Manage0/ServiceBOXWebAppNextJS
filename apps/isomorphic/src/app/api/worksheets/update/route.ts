@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer';
 import puppeteer from 'puppeteer';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
+import { getCETDate } from '@/utils';
 
 async function fetchWorksheetData(
   id: string
@@ -144,12 +145,9 @@ async function generatePDF(htmlContent: string): Promise<Buffer> {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { signage, signage_date, signing_person, id, email } =
+    const { signage, signing_person, id, email } =
       (await req.json()) as Partial<
-        Pick<
-          WorksheetFormTypes,
-          'signage' | 'signage_date' | 'signing_person' | 'id' | 'email'
-        >
+        Pick<WorksheetFormTypes, 'signage' | 'signing_person' | 'id' | 'email'>
       >;
 
     if (!id) {
@@ -159,7 +157,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    if (!signage || !signage_date || !signing_person || !email) {
+    if (!signage || !signing_person) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -175,7 +173,7 @@ export async function PATCH(req: NextRequest) {
 
     const res = await executeQuery(query, [
       signage,
-      signage_date,
+      getCETDate(),
       signing_person,
       id,
     ]);
@@ -610,7 +608,7 @@ export async function PATCH(req: NextRequest) {
         <img src="${signage}" alt="Signature" />
       </div>
       <div class="signature-info">
-        <p>Aláírva: ${new Date(signage_date).toLocaleString()}</p>
+        <p>Aláírva: ${getCETDate().toLocaleString()}</p>
         <p>Aláíró neve: <span>${signing_person}</span></p>
       </div>
     </div>
@@ -638,7 +636,7 @@ export async function PATCH(req: NextRequest) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: email,
+      to: email || partnerData.email,
       subject: 'Aláírt munkalap',
       text: 'Csatolva küldjük az aláírt munkalapot.',
       attachments: [

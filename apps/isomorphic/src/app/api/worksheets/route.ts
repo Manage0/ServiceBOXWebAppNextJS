@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { executeQuery } from '@/db';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
+import { getCETDate } from '@/utils';
 
 export async function GET() {
   try {
@@ -37,10 +38,8 @@ export async function POST(request: Request) {
       completion_date,
       handover_date,
       priority,
-      creation_date,
       status,
       invoice_date,
-      signage_date,
       deadline_date,
       country,
       postal_code,
@@ -88,7 +87,6 @@ export async function POST(request: Request) {
         creation_date,
         status,
         invoice_date,
-        signage_date,
         deadline_date,
         country,
         postal_code,
@@ -116,7 +114,7 @@ export async function POST(request: Request) {
         departure_time,
         rearrival_time
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32
       ) RETURNING id;
     `;
 
@@ -124,10 +122,9 @@ export async function POST(request: Request) {
       completion_date,
       handover_date,
       priority,
-      creation_date,
+      getCETDate(),
       status,
       invoice_date,
-      signage_date,
       deadline_date,
       country,
       postal_code,

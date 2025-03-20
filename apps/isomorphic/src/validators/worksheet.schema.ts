@@ -33,9 +33,6 @@ export const WorksheetFormSchema = z
     }),
     site_id: z.number({ required_error: 'Telephely kiválasztása kötelező.' }),
     partner_id: z.number({ required_error: 'Partner kiválasztása kötelező.' }),
-    creation_date: z
-      .date({ required_error: 'A létrehozás dátuma kötelező.' })
-      .optional(),
     status: z.enum(
       ['new', 'pending', 'completed', 'outforsignature', 'draft', 'closed'],
       {
@@ -45,13 +42,8 @@ export const WorksheetFormSchema = z
     ),
     invoice_date: z.date({ required_error: 'A számla dátuma kötelező.' }),
     signage: z.any().optional(),
-    signage_date: z.date().optional(),
     deadline_date: z.date({ required_error: 'A határidő dátuma kötelező.' }),
-    id: z
-      .string({ required_error: 'Az azonosító megadása kötelező.' })
-      .optional(),
-    signing_person: z.string().optional(),
-    received_accessories: z.string().optional(),
+    received_accessories: z.union([z.string(), z.null()]).optional(),
     jira_ticket_num: z.string().optional(),
     invoice_number: z.string().optional(),
     procurement_po: z.string().optional(),
@@ -121,7 +113,17 @@ export const WorksheetFormSchema = z
   });
 
 // Generate form types from Zod validation schema
-export type WorksheetFormTypes = z.infer<typeof WorksheetFormSchema>;
+export type WorksheetFormTypesREALLYFORTHEFORM = z.infer<
+  typeof WorksheetFormSchema
+>;
+
+// Generate form types from Zod validation schema
+export type WorksheetFormTypes = z.infer<typeof WorksheetFormSchema> & {
+  creation_date: Date;
+  signange_date: Date;
+  id: string;
+  signing_person: string;
+};
 
 export const defaultValues: WorksheetFormTypes = {
   completion_date: new Date(),
@@ -133,12 +135,12 @@ export const defaultValues: WorksheetFormTypes = {
   priority: 'normal',
   site_id: 1,
   partner_id: 1,
-  creation_date: new Date(),
   status: 'new',
   invoice_date: new Date(),
   signage: undefined,
-  signage_date: new Date(),
   deadline_date: new Date(),
+  creation_date: new Date(),
+  signange_date: new Date(),
   id: '',
   signing_person: '',
   received_accessories: '',
