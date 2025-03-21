@@ -17,7 +17,7 @@ import {
 import { Label, LabeledInput } from '../account-settings/personal-info';
 import WorksheetFormFooter from '@core/components/worksheet-form-footer';
 import AddBtn from '../add-btn';
-import { FileInput } from '../file-upload';
+import FileUpload from '../ImageUploadToWorksheet';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
 import { statusOptions, priorityOptions, timeOptions } from '../options';
@@ -75,6 +75,8 @@ export default function CreateWorksheet({
   >([]); // New state for product options
   const [selectedDescriptionTemplate, setSelectedDescriptionTemplate] =
     useState<DescriptionTemplateOption | null>(null);
+
+  const [pendingImages, setPendingImages] = useState<File[]>([]); // State for temporarily stored images
 
   const prevSelectedDescriptionTemplate =
     useRef<DescriptionTemplateOption | null>(null);
@@ -165,6 +167,22 @@ export default function CreateWorksheet({
       }
 
       const result = (await response.json()) as { id: number };
+
+      // Upload pending images after worksheet creation
+      if (pendingImages.length > 0) {
+        const formData = new FormData();
+        pendingImages.forEach((file) => {
+          formData.append('images', file);
+        });
+        formData.append('worksheetId', result.id.toString());
+
+        await fetch('/api/worksheets/upload-images', {
+          method: 'POST',
+          body: formData,
+        });
+
+        setPendingImages([]); // Clear pending images
+      }
 
       await fetch('/api/ws_ws', {
         method: 'POST',
@@ -359,10 +377,6 @@ export default function CreateWorksheet({
                         error={errors?.assignees?.message}
                       />
                     </LabeledInput>
-                    {/*<AddBtn
-                      onClick={() => console.log('Munkatárs hozzáadva')}
-                      variant="gray"
-                    />*/}
                   </div>
                 </FormBlockWrapper>
                 <PartnerSection
@@ -393,10 +407,13 @@ export default function CreateWorksheet({
                       textareaClassName="h-20"
                       className="mb-5 w-full"
                     />
-                    {/*<FileInput
-                      className="w-full"
+
+                    <FileUpload
                       btnLabel="Mentés a munkalaphoz"
-                    />*/}
+                      onImagesUploaded={(images) =>
+                        setPendingImages((prev) => [...prev, ...images])
+                      }
+                    />
                   </div>
                 </FormBlockWrapper>
                 <FormBlockWrapper
