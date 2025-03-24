@@ -26,15 +26,16 @@ export default function WorksheetFormFooter({
         negMargin
       )}
     >
-      <Button
+      <div></div>
+      {/*<Button
         variant="outline"
         className="w-full @xl:w-auto bg-white"
         onClick={handleAltBtn}
       >
         Bizonylat mentése sablonként
-      </Button>
+      </Button>*/}
       <div className="flex gap-4">
-        <Button
+        {/*<Button
           variant="outline"
           className="w-full @xl:w-auto"
           onClick={handleAltBtn}
@@ -47,7 +48,7 @@ export default function WorksheetFormFooter({
           onClick={handleAltBtn}
         >
           Aláír
-        </Button>
+        </Button>*/}
         <Button
           variant="outline"
           className="w-full @xl:w-auto"
@@ -59,8 +60,17 @@ export default function WorksheetFormFooter({
           type="submit"
           isLoading={isLoading}
           className="w-full @xl:w-auto"
+          name="save"
         >
           {submitBtnText}
+        </Button>
+        <Button
+          type="submit"
+          isLoading={isLoading}
+          className="w-full @xl:w-auto"
+          name="finalize"
+        >
+          {"Véglegesít"}
         </Button>
       </div>
     </div>

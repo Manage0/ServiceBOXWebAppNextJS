@@ -99,8 +99,12 @@ export default function CreateWorksheet({
   }, [session, session?.user?.id, record]);
 
   const onSubmit: SubmitHandler<WorksheetFormTypesREALLYFORTHEFORM> = async (
-    data
+    data,
+    event
   ) => {
+    const submitter = (event as any)?.nativeEvent?.submitter;
+    const action = submitter?.name;
+
     data.invoice_date = new Date();
     console.log('data', data);
 
@@ -200,8 +204,10 @@ export default function CreateWorksheet({
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        if (record) {
-          window.location.reload();
+        if (action === 'save') {
+          window.location.href = `/worksheets/`;
+        } else if (action === 'finalize') {
+          window.location.href = `/worksheets/${result.id}`;
         }
         setReset(defaultValues);
       }, 600);
