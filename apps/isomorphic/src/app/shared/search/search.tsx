@@ -36,12 +36,12 @@ export default function SearchWidget({
 
   return (
     <>
-      <SearchTrigger
+      {/*<SearchTrigger
         icon={icon}
         className={className}
         onClick={() => setOpen(true)}
         placeholderClassName={placeholderClassName}
-      />
+      />*/}
 
       <Modal
         isOpen={open}

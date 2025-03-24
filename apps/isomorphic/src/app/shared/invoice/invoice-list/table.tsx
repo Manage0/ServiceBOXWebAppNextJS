@@ -29,6 +29,12 @@ export default function InvoiceTable({
           pageIndex: 0,
           pageSize: 10,
         },
+        sorting: [
+          {
+            id: 'worksheet_id', // The column ID to sort
+            desc: true, // Set to true for descending order
+          },
+        ],
       },
       meta: {
         handleDeleteRow: (row) => {

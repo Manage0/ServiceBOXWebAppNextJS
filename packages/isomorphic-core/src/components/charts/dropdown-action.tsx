@@ -54,6 +54,9 @@ export default function DropdownAction({
       displayValue={(selected) =>
         options.find((option) => option.value === selected)?.label
       }
+      searchable={true}
+      searchPlaceHolder="Keresés..."
+      searchType="text"
       selectClassName={cn("py-1 px-2 leading-[32px] h-8 me-2", selectClassName)}
       optionClassName="py-1 px-2 leading-[32px] h-8"
       dropdownClassName={cn(

@@ -17,12 +17,12 @@ export default function ProjectDashboard() {
         fileName={undefined}
         header={undefined}
       >
-        <InvoiceTable searchbarPlaceholder={'Keresés a rendelések között...'} />
+        <InvoiceTable searchbarPlaceholder={'Keresés a munkalapok között...'} />
       </TableLayout>
-      <Box className="grid grid-flow-row grid-cols-1 gap-6 @3xl/pd:grid-cols-12 3xl:gap-8">
+      {/*<Box className="grid grid-flow-row grid-cols-1 gap-6 @3xl/pd:grid-cols-12 3xl:gap-8">
         <OverallProgress className="@3xl/pd:col-span-6 @7xl/pd:col-span-4" />
         <ProjectActivities className="@3xl/pd:col-span-6 @7xl/pd:col-span-4" />
-      </Box>
+      </Box>*/}
     </Box>
   );
 }

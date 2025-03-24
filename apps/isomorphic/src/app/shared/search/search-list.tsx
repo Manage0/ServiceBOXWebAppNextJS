@@ -47,7 +47,7 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
   return (
     <>
       <div className="flex items-center px-5 py-4">
-        <Input
+        {/*<Input
           variant="flat"
           value={searchText}
           ref={inputRef}
@@ -72,7 +72,7 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
               </Button>
             )
           }
-        />
+        />*/}
         <ActionIcon
           variant="text"
           size="sm"

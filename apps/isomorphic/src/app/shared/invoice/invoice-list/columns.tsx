@@ -36,7 +36,6 @@ export const invoiceListColumns = [
     id: 'worksheet_id',
     size: 250,
     header: 'MUNKALAPSZÁM / MUNKATÁRS',
-    enableSorting: false,
     cell: ({ row }) => {
       return (
         <AvatarCard
@@ -57,6 +56,7 @@ export const invoiceListColumns = [
     id: 'creation_date',
     size: 200,
     header: 'LÉTREHOZÁS DÁTUMA',
+    enableSorting: false,
     cell: ({ row }) =>
       row.original.creation_date ? (
         <DateCell

@@ -5,7 +5,9 @@ import { getCETDate } from '@/utils';
 
 export async function GET() {
   try {
-    const res = await executeQuery('SELECT * FROM worksheets;');
+    const res = await executeQuery(
+      'SELECT * FROM worksheets ORDER BY worksheet_id DESC;'
+    );
 
     if (res.rows.length === 0) {
       return NextResponse.json(
@@ -17,7 +19,7 @@ export async function GET() {
     // Append a badge with 50% chance of being "Új" or null
     const worksheetsWithBadge = res.rows.map((worksheet) => ({
       ...worksheet,
-      badge: Math.random() < 0.5 ? 'Új' : null,
+      badge: null, //Math.random() < 0.5 ? 'Új' : null,
     }));
 
     return NextResponse.json(worksheetsWithBadge, { status: 200 });

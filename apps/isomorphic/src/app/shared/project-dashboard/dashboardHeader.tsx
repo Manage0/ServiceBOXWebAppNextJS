@@ -38,13 +38,13 @@ export default function DashboardHeader({ className }: { className?: string }) {
           <AddBtn href={routes.partners.add} text="Új partner" />
         </Box>
       </Flex>
-      <SimpleBar>
+      {/*<SimpleBar>
         <Flex className="sm:gap-6 3xl:gap-8">
           {projectStatData.map((stat: StatType, index: number) => {
             return <StatCard key={'stat-card-' + index} transaction={stat} />;
           })}
         </Flex>
-      </SimpleBar>
+      </SimpleBar>*/}
     </Box>
   );
 }
