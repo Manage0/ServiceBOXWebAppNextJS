@@ -86,7 +86,7 @@ export const invoiceListColumns = [
     }) => (
       <TableRowActionGroup
         editUrl={row.original.id ? routes.worksheets.edit(row.original.id) : ''}
-        comment={row.original.public_comment}
+        comment={row.original.public_comment || ''}
         viewUrl={
           row.original.id ? routes.worksheets.details(row.original.id) : ''
         }

@@ -76,9 +76,6 @@ export async function POST(request: Request) {
     if (!partner_id) {
       throw new Error('partner_id is required');
     }
-    if (!site_id) {
-      throw new Error('site_id is required');
-    }
 
     const query = `
       INSERT INTO worksheets (
@@ -121,13 +118,13 @@ export async function POST(request: Request) {
     `;
 
     const values = [
-      completion_date,
-      handover_date,
+      completion_date || null,
+      handover_date || null,
       priority,
       getCETDate(),
       status,
       invoice_date,
-      deadline_date,
+      deadline_date || null,
       country,
       postal_code,
       city,
@@ -140,19 +137,19 @@ export async function POST(request: Request) {
       company_address,
       company_tax_num,
       creator_name,
-      jira_ticket_num,
-      invoice_number,
-      procurement_po,
-      issue_description,
-      work_description,
-      public_comment,
-      private_comment,
+      jira_ticket_num || '',
+      invoice_number || '',
+      procurement_po || '',
+      issue_description || '',
+      work_description || '',
+      public_comment || '',
+      private_comment || '',
       partner_id,
-      site_id,
-      start_time,
-      arrival_time,
-      departure_time,
-      rearrival_time,
+      site_id || null,
+      start_time || null,
+      arrival_time || null,
+      departure_time || null,
+      rearrival_time || null,
       received_accessories, // Add received_accessories to the values array
     ];
 

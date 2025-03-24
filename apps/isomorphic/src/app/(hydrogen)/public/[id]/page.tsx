@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
 import ReactSignatureCanvas from 'react-signature-canvas';
+import { handleDate } from '@/utils';
 
 async function fetchWorksheetData(id: string): Promise<any> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -31,10 +32,10 @@ async function fetchWorksheetData(id: string): Promise<any> {
     return null;
   }
 
-  data.deadline_date = new Date(data.deadline_date);
-  data.completion_date = new Date(data.completion_date);
-  data.invoice_date = new Date(data.invoice_date);
-  data.handover_date = new Date(data.handover_date);
+  data.deadline_date = handleDate(data.deadline_date);
+  data.completion_date = handleDate(data.completion_date);
+  data.invoice_date = handleDate(data.invoice_date);
+  data.handover_date = handleDate(data.handover_date);
 
   const partnerRes = await fetch(`${baseUrl}/api/partners/get`, {
     method: 'POST',

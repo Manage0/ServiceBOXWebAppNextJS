@@ -4,6 +4,7 @@ import CreateWorksheet from '@/app/shared/worksheets/create-worksheet';
 import { routes } from '@/config/routes';
 import { notFound } from 'next/navigation';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
+import { handleDate } from '@/utils';
 
 export const metadata = {
   ...metaObject('Munkalap szerkesztése'),
@@ -24,10 +25,10 @@ async function fetchWorksheetData(id: string) {
     return null;
   }
 
-  data.deadline_date = new Date(data.deadline_date);
-  data.completion_date = new Date(data.completion_date);
-  data.invoice_date = new Date(data.invoice_date);
-  data.handover_date = new Date(data.handover_date);
+  data.deadline_date = handleDate(data.deadline_date);
+  data.completion_date = handleDate(data.completion_date);
+  data.invoice_date = handleDate(data.invoice_date);
+  data.handover_date = handleDate(data.handover_date);
 
   // Fetch devices for the worksheet
   const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {

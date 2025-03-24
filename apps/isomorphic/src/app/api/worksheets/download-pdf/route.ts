@@ -67,6 +67,9 @@ async function fetchLogo(): Promise<string | null> {
 }
 
 async function fetchSiteData(siteId: string): Promise<any | null> {
+  if (siteId === 'noid') {
+    return null;
+  }
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/api/sites/get`, {
     method: 'POST',
@@ -174,7 +177,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const siteData = await fetchSiteData(worksheetData.site_id.toString());
+    const siteData = await fetchSiteData(
+      worksheetData.site_id ? worksheetData.site_id.toString() : 'noid'
+    );
     if (!siteData) {
       return NextResponse.json(
         { error: 'Failed to fetch site data' },
@@ -477,48 +482,64 @@ export async function POST(req: NextRequest) {
     <div class="dates">
       <div>
         <span>Bizonylat kelte</span>
-        <span>${new Date(worksheetData.invoice_date).toLocaleDateString()}</span>
+        <span>${
+          worksheetData.deadline_date
+            ? new Date(worksheetData.deadline_date).toLocaleDateString()
+            : 'Nincs adat'
+        }</span>
       </div>
       <div>
         <span>Vállalási határidő</span>
-        <span>${new Date(worksheetData.deadline_date).toLocaleDateString()}</span>
+        <span>${
+          worksheetData.deadline_date
+            ? new Date(worksheetData.deadline_date).toLocaleDateString()
+            : 'Nincs adat'
+        }</span>
       </div>
       <div>
         <span>Elkészült</span>
-        <span>${new Date(worksheetData.completion_date).toLocaleDateString()}</span>
+        <span>${
+          worksheetData.completion_date
+            ? new Date(worksheetData.completion_date).toLocaleDateString()
+            : 'Nincs adat'
+        }</span>
       </div>
       <div>
         <span>Átadva</span>
-        <span>${new Date(worksheetData.handover_date).toLocaleDateString()}</span>
+        <span>${
+          worksheetData.handover_date
+            ? new Date(worksheetData.handover_date).toLocaleDateString()
+            : 'Nincs adat'
+        }</span>
       </div>
     </div>
     <div class="section-title">Javítás</div>
     <div class="work-details">
       <span>Munka megnevezése</span>
-      <b>${worksheetData.work_description}</b>
+      <b>${worksheetData.work_description || ''}</b>
       <span>Szerelő</span>
       <b>${worksheetData.creator_name}</b>
       <span>JIRA Ticket</span>
-      <b>${worksheetData.jira_ticket_num}</b>
+      <b>${worksheetData.jira_ticket_num || ''}</b>
       <span>Hiba / Munka leírása</span>
-      <b>${worksheetData.issue_description}</b>
+      <b>${worksheetData.issue_description || ''}</b>
     </div>
     <div class="times">
       <div>
         <span>Indulás</span>
-        <span>${worksheetData.start_time}</span>
+        <span>${worksheetData.start_time || 'Nincs adat'}</span>
       </div>
       <div>
         <span>Érkezés</span>
-        <span>${worksheetData.arrival_time}</span>
+        <span>${worksheetData.arrival_time || 'Nincs adat'}</span>
       </div>
       <div>
         <span>Távozás</span>
-        <span>${worksheetData.departure_time}</span>
+        <span>${worksheetData.departure_time || 'Nincs adat'}</span>
       </div>
       <div>
         <span>Visszaérkezés</span>
-        <span>${worksheetData.rearrival_time}</span>
+        <span>${worksheetData.rearrival_time || 'Nincs adat'}</span>
       </div>
     </div>
   </div>

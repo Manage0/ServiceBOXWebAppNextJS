@@ -358,3 +358,6 @@ export function getCETDate() {
   );
   return cetDate;
 }
+
+export const handleDate = (date: any) =>
+  new Date(date).getTime() === 0 ? null : new Date(date);

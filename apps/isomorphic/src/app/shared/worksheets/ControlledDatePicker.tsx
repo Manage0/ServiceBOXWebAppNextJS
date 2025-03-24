@@ -5,21 +5,27 @@ const ControlledDatePicker = ({
   name,
   control,
   label,
+  disabled,
 }: {
   name: string;
   control: any;
   label: string;
+  disabled?: boolean;
 }) => (
   <div className="[&>.react-datepicker-wrapper]:w-full">
     <Controller
       name={name}
       control={control}
+      disabled={disabled}
       render={({ field: { value, onChange } }) => (
-        <DatePicker
-          inputProps={{ label }}
-          selected={value}
-          onChange={onChange}
-        />
+        <>
+          <DatePicker
+            disabled={disabled}
+            inputProps={{ label }}
+            selected={value}
+            onChange={onChange}
+          />
+        </>
       )}
     />
   </div>

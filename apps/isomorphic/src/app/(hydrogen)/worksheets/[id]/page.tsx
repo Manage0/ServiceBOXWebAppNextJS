@@ -18,6 +18,7 @@ import SignatureModal from './SignatureModal';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import toast from 'react-hot-toast';
 import SendModal from '../SendModal';
+import { handleDate } from '@/utils';
 
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
@@ -54,11 +55,10 @@ export default function InvoiceDetailsPage() {
       return null;
     }
 
-    // Convert dates
-    data.deadline_date = new Date(data.deadline_date);
-    data.completion_date = new Date(data.completion_date);
-    data.invoice_date = new Date(data.invoice_date);
-    data.handover_date = new Date(data.handover_date);
+    data.deadline_date = handleDate(data.deadline_date);
+    data.completion_date = handleDate(data.completion_date);
+    data.invoice_date = handleDate(data.invoice_date);
+    data.handover_date = handleDate(data.handover_date);
 
     const partnerRes = await fetch(`${baseUrl}/api/partners/get`, {
       method: 'POST',

@@ -69,10 +69,10 @@ export default function CreateWorksheet({
       category: string;
       measure: string;
     }[]
-  >([]); // New state for products
+  >([]);
   const [productOptions, setProductOptions] = useState<
     { label: string; value: number }[]
-  >([]); // New state for product options
+  >([]);
   const [selectedDescriptionTemplate, setSelectedDescriptionTemplate] =
     useState<DescriptionTemplateOption | null>(null);
 
@@ -101,19 +101,15 @@ export default function CreateWorksheet({
   const onSubmit: SubmitHandler<WorksheetFormTypesREALLYFORTHEFORM> = async (
     data
   ) => {
+    data.invoice_date = new Date();
     console.log('data', data);
-    // Prevent submission if the worksheet's status is "closed"
+
     if (record?.status === 'closed') {
       toast.error('A lezárt munkalap nem módosítható.');
       return;
     }
     if (!data.partner_id) {
       toast.error('A partner kiválasztása kötelező.');
-      return;
-    }
-
-    if (!data.site_id) {
-      toast.error('A telephely kiválasztása kötelező.');
       return;
     }
 
@@ -143,7 +139,7 @@ export default function CreateWorksheet({
     }
 
     try {
-      const isUpdating = Boolean(record); // If `record` exists, update instead of create
+      const isUpdating = Boolean(record);
       const apiMethod = isUpdating ? 'PUT' : 'POST';
       const apiUrl =
         isUpdating && record
@@ -172,12 +168,11 @@ export default function CreateWorksheet({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          wsid1: record?.id ?? result.id, // Use existing ID if updating
+          wsid1: record?.id ?? result.id,
           wsid2: data.connected_worksheet_ids,
         }),
       });
 
-      // Notify assignees if the status has changed
       if (
         (record &&
           record.status !== data.status &&
@@ -218,7 +213,6 @@ export default function CreateWorksheet({
 
   const prevSelectedPartnerId = useRef<number | null>(null);
 
-  // Use useRef to avoid constant updates
   const prevDevicesRef = useRef(record?.devices);
   const prevProductsRef = useRef(record?.products);
 
@@ -235,11 +229,12 @@ export default function CreateWorksheet({
 
   return (
     <Form<WorksheetFormTypesREALLYFORTHEFORM>
-      validationSchema={WorksheetFormSchema}
+      //validationSchema={WorksheetFormSchema}
       resetValues={reset}
       onSubmit={onSubmit}
       useFormProps={{
         defaultValues: record || defaultValues,
+        mode: 'onSubmit',
       }}
       className="flex flex-grow flex-col @container [&_label]:font-medium"
     >
@@ -296,39 +291,36 @@ export default function CreateWorksheet({
                     name="status"
                     control={control}
                     label="Státusz"
-                    error={errors?.status?.message}
+                    error="A státusz megadása kötelező."
                   />
                   <ControlledSelect
                     options={priorityOptions}
                     name="priority"
                     control={control}
                     label="Prioritás"
-                    error={errors?.priority?.message}
+                    error="A prioritás megadása kötelező."
                   />
                   <Input
                     label="JIRA Ticket száma"
                     {...register('jira_ticket_num')}
-                    error={errors.jira_ticket_num?.message}
                   />
                   <Input
                     label="Munkalap sorszám"
                     {...register('worksheet_id')}
-                    error={errors.worksheet_id?.message}
                   />
                   <Input
                     label="Számla sorszám"
                     {...register('invoice_number')}
-                    error={errors.invoice_number?.message}
                   />
                   <Input
                     label="Beszerzési PO szám"
                     {...register('procurement_po')}
-                    error={errors.procurement_po?.message}
                   />
                   <ControlledDatePicker
                     name="invoice_date"
                     control={control}
                     label="Bizonylat kelte"
+                    disabled={true}
                   />
                   <ControlledDatePicker
                     name="deadline_date"
@@ -356,13 +348,8 @@ export default function CreateWorksheet({
                         control={control}
                         isMulti={true}
                         label="Munkatárs"
-                        error={errors?.assignees?.message}
                       />
                     </LabeledInput>
-                    {/*<AddBtn
-                      onClick={() => console.log('Munkatárs hozzáadva')}
-                      variant="gray"
-                    />*/}
                   </div>
                 </FormBlockWrapper>
                 <PartnerSection
@@ -389,14 +376,9 @@ export default function CreateWorksheet({
                     <Textarea
                       label="Átvett tartozék"
                       {...register('received_accessories')}
-                      error={errors.received_accessories?.message}
                       textareaClassName="h-20"
                       className="mb-5 w-full"
                     />
-                    {/*<FileInput
-                      className="w-full"
-                      btnLabel="Mentés a munkalaphoz"
-                    />*/}
                   </div>
                 </FormBlockWrapper>
                 <FormBlockWrapper
@@ -411,28 +393,24 @@ export default function CreateWorksheet({
                     name="departure_time"
                     control={control}
                     label="Indulás"
-                    error={errors?.departure_time?.message}
                   />
                   <ControlledSelect
                     options={timeOptions}
                     name="arrival_time"
                     control={control}
                     label="Érkezés"
-                    error={errors?.arrival_time?.message}
                   />
                   <ControlledSelect
                     options={timeOptions}
                     name="start_time"
                     control={control}
                     label="Távozás"
-                    error={errors?.go_time?.message}
                   />
                   <ControlledSelect
                     options={timeOptions}
                     name="rearrival_time"
                     control={control}
                     label="Visszaérkezés"
-                    error={errors?.rearrival_time?.message}
                   />
                   <LabeledInput>
                     <Label>
@@ -444,7 +422,6 @@ export default function CreateWorksheet({
                       control={control}
                       isMulti={true}
                       label="Munkalap azonosítók"
-                      error={errors?.connected_worksheet_ids?.message}
                     />
                   </LabeledInput>
                 </FormBlockWrapper>
@@ -458,14 +435,12 @@ export default function CreateWorksheet({
                   <Textarea
                     label="Hiba / Munka oka"
                     {...register('issue_description')}
-                    error={errors.issue_description?.message}
                     textareaClassName="h-20"
                     className="col-span-2"
                   />
                   <Textarea
                     label="Elvégzett munka leírása"
                     {...register('work_description')}
-                    error={errors.work_description?.message}
                     textareaClassName="h-20"
                     className="col-span-2"
                   />
@@ -517,7 +492,7 @@ export default function CreateWorksheet({
                   control={control}
                   register={register}
                   errors={errors}
-                  products={products} // Pass products to AddInvoiceItems
+                  products={products}
                   setValue={setValue}
                 />
               </div>

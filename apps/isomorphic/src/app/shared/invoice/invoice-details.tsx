@@ -33,7 +33,7 @@ const columns = [
           as="p"
           className="max-w-[500px] overflow-hidden truncate text-sm text-gray-500"
         >
-          {record.public_comment}
+          {record.public_comment || ''}
         </Text>
       </>
     ),
@@ -68,8 +68,8 @@ interface InvoiceDetailsProps {
   record: WorksheetFormTypes | any; // Declare the record prop type
 }
 
-function formatDate(date: Date | string): string {
-  if (!date) return 'N/A'; // Handle missing dates
+function formatDate(date: Date | string | null): string {
+  if (!date) return 'Nincs adat'; // Handle missing dates
   const d = new Date(date); // Ensure it's a Date object
   return new Intl.DateTimeFormat('hu-HU', {
     year: 'numeric',
@@ -178,11 +178,17 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
             Telephely
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            {record.site.name}
+            {record.site ? record.site.name : 'Nincs adat'}
           </Text>
-          <Text className="mb-1.5">{record.site.address}</Text>
-          <Text className="mb-1.5">{record.site.city}</Text>
-          <Text className="mb-1.5">{record.site.postal_code}</Text>
+          <Text className="mb-1.5">
+            {record.site ? record.site.address : 'Nincs adat'}
+          </Text>
+          <Text className="mb-1.5">
+            {record.site ? record.site.city : 'Nincs adat'}
+          </Text>
+          <Text className="mb-1.5">
+            {record.site ? record.site.postal_code : 'Nincs adat'}
+          </Text>
         </div>
 
         {/*<div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
@@ -224,10 +230,13 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
 
       <InvoiceDates
         dates={[
-          { label: 'Indulás', value: record.start_time },
-          { label: 'Érkezés', value: record.arrival_time },
-          { label: 'Távozás', value: record.departure_time },
-          { label: 'Visszaérkezés', value: record.rearrival_time },
+          { label: 'Indulás', value: record.start_time || 'Nincs adat' },
+          { label: 'Érkezés', value: record.arrival_time || 'Nincs adat' },
+          { label: 'Távozás', value: record.departure_time || 'Nincs adat' },
+          {
+            label: 'Visszaérkezés',
+            value: record.rearrival_time || 'Nincs adat',
+          },
         ]}
       />
 
@@ -239,7 +248,9 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
         >
           Megjegyzés
         </Title>
-        <Text className="ml-16 leading-[1.7]">{record.public_comment}</Text>
+        <Text className="ml-16 leading-[1.7]">
+          {record.public_comment || ''}
+        </Text>
       </div>
       <div className="flex flex-col-reverse items-start justify-between border-t border-gray-300 pb-4 pt-8 xs:flex-row">
         <div className="mr-20 flex w-full flex-col items-start">
