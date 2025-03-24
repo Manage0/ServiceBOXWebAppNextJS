@@ -5,9 +5,25 @@ import { getCETDate } from '@/utils';
 
 export async function GET() {
   try {
-    const res = await executeQuery(
-      'SELECT * FROM worksheets ORDER BY worksheet_id DESC;'
-    );
+    const res = await executeQuery(`
+      SELECT 
+        w.*, 
+        COALESCE(
+          JSON_AGG(
+            JSON_BUILD_OBJECT(
+              'user_id', a.user_id,
+              'full_name', CONCAT(u.forename, ' ', u.surname),
+              'seen', a.seen
+            )
+          ) FILTER (WHERE a.user_id IS NOT NULL), 
+          '[]'
+        ) AS assignees
+      FROM worksheets w
+      LEFT JOIN ws_assignees a ON w.id = a.wsid
+      LEFT JOIN users u ON a.user_id = u.id
+      GROUP BY w.id
+      ORDER BY w.worksheet_id DESC;
+    `);
 
     if (res.rows.length === 0) {
       return NextResponse.json(

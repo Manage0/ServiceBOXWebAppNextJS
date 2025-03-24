@@ -90,7 +90,12 @@ export default function TableRowActionGroup({
         </Tooltip>
       )}
       {viewUrl && (
-        <Tooltip size="sm" content="View Item" placement="top" color="invert">
+        <Tooltip
+          size="sm"
+          content="Nyomtatási kép"
+          placement="top"
+          color="invert"
+        >
           <Link href={viewUrl}>
             <ActionIcon
               as="span"

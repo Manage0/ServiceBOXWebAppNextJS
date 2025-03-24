@@ -1,4 +1,4 @@
-import { Title, Text, ActionIcon, Button, Popover } from "rizzui";
+import { Title, Text, ActionIcon, Button, Popover, Tooltip } from "rizzui";
 import TrashIcon from "@core/components/icons/trash";
 import { PiTrashFill } from "react-icons/pi";
 import Image from "next/image";
@@ -17,20 +17,22 @@ export default function DeletePopover({
   return (
     <Popover placement="left">
       <Popover.Trigger>
-        <ActionIcon
-          size="sm"
-          variant="outline"
-          aria-label={"Delete Item"}
-          className="cursor-pointer"
-        >
-          <Image
-            src={"/Bin.svg"}
-            alt="Users icon"
-            width={15}
-            height={15}
-            className="size-4"
-          />
-        </ActionIcon>
+        <Tooltip size="sm" content="Törlés" placement="top" color="invert">
+          <ActionIcon
+            size="sm"
+            variant="outline"
+            aria-label={"Delete Item"}
+            className="cursor-pointer"
+          >
+            <Image
+              src={"/Bin.svg"}
+              alt="Users icon"
+              width={15}
+              height={15}
+              className="size-4"
+            />
+          </ActionIcon>
+        </Tooltip>
       </Popover.Trigger>
       <Popover.Content className="z-10">
         {({ setOpen }) => (

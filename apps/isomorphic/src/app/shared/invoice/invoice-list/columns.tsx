@@ -37,10 +37,15 @@ export const invoiceListColumns = [
     size: 250,
     header: 'MUNKALAPSZÁM / MUNKATÁRS',
     cell: ({ row }) => {
+      const assignees = row.original.assignees || [];
+      const assigneeNames = assignees
+        .map((assignee: any) => assignee.full_name)
+        .join(' • ');
+
       return (
         <AvatarCard
           name={row.original.worksheet_id}
-          description={row.original.creator_name}
+          description={assigneeNames || row.original.creator_name} // Show assignees if available, otherwise creator_name
           badge={row.original.badge}
         />
       );
