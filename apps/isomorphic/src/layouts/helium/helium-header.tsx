@@ -14,6 +14,7 @@ import {
   useApplyColorPreset,
   useColorPresets,
 } from '../settings/use-theme-color';
+import logoImg from '@public/logoSmall.svg';
 
 function HeaderMenuRight() {
   const COLOR_PRESETS = usePresets();
@@ -77,7 +78,7 @@ export default function Header() {
           aria-label="Site Logo"
           className="me-4 w-9 shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:hidden"
         >
-          <Logo iconOnly={true} />
+          <Image src={logoImg} alt="ServiceBOX" className="dark:invert" />
         </Link>
         <SearchWidget />
       </div>
