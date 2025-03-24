@@ -217,6 +217,21 @@ export default function CreateWorksheet({
     }
   };
 
+  const fetchNextWorksheetId = async () => {
+    try {
+      const response = await fetch('/api/worksheets/next-id'); // API to fetch the last worksheet_id
+      if (!response.ok) throw new Error('Failed to fetch next worksheet ID');
+      const { nextWorksheetId } = (await response.json()) as {
+        nextWorksheetId: string;
+      };
+      return nextWorksheetId;
+    } catch (error) {
+      console.error('Error fetching next worksheet ID:', error);
+      toast.error('Nem sikerült lekérni a következő munkalap azonosítót.');
+      return null;
+    }
+  };
+
   const prevSelectedPartnerId = useRef<number | null>(null);
 
   const prevDevicesRef = useRef(record?.devices);
@@ -248,6 +263,15 @@ export default function CreateWorksheet({
         const issueDescription = watch('issue_description');
         const workDescription = watch('work_description');
         const selectedPartnerId = watch('partner_id');
+
+        if (!record?.worksheet_id) {
+          // Generate the next worksheet_id if not provided
+          fetchNextWorksheetId().then((nextId) => {
+            if (nextId) {
+              setValue('worksheet_id', nextId); // Set the generated worksheet_id in the form
+            }
+          });
+        }
 
         if (selectedPartnerId !== prevSelectedPartnerId.current) {
           handlePartnerChange(
@@ -313,6 +337,7 @@ export default function CreateWorksheet({
                   <Input
                     label="Munkalap sorszám"
                     {...register('worksheet_id')}
+                    disabled={true}
                   />
                   <Input
                     label="Számla sorszám"
