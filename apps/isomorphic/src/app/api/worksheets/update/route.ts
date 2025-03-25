@@ -655,6 +655,7 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
+    console.log('Email sent to: ' + email || partnerData.email);
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email || partnerData.email,
@@ -662,7 +663,7 @@ export async function PATCH(req: NextRequest) {
       text: 'Csatolva küldjük az aláírt munkalapot.',
       attachments: [
         {
-          filename: `worksheet-${worksheet.id}.pdf`,
+          filename: `${worksheet.worksheet_id}.pdf`,
           content: pdfBuffer,
         },
       ],

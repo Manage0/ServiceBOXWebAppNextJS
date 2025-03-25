@@ -18,11 +18,11 @@ import SignatureModal from './SignatureModal';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import toast from 'react-hot-toast';
 import SendModal from '../SendModal';
-import { handleDate } from '@/utils';
+import { handleDate, handleDownloadPDF } from '@/utils';
 
 export default function InvoiceDetailsPage() {
   const pathname = usePathname();
-  const invoiceId = pathname.split('/').pop(); // Extract the last part of the pathname
+  const invoiceId = pathname.split('/').pop() || ''; // Extract the last part of the pathname
   const pageHeader = {
     title: 'Részletek',
     breadcrumb: [
@@ -210,37 +210,6 @@ export default function InvoiceDetailsPage() {
     }
   };
 
-  const handleDownloadPDF = async () => {
-    if (!invoiceId) return;
-
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-      const res = await fetch(`${baseUrl}/api/worksheets/download-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: invoiceId }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Hiba a PDF letöltése közben');
-      }
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `worksheet_${invoiceId}.pdf`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      toast.success('PDF sikeresen letöltve');
-    } catch (error) {
-      console.error(error);
-      toast.error('Hiba a PDF letöltése közben');
-    }
-  };
-
   const { openModal } = useModal();
 
   if (!worksheetData) {
@@ -278,7 +247,12 @@ export default function InvoiceDetailsPage() {
                 : 'Küldés'}
             </Button>
           )}
-          <DownloadBtn onExport={handleDownloadPDF} size="md" />
+          <DownloadBtn
+            onExport={handleDownloadPDF}
+            size="md"
+            invoiceId={parseInt(invoiceId)}
+            worksheet_id={worksheetData.worksheet_id}
+          />
           {!worksheetData.signage && (
             <Button
               className="w-full border-custom-green @lg:w-auto"

@@ -14,7 +14,7 @@ import Image from 'next/image';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
 import ReactSignatureCanvas from 'react-signature-canvas';
-import { handleDate } from '@/utils';
+import { handleDate, handleDownloadPDF } from '@/utils';
 
 async function fetchWorksheetData(id: string): Promise<any> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -154,11 +154,14 @@ export default function InvoiceDetailsPage() {
   );
   const sigCanvasRef = useRef<ReactSignatureCanvas | null>(null);
 
+  const [isSigned, setIsSigned] = useState(false); // State to track if the signature is saved
+
   useEffect(() => {
     if (invoiceId) {
       fetchWorksheetData(invoiceId).then((data) => {
         if (data) {
           setWorksheetData(data);
+          setIsSigned(!!data.signage); // Set isSigned to true if the signature is saved
         } else {
           // Handle error case (e.g., redirect to a 404 page or show an error)
         }
@@ -193,6 +196,7 @@ export default function InvoiceDetailsPage() {
       assignees
     );
     if (success) {
+      setIsSigned(true); // Update the state to reflect the signature is saved
       alert('Munkalap sikeresen aláírva.');
     } else {
       alert('Hiba a munkalap aláírása közben.');
@@ -205,20 +209,42 @@ export default function InvoiceDetailsPage() {
 
   return (
     <>
-      <Button
-        onClick={handleSign}
-        className="w-30 mx-auto my-5 flex items-center justify-center space-x-1.5 border-custom-green @lg:w-auto"
-      >
-        <Image
-          src={'/SignWhite.svg'}
-          alt="Sign"
-          width={17}
-          height={17}
-          className="me-1.5"
-        />
-        Aláír
-      </Button>
       <InvoiceDetails record={worksheetData} sigCanvasRef={sigCanvasRef} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '10px', // Add 10px gap between the buttons
+          marginTop: '20px', // Add 20px margin to the top
+          marginBottom: '20px', // Add 20px margin to the bottom
+        }}
+      >
+        <Button
+          onClick={handleSign}
+          disabled={isSigned} // Disable the button if the signature is saved
+          className={`w-30 flex items-center justify-center space-x-1.5 border-custom-green @lg:w-auto ${
+            isSigned ? 'cursor-not-allowed bg-gray-400' : ''
+          }`}
+        >
+          <Image
+            src={'/SignWhite.svg'}
+            alt="Sign"
+            width={17}
+            height={17}
+            className="me-1.5"
+          />
+          <div style={{ color: 'white' }}>
+            {isSigned ? 'Aláírás rögzítve' : 'Aláírás rögzítése'}
+          </div>
+        </Button>
+        <DownloadBtn
+          onExport={handleDownloadPDF}
+          size="md"
+          invoiceId={parseInt(worksheetData.id)}
+          worksheet_id={worksheetData.worksheet_id}
+        />
+      </div>
     </>
   );
 }

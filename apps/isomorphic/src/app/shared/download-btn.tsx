@@ -15,8 +15,10 @@ type ImportButtonProps = {
   modalBtnLabel?: string;
   className?: string;
   buttonLabel?: string;
-  onExport: () => void;
+  onExport: (invoiceId: number, worksheet_id: string) => void;
   size?: 'sm' | 'md' | 'lg';
+  invoiceId: number;
+  worksheet_id: string;
 };
 
 export default function DownloadBtn({
@@ -26,13 +28,15 @@ export default function DownloadBtn({
   buttonLabel = 'Import',
   onExport,
   size = 'sm',
+  invoiceId,
+  worksheet_id,
 }: React.PropsWithChildren<ImportButtonProps>) {
   const { openModal } = useModal();
 
   return (
     <Button
       size={size}
-      onClick={onExport}
+      onClick={() => onExport(invoiceId, worksheet_id)}
       className="border-0 border-[1px] border-[#E3E3E3] bg-white text-[#484848] hover:border-[#E3E3E3] hover:bg-gray-100 hover:text-[#484848]"
     >
       <Image

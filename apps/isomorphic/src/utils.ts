@@ -361,3 +361,37 @@ export function getCETDate() {
 
 export const handleDate = (date: any) =>
   new Date(date).getTime() === 0 ? null : new Date(date);
+
+export const handleDownloadPDF = async (
+  invoiceId: number,
+  worksheet_id: string
+) => {
+  if (!invoiceId) return;
+
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const res = await fetch(`${baseUrl}/api/worksheets/download-pdf`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: invoiceId }),
+    });
+
+    if (!res.ok) {
+      throw new Error('Hiba a PDF letöltése közben');
+    }
+
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${worksheet_id}.pdf`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    toast.success('PDF sikeresen letöltve');
+  } catch (error) {
+    console.error(error);
+    toast.error('Hiba a PDF letöltése közben');
+  }
+};
