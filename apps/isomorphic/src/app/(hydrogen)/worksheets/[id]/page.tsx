@@ -251,31 +251,33 @@ export default function InvoiceDetailsPage() {
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <Button
-            onClick={() =>
-              openModal({
-                view: (
-                  <SendModal
-                    worksheetId={invoiceId || ''}
-                    assignees={worksheetData.assignees}
-                  />
-                ),
-              })
-            }
-            className="w-full border-custom-green bg-white text-custom-green hover:bg-custom-green hover:text-white @lg:w-auto"
-          >
-            <Image
-              src={'/Send.svg'}
-              alt="Users icon"
-              width={17}
-              height={17}
-              className="me-1.5"
-            />
-            {worksheetData.status === 'outforsignature' ||
-            worksheetData.status === 'closed'
-              ? 'Elküldve'
-              : 'Küldés'}
-          </Button>
+          {!worksheetData.signage && (
+            <Button
+              onClick={() =>
+                openModal({
+                  view: (
+                    <SendModal
+                      worksheetId={invoiceId || ''}
+                      assignees={worksheetData.assignees}
+                    />
+                  ),
+                })
+              }
+              className="w-full border-custom-green bg-white text-custom-green hover:bg-custom-green hover:text-white @lg:w-auto"
+            >
+              <Image
+                src={'/Send.svg'}
+                alt="Users icon"
+                width={17}
+                height={17}
+                className="me-1.5"
+              />
+              {worksheetData.status === 'outforsignature' ||
+              worksheetData.status === 'closed'
+                ? 'Elküldve'
+                : 'Küldés'}
+            </Button>
+          )}
           <DownloadBtn onExport={handleDownloadPDF} size="md" />
           {!worksheetData.signage && (
             <Button
