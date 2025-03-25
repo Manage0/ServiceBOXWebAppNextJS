@@ -304,7 +304,7 @@ export default function CreateWorksheet({
           if (record?.connected_worksheet_ids) {
             setValue('connected_worksheet_ids', record.connected_worksheet_ids);
           }
-        }, 500);
+        }, 1000);
 
         return (
           <>
