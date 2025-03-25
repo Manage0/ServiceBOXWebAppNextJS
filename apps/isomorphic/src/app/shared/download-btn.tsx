@@ -33,7 +33,7 @@ export default function DownloadBtn({
     <Button
       size={size}
       onClick={onExport}
-      className="me-[20px] border-0 border-[1px] border-[#E3E3E3] bg-white text-[#484848] hover:border-[#E3E3E3] hover:bg-gray-100 hover:text-[#484848]"
+      className="border-0 border-[1px] border-[#E3E3E3] bg-white text-[#484848] hover:border-[#E3E3E3] hover:bg-gray-100 hover:text-[#484848]"
     >
       <Image
         src={'/Download.svg'}
