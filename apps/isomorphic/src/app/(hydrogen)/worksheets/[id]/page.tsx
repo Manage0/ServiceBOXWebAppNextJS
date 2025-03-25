@@ -299,7 +299,15 @@ export default function InvoiceDetailsPage() {
         </div>
       </PageHeader>
 
-      <InvoiceDetails record={worksheetData} sigCanvasRef={sigCanvasRef} />
+      <InvoiceDetails
+        record={worksheetData}
+        sigCanvasRef={sigCanvasRef}
+        openSigantureModal={() =>
+          openModal({
+            view: <SignatureModal onSave={handleSign} />,
+          })
+        }
+      />
     </>
   );
 }

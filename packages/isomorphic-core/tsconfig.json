@@ -7,5 +7,5 @@
       "@core/*": ["./src/*"]
     }
   },
-  "include": [".", "./types/**/*.ts"]
+  "include": [".", "./types/**/*.ts", "../../apps/isomorphic/src/app/shared/invoice/worksheet-print-footer.tsx"]
 }

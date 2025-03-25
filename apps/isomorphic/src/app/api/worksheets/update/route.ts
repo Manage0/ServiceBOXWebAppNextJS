@@ -209,14 +209,16 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const siteData = await fetchSiteData(
+    let siteData = await fetchSiteData(
       worksheetData.site_id ? worksheetData.site_id.toString() : 'noid'
     );
     if (!siteData) {
-      return NextResponse.json(
-        { error: 'Failed to fetch site data' },
-        { status: 500 }
-      );
+      siteData = {
+        name: 'Nincs adat',
+        address: 'Nincs adat',
+        city: 'Nincs adat',
+        postal_code: 'Nincs adat',
+      };
     }
 
     const companyData = await fetchCompanyData();

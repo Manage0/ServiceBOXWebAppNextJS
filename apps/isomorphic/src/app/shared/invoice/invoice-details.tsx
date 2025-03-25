@@ -11,6 +11,7 @@ import React, { useEffect, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import jsPDF from 'jspdf';
 import { WorksheetFormTypes } from '@/validators/worksheet.schema';
+import WorksheetPrintFooter from './worksheet-print-footer';
 
 const columns = [
   {
@@ -91,23 +92,12 @@ function getFormattedNow(): string {
     .replace(',', ' -'); // Ensure correct format
 }
 
-const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
-  record,
-  sigCanvasRef,
-}) => {
+const InvoiceDetails: React.FC<{
+  record: any;
+  sigCanvasRef: any;
+  openSigantureModal?: () => void;
+}> = ({ record, sigCanvasRef, openSigantureModal }) => {
   const pathname = usePathname();
-  /*const savePDF = () => {
-    const sigCanvas = sigCanvasRef.current;
-    if (sigCanvas !== null && !sigCanvas.isEmpty()) {
-      const signatureDataUrl = sigCanvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.text('Signature Section', 10, 10);
-      pdf.addImage(signatureDataUrl, 'PNG', 10, 20, 180, 50); // Adjust position and size
-      pdf.save('signature.pdf');
-    } else {
-      alert('Kérlek írd alá a munkalapot.');
-    }
-  };*/
   useEffect(() => {
     if (record.signage && sigCanvasRef.current) {
       // Load the signature into the canvas
@@ -281,6 +271,12 @@ const InvoiceDetails: React.FC<{ record: any; sigCanvasRef: any }> = ({
           </div>
         </div>
       </div>
+      {window.location.pathname.includes('worksheets') && (
+        <WorksheetPrintFooter
+          openSignatureModal={openSigantureModal || undefined}
+          isSigned={!!record.signage}
+        />
+      )}
     </div>
   );
 };
