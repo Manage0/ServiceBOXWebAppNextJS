@@ -162,24 +162,27 @@ const InvoiceDetails: React.FC<{
           <Text className="mb-1.5">{record.partner_postal_code}</Text>
           <Text className="mb-4 sm:mb-6 md:mb-8">{record.partner_tax_num}</Text>
         </div>
-
-        <div className="mt-4 xs:mt-0">
-          <Title as="h6" className="mb-3.5 font-semibold">
-            Telephely
-          </Title>
-          <Text className="mb-1.5 text-sm font-semibold uppercase">
-            {record.site ? record.site.name : 'Nincs adat'}
-          </Text>
-          <Text className="mb-1.5">
-            {record.site ? record.site.address : 'Nincs adat'}
-          </Text>
-          <Text className="mb-1.5">
-            {record.site ? record.site.city : 'Nincs adat'}
-          </Text>
-          <Text className="mb-1.5">
-            {record.site ? record.site.postal_code : 'Nincs adat'}
-          </Text>
-        </div>
+        {record.site ? (
+          <div className="mt-4 xs:mt-0">
+            <Title as="h6" className="mb-3.5 font-semibold">
+              Telephely
+            </Title>
+            <Text className="mb-1.5 text-sm font-semibold uppercase">
+              {record.site ? record.site.name : 'Nincs adat'}
+            </Text>
+            <Text className="mb-1.5">
+              {record.site ? record.site.address : 'Nincs adat'}
+            </Text>
+            <Text className="mb-1.5">
+              {record.site ? record.site.city : 'Nincs adat'}
+            </Text>
+            <Text className="mb-1.5">
+              {record.site ? record.site.postal_code : 'Nincs adat'}
+            </Text>
+          </div>
+        ) : (
+          <div className="mt-4 xs:mt-0"></div>
+        )}
 
         {/*<div className="mt-4 sm:mt-6 md:mt-0 md:justify-end">
           <ReactBarcode

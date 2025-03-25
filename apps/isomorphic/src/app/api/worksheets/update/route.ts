@@ -209,17 +209,9 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    let siteData = await fetchSiteData(
+    const siteData = await fetchSiteData(
       worksheetData.site_id ? worksheetData.site_id.toString() : 'noid'
     );
-    if (!siteData) {
-      siteData = {
-        name: 'Nincs adat',
-        address: 'Nincs adat',
-        city: 'Nincs adat',
-        postal_code: 'Nincs adat',
-      };
-    }
 
     const companyData = await fetchCompanyData();
     if (!companyData) {
@@ -506,11 +498,17 @@ export async function PATCH(req: NextRequest) {
         <p>${partnerData.tax_num}</p>
       </div>
       <div class="grid-item">
-        <h6>Telephely</h6>
-        <p class="uppercase">${siteData.name}</p>
-        <p>${siteData.address}</p>
-        <p>${siteData.city}</p>
-        <p>${siteData.postal_code}</p>
+        ${
+          siteData
+            ? `
+              <h6>Telephely</h6>
+              <p class="uppercase">${siteData.name}</p>
+              <p>${siteData.address}</p>
+              <p>${siteData.city}</p>
+              <p>${siteData.postal_code}</p>
+            `
+            : ''
+        }
       </div>
     </div>
     <div class="dates">

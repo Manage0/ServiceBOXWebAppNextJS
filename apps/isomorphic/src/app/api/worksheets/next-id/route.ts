@@ -15,6 +15,8 @@ export async function GET() {
     // Ha nincs worksheet_id, kezdjük az elsővel
     const lastWorksheetId = res.rows[0]?.worksheet_id || '2025/00000';
 
+    console.log(lastWorksheetId);
+
     // Szétválasztjuk az év és a sorszám részt
     const [year, number] = lastWorksheetId.split('/');
     const nextNumber = String(parseInt(number, 10) + 1).padStart(5, '0'); // Növeljük a sorszámot és nullákkal töltjük ki

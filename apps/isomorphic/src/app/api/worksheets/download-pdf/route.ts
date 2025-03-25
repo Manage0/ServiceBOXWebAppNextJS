@@ -180,12 +180,6 @@ export async function POST(req: NextRequest) {
     const siteData = await fetchSiteData(
       worksheetData.site_id ? worksheetData.site_id.toString() : 'noid'
     );
-    if (!siteData) {
-      return NextResponse.json(
-        { error: 'Failed to fetch site data' },
-        { status: 500 }
-      );
-    }
 
     const companyData = await fetchCompanyData();
     if (!companyData) {
@@ -472,11 +466,17 @@ export async function POST(req: NextRequest) {
         <p>${partnerData.tax_num}</p>
       </div>
       <div class="grid-item">
-        <h6>Telephely</h6>
-        <p class="uppercase">${siteData.name}</p>
-        <p>${siteData.address}</p>
-        <p>${siteData.city}</p>
-        <p>${siteData.postal_code}</p>
+        ${
+          siteData
+            ? `
+              <h6>Telephely</h6>
+              <p class="uppercase">${siteData.name}</p>
+              <p>${siteData.address}</p>
+              <p>${siteData.city}</p>
+              <p>${siteData.postal_code}</p>
+            `
+            : ''
+        }
       </div>
     </div>
     <div class="dates">
