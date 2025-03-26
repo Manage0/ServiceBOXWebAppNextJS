@@ -421,7 +421,7 @@ export default function CreateWorksheet({
                 >
                   <ControlledSelect
                     options={timeOptions}
-                    name="departure_time"
+                    name="start_time"
                     control={control}
                     label="Indulás"
                   />
@@ -433,7 +433,7 @@ export default function CreateWorksheet({
                   />
                   <ControlledSelect
                     options={timeOptions}
-                    name="start_time"
+                    name="departure_time"
                     control={control}
                     label="Távozás"
                   />
