@@ -78,6 +78,20 @@ export default function InvoiceDetailsPage() {
     data.partner_postal_code = dataPartner.postal_code;
     data.partner_contact_person = dataPartner.contact_person;
 
+    // Fetch company data
+    const companyRes = await fetch(`${baseUrl}/api/company`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    });
+
+    const companyData = await companyRes.json();
+    if (companyRes.ok) {
+      data.company = companyData; // Merge company data into worksheetData
+    }
+
     const sitesRes = await fetch(`${baseUrl}/api/sites`, {
       method: 'GET',
       headers: {
@@ -218,6 +232,7 @@ export default function InvoiceDetailsPage() {
 
   return (
     <>
+      {JSON.stringify(worksheetData)}
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           {!worksheetData.signage && (

@@ -31,6 +31,19 @@ async function fetchWorksheetData(id: string): Promise<any> {
   if (!res.ok) {
     return null;
   }
+  // Fetch company data
+  const companyRes = await fetch(`${baseUrl}/api/company`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  const companyData = await companyRes.json();
+  if (companyRes.ok) {
+    data.company = companyData; // Merge company data into worksheetData
+  }
 
   data.deadline_date = handleDate(data.deadline_date);
   data.completion_date = handleDate(data.completion_date);

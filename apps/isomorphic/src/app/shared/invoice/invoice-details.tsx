@@ -144,9 +144,9 @@ const InvoiceDetails: React.FC<{
           <Text className="mb-1.5 text-sm font-semibold uppercase">
             {record.company_name}
           </Text>
-          <Text className="mb-1.5">{record.address}</Text>
-          <Text className="mb-1.5">{record.city}</Text>
-          <Text className="mb-1.5">{record.postal_code}</Text>
+          <Text className="mb-1.5">{record.company_address}</Text>
+          <Text className="mb-1.5">{record.company.city}</Text>
+          <Text className="mb-1.5">{record.company.postal_code}</Text>
           <Text className="mb-4 sm:mb-6 md:mb-8">{record.company_tax_num}</Text>
         </div>
 
