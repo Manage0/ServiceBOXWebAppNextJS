@@ -29,11 +29,18 @@ export default function DashboardHeader({ className }: { className?: string }) {
 
   return (
     <Box className={cn('@container', className)}>
-      <Flex justify="between" align="center" className="mb-6">
-        <Title as="h1" className="text-#333333 font-30 font-lexendBold">
+      <Flex
+        justify="between"
+        align="center"
+        className="mb-6 flex-col gap-4 @lg:flex-row @lg:gap-0"
+      >
+        <Title
+          as="h1"
+          className="text-#333333 font-30 w-full text-center font-lexendBold @lg:text-left"
+        >
           Jó reggelt, {userName?.forename}!
         </Title>
-        <Box className="flex flex-col gap-5 @lg:flex-row">
+        <Box className="flex w-full flex-col gap-5 @lg:flex-row @lg:items-center @lg:justify-end">
           <AddBtn href={routes.worksheets.create} text="Új munkalap" />
           <AddBtn href={routes.partners.add} text="Új partner" />
         </Box>

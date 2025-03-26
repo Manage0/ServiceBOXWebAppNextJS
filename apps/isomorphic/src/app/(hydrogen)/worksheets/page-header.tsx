@@ -22,7 +22,11 @@ const pageHeader = {
 export default function WorksheetPageHeader() {
   return (
     <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
-      <AddBtn href={routes.worksheets.create} text="Új munkalap" />
+      <AddBtn
+        href={routes.worksheets.create}
+        text="Új munkalap"
+        className="mt-4 @lg:w-full"
+      />
     </PageHeader>
   );
 }

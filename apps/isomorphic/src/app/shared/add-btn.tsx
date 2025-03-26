@@ -28,12 +28,16 @@ const AddBtn: React.FC<AddBtnProps> = ({
   const button = (
     <Button
       style={style}
-      className={cn(
-        'w-full max-w-[150px] @lg:w-auto',
-        variant === 'gray' &&
-          'border-gray-300 bg-white text-black hover:bg-gray-100',
-        className
-      )}
+      className={
+        href
+          ? 'w-full'
+          : cn(
+              'w-full @lg:w-auto @lg:max-w-[150px]',
+              variant === 'gray' &&
+                'border-gray-300 bg-white text-black hover:bg-gray-100',
+              className
+            )
+      }
       onClick={modalView ? () => openModal({ view: modalView }) : onClick}
     >
       <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
@@ -41,7 +45,21 @@ const AddBtn: React.FC<AddBtnProps> = ({
     </Button>
   );
 
-  return href ? <Link href={href}>{button}</Link> : button;
+  return href ? (
+    <Link
+      href={href}
+      className={cn(
+        'w-full @lg:w-auto @lg:max-w-[150px]',
+        variant === 'gray' &&
+          'border-gray-300 bg-white text-black hover:bg-gray-100',
+        className
+      )}
+    >
+      {button}
+    </Link>
+  ) : (
+    button
+  );
 };
 
 export default AddBtn;

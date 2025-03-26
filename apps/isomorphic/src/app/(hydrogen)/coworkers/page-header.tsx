@@ -40,6 +40,7 @@ export default function CoworkersPageHeader({
           />
         }
         text="Új munkatárs"
+        className="mt-4"
       />
     </PageHeader>
   );
