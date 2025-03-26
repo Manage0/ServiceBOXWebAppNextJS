@@ -140,7 +140,7 @@ async function generatePDF(htmlContent: string): Promise<Buffer> {
     waitUntil: 'networkidle2',
   });
   console.log('pdf');
-  const pdfBuffer = await page.pdf();
+  const pdfBuffer = await page.pdf({ printBackground: true });
   console.log('close');
   await browser.close();
   return Buffer.from(pdfBuffer);
@@ -235,6 +235,22 @@ export async function PATCH(req: NextRequest) {
         { error: 'Failed to fetch logo' },
         { status: 500 }
       );
+    }
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+    const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ worksheet_id: id }),
+      cache: 'no-store',
+    });
+    const devicesData = await devicesRes.json();
+    if (devicesRes.ok) {
+      worksheetData.devices = devicesRes.ok
+        ? (devicesData as { name: string; device_id: string }[] | undefined)
+        : undefined;
     }
 
     // Generate HTML content for the PDF
