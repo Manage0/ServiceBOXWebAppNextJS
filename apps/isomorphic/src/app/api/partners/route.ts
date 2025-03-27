@@ -244,23 +244,61 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Update partner data in the database
-    const res = await executeQuery(
-      'UPDATE partners SET name = $1, tax_num = $2, contact_person = $3, external_id = $4, email = $5, contact_phone_number = $6, country = $7, postal_code = $8, city = $9, address = $10 WHERE id = $11 RETURNING id',
-      [
-        name,
-        tax_num,
-        contact_person,
-        external_id,
-        email,
-        contact_phone_number,
-        country,
-        postal_code,
-        city,
-        address,
-        id,
-      ]
-    );
+    // Single query to update partner, emails, and site
+    const query = `
+      WITH updated_partner AS (
+        UPDATE partners
+        SET name = $1, tax_num = $2, contact_person = $3, external_id = $4, email = $5, contact_phone_number = $6, country = $7, postal_code = $8, city = $9, address = $10
+        WHERE id = $11
+        RETURNING id
+      ),
+      deleted_emails AS (
+        DELETE FROM partner_email
+        WHERE partner_id = $11
+      ),
+      inserted_emails AS (
+        INSERT INTO partner_email (partner_id, email)
+        SELECT id, unnest($12::text[])
+        FROM updated_partner
+      ),
+      upserted_site AS (
+        INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address)
+        SELECT id, $13, $14, $15, $16, $17, $18
+        FROM updated_partner
+        ON CONFLICT (partner_id)
+        DO UPDATE SET 
+          name = EXCLUDED.name,
+          external_id = EXCLUDED.external_id,
+          country = EXCLUDED.country,
+          postal_code = EXCLUDED.postal_code,
+          city = EXCLUDED.city,
+          address = EXCLUDED.address
+      )
+      SELECT id FROM updated_partner;
+    `;
+
+    const values = [
+      name,
+      tax_num,
+      contact_person,
+      external_id,
+      email,
+      contact_phone_number,
+      country,
+      postal_code,
+      city,
+      address,
+      id,
+      emails, // Array of emails
+      site.name,
+      site.external_id,
+      site.country,
+      site.postal_code,
+      site.city,
+      site.address,
+    ];
+
+    const res = await executeQuery(query, values);
 
     if (res.rows.length === 0) {
       return NextResponse.json(
@@ -269,43 +307,9 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Delete existing emails for the partner
-    await executeQuery('DELETE FROM partner_email WHERE partner_id = $1', [id]);
+    const partnerId = res.rows[0].id;
 
-    // Insert new emails into partner_email table
-    for (const email of emails) {
-      await executeQuery(
-        'INSERT INTO partner_email (partner_id, email) VALUES ($1, $2)',
-        [id, email]
-      );
-    }
-
-    // Upsert site data in the sites table
-    await executeQuery(
-      `
-        INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        ON CONFLICT (partner_id) 
-        DO UPDATE SET 
-          name = EXCLUDED.name,
-          external_id = EXCLUDED.external_id,
-          country = EXCLUDED.country,
-          postal_code = EXCLUDED.postal_code,
-          city = EXCLUDED.city,
-          address = EXCLUDED.address
-      `,
-      [
-        id,
-        site.name,
-        site.external_id,
-        site.country,
-        site.postal_code,
-        site.city,
-        site.address,
-      ]
-    );
-
-    return NextResponse.json({ id: res.rows[0].id }, { status: 200 });
+    return NextResponse.json({ id: partnerId }, { status: 200 });
   } catch (error) {
     console.error('Error updating partner:', error);
     return NextResponse.json(
