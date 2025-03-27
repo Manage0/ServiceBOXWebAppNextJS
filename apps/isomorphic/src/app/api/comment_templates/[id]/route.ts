@@ -6,9 +6,7 @@ export async function PUT(
   { params }: { params: Record<string, string> }
 ) {
   try {
-    const templateName = params.id; // ✅ Use `name` instead of `id`
-
-    console.log('Received Name:', templateName); // Debugging output
+    const templateName = params.id;
 
     const { public_comment, private_comment } = (await req.json()) as {
       public_comment: string;
@@ -22,24 +20,23 @@ export async function PUT(
       );
     }
 
-    // Check if the comment template exists
-    const existingTemplate = await executeQuery(
-      'SELECT id FROM comment_templates WHERE name = $1;',
-      [templateName] // ✅ Query by name
-    );
+    // Single query to check existence and update
+    const query = `
+      UPDATE comment_templates
+      SET public_comment = $1, private_comment = $2
+      WHERE name = $3
+      RETURNING id;
+    `;
+    const values = [public_comment, private_comment, templateName];
 
-    if (existingTemplate.rows.length === 0) {
+    const result = await executeQuery(query, values);
+
+    if (result.rows.length === 0) {
       return NextResponse.json(
         { error: 'Comment template not found' },
         { status: 404 }
       );
     }
-
-    // Update the template using `name` as the identifier
-    await executeQuery(
-      'UPDATE comment_templates SET public_comment = $1, private_comment = $2 WHERE name = $3;',
-      [public_comment, private_comment, templateName] // ✅ Use name in WHERE clause
-    );
 
     return NextResponse.json(
       { message: 'Comment template successfully updated' },
