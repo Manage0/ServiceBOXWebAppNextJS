@@ -64,6 +64,13 @@ export async function POST(req: NextRequest) {
       ? connectionRes.rows[0].connected_worksheet
       : null;
 
+    // Fetch devices
+    const devicesRes = await executeQuery(
+      `SELECT id, wsid, device_id, device_name AS name FROM ws_device WHERE wsid = $1`,
+      [id]
+    );
+    worksheet.devices = devicesRes.rows;
+
     return NextResponse.json(worksheet, { status: 200 });
   } catch (error) {
     console.error('Error fetching worksheet:', error);

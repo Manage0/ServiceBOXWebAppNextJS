@@ -30,20 +30,6 @@ async function fetchWorksheetData(id: string) {
   data.invoice_date = handleDate(data.invoice_date);
   data.handover_date = handleDate(data.handover_date);
 
-  // Fetch devices for the worksheet
-  const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ worksheet_id: id }),
-    cache: 'no-store',
-  });
-  const devicesData = await devicesRes.json();
-  if (devicesRes.ok) {
-    data.devices = devicesData;
-  }
-
   // Fetch products for the worksheet
   const productsRes = await fetch(`${baseUrl}/api/products/get`, {
     method: 'POST',

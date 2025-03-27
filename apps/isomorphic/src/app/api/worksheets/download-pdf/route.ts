@@ -207,21 +207,6 @@ export async function POST(req: NextRequest) {
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-    const devicesRes = await fetch(`${baseUrl}/api/devices/get`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ worksheet_id: id }),
-      cache: 'no-store',
-    });
-    const devicesData = await devicesRes.json();
-    if (devicesRes.ok) {
-      worksheetData.devices = devicesRes.ok
-        ? (devicesData as { name: string; device_id: string }[] | undefined)
-        : undefined;
-    }
-
     // Generate HTML content for the PDF
     const htmlContent = generateHTML(
       worksheetData,
