@@ -32,18 +32,26 @@ export async function POST(req: NextRequest) {
   };
 
   try {
+    // Send the email
     await transporter.sendMail(mailOptions);
 
-    // Update the signing_person on the worksheet
+    // Update the signing_person and status on the worksheet
     const updateQuery = `
       UPDATE worksheets
-      SET signing_person = $1
-      WHERE id = $2
+      SET signing_person = $1, status = $2
+      WHERE id = $3
     `;
-    await executeQuery(updateQuery, [signingPerson, worksheetId]);
+    await executeQuery(updateQuery, [
+      signingPerson,
+      'outforsignature',
+      worksheetId,
+    ]);
 
     return NextResponse.json(
-      { message: 'Email sent and signing person updated successfully' },
+      {
+        message:
+          'Email sent, signing person updated, and status set to "outforsignature" successfully',
+      },
       { status: 200 }
     );
   } catch (error) {

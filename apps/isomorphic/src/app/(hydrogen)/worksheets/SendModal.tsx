@@ -42,10 +42,6 @@ export default function SendModal({
   };
 
   const handleSend = async () => {
-    const selectedPartner = partnerOptions.find(
-      (option) => option.value === partner
-    )?.label;
-
     try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
@@ -56,50 +52,34 @@ export default function SendModal({
       });
 
       if (res.ok) {
-        // Change the status of the worksheet to "outforsignature"
-        const updateRes = await fetch(`/api/updateStatus/${worksheetId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ status: 'outforsignature' }),
-        });
+        if (assignees && assignees.length > 0) {
+          // Notify assignees
+          const notifyRes = await fetch('/api/notify-assignees', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userIds: assignees, // Replace with actual assignee IDs
+              worksheetId,
+              newStatus: 'outforsignature',
+              changingPerson: session?.user?.email,
+            }),
+          });
 
-        if (!updateRes.ok) {
-          toast.error('Failed to update worksheet status');
-          return;
-        } else {
-          if (assignees && assignees.length > 0) {
-            // Notify assignees
-            const notifyRes = await fetch('/api/notify-assignees', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                userIds: assignees, // Replace with actual assignee IDs
-                worksheetId,
-                newStatus: 'outforsignature',
-                changingPerson: session?.user?.email,
-              }),
-            });
-
-            if (notifyRes.ok) {
-              toast.success('Email sikeresen elküldve és státusz frissítve');
-              onClose();
-            } else {
-              toast.error('Failed to notify assignees');
-            }
-          } else {
+          if (notifyRes.ok) {
             toast.success('Email sikeresen elküldve és státusz frissítve');
             onClose();
+          } else {
+            toast.error('Failed to notify assignees');
           }
+        } else {
+          toast.success('Email sikeresen elküldve és státusz frissítve');
+          onClose();
         }
-      } else {
-        toast.error('Failed to send email');
       }
     } catch (error) {
-      toast.error('Failed to send email');
+      toast.error('Hiba az email kiküldése és státusz frissítése közben');
       console.error('Error sending email:', error);
     }
   };
