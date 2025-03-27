@@ -277,17 +277,28 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Update site data in the sites table
+    // Upsert site data in the sites table
     await executeQuery(
-      'UPDATE sites SET name = $1, external_id = $2, country = $3, postal_code = $4, city = $5, address = $6 WHERE partner_id = $7',
+      `
+        INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        ON CONFLICT (partner_id) 
+        DO UPDATE SET 
+          name = EXCLUDED.name,
+          external_id = EXCLUDED.external_id,
+          country = EXCLUDED.country,
+          postal_code = EXCLUDED.postal_code,
+          city = EXCLUDED.city,
+          address = EXCLUDED.address
+      `,
       [
+        id,
         site.name,
         site.external_id,
         site.country,
         site.postal_code,
         site.city,
         site.address,
-        id,
       ]
     );
 

@@ -18,6 +18,7 @@ async function fetchPartnerData(id: string): Promise<PartnerDataWithId | null> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ id }),
+    cache: 'no-store',
   });
 
   if (!res.ok) {
