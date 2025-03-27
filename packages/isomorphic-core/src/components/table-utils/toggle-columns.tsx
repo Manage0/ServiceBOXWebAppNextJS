@@ -13,7 +13,7 @@ export default function ToggleColumns<TData extends Record<string, any>>({
         <ActionIcon
           variant="outline"
           title="Toggle Columns"
-          className="h-9 p-1"
+          className="h-9 p-1 self-start"
         >
           <Image src={"/Tasks.svg"} alt="Users icon" width={18} height={18} />
         </ActionIcon>

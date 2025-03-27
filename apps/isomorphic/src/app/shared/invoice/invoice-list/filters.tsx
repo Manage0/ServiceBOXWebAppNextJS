@@ -53,13 +53,13 @@ export default function Filters<TData extends Record<string, any>>({
           value={table.getState().globalFilter ?? ''}
           onClear={() => table.setGlobalFilter('')}
           onChange={(e) => table.setGlobalFilter(e.target.value)}
-          inputClassName="h-9 min-w-[280px]"
+          inputClassName="h-9 w-[280px]"
           clearable={true}
           prefix={<PiMagnifyingGlass className="h-4 w-4" />}
         />
         {dropdownProps && dropdownProps.options?.length > 0 && (
           <DropdownAction
-            className="ml-4 w-[30%] rounded-md border"
+            className="ml-0 w-[280px] rounded-md border @lg:ml-4 @lg:w-[30%]"
             options={dropdownProps.options}
             onChange={dropdownProps.onChange}
             dropdownClassName="!z-0"
@@ -68,7 +68,7 @@ export default function Filters<TData extends Record<string, any>>({
         )}
         {isLarge && showFilters && <FilterElements table={table} />}
       </Flex>
-      <Flex align="center" className="w-auto">
+      <Flex align="center" className="w-auto self-start">
         {/*<Button
           {...(!isLarge
             ? {
@@ -104,8 +104,9 @@ export default function Filters<TData extends Record<string, any>>({
             </div>
           </FilterDrawerView>
         )}
-
-        <ToggleColumns table={table} />
+        <div className="self-start">
+          <ToggleColumns table={table} />
+        </div>
       </Flex>
     </Flex>
   );
