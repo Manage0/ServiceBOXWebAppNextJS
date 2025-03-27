@@ -232,7 +232,6 @@ export default function InvoiceDetailsPage() {
 
   return (
     <>
-      {JSON.stringify(worksheetData)}
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           {!worksheetData.signage && (
