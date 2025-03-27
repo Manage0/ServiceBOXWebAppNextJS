@@ -117,22 +117,47 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Insert partner data into the database
-    const res = await logAndExecuteQuery(
-      'INSERT INTO partners (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id',
-      [
-        name,
-        tax_num,
-        contact_person,
-        external_id,
-        email,
-        contact_phone_number,
-        country,
-        postal_code,
-        city,
-        address,
-      ]
-    );
+    // Single query to insert partner, emails, and site
+    const query = `
+      WITH inserted_partner AS (
+        INSERT INTO partners (name, tax_num, contact_person, external_id, email, contact_phone_number, country, postal_code, city, address)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        RETURNING id
+      ),
+      inserted_emails AS (
+        INSERT INTO partner_email (partner_id, email)
+        SELECT id, unnest($11::text[])
+        FROM inserted_partner
+      ),
+      inserted_site AS (
+        INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address)
+        SELECT id, $12, $13, $14, $15, $16, $17
+        FROM inserted_partner
+      )
+      SELECT id FROM inserted_partner;
+    `;
+
+    const values = [
+      name,
+      tax_num,
+      contact_person,
+      external_id,
+      email,
+      contact_phone_number,
+      country,
+      postal_code,
+      city,
+      address,
+      emails, // Array of emails
+      site.name,
+      site.external_id,
+      site.country,
+      site.postal_code,
+      site.city,
+      site.address,
+    ];
+
+    const res = await executeQuery(query, values);
 
     if (res.rows.length === 0) {
       return NextResponse.json(
@@ -142,28 +167,6 @@ export async function POST(req: NextRequest) {
     }
 
     const partnerId = res.rows[0].id;
-
-    // Insert emails into partner_email table
-    for (const email of emails) {
-      await logAndExecuteQuery(
-        'INSERT INTO partner_email (partner_id, email) VALUES ($1, $2)',
-        [partnerId, email]
-      );
-    }
-
-    // Insert site data into the sites table
-    await logAndExecuteQuery(
-      'INSERT INTO sites (partner_id, name, external_id, country, postal_code, city, address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [
-        partnerId,
-        site.name,
-        site.external_id,
-        site.country,
-        site.postal_code,
-        site.city,
-        site.address,
-      ]
-    );
 
     return NextResponse.json({ id: partnerId }, { status: 201 });
   } catch (error) {
