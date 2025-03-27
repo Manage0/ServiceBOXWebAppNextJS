@@ -401,7 +401,6 @@ export function generateHTML(
   companyData: any,
   partnerData: any,
   siteData: any,
-  productsData: any,
   BBOXLOGO: string
 ) {
   console.log(worksheetData.devices);
@@ -781,8 +780,8 @@ export function generateHTML(
         </thead>
         <tbody>
           ${
-            productsData
-              ? productsData
+            worksheetData.products
+              ? worksheetData.products
                   .map(
                     (
                       product: {

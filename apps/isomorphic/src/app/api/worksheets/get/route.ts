@@ -71,6 +71,16 @@ export async function POST(req: NextRequest) {
     );
     worksheet.devices = devicesRes.rows;
 
+    // Fetch products
+    const productsRes = await executeQuery(
+      `SELECT ws_product.*, products.id AS id
+       FROM ws_product
+       JOIN products ON ws_product.product_name = products.name
+       WHERE ws_product.wsid = $1`,
+      [id]
+    );
+    worksheet.products = productsRes.rows;
+
     return NextResponse.json(worksheet, { status: 200 });
   } catch (error) {
     console.error('Error fetching worksheet:', error);

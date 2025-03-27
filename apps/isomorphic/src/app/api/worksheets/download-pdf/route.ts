@@ -106,25 +106,6 @@ async function fetchCompanyData(): Promise<any | null> {
   return data;
 }
 
-async function fetchProductsData(worksheet_id: string): Promise<any | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/products/get`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ worksheet_id }),
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    return null;
-  }
-
-  const data = await res.json();
-  return data;
-}
-
 async function generatePDF(htmlContent: string): Promise<Buffer> {
   console.log('connect');
   const browser = await puppeteer.connect({
@@ -189,14 +170,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const productsData = await fetchProductsData(id);
-    if (!productsData) {
-      return NextResponse.json(
-        { error: 'Failed to fetch products data' },
-        { status: 500 }
-      );
-    }
-
     const BBOXLOGO = await fetchLogo();
     if (!BBOXLOGO) {
       return NextResponse.json(
@@ -205,15 +178,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
     // Generate HTML content for the PDF
     const htmlContent = generateHTML(
       worksheetData,
       companyData,
       partnerData,
       siteData,
-      productsData,
       BBOXLOGO
     );
 

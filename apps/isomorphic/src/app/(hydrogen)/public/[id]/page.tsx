@@ -88,19 +88,6 @@ async function fetchWorksheetData(id: string): Promise<any> {
 
   data.site = exactSite;
 
-  const productsRes = await fetch(`${baseUrl}/api/products/get`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ worksheet_id: id }),
-    cache: 'no-store',
-  });
-  const productsData = await productsRes.json();
-  if (productsRes.ok) {
-    data.products = productsData;
-  }
-
   return data;
 }
 
