@@ -6,105 +6,74 @@ import { WorksheetFormTypes } from '@/validators/worksheet.schema';
 import { PartnerFormTypes } from '@/validators/partner.schema';
 import { generateHTML, getCETDate } from '@/utils';
 
-async function fetchWorksheetData(
-  id: string
-): Promise<WorksheetFormTypes | null> {
+async function fetchDataInParallel(
+  id: string,
+  partnerId: string,
+  siteId: string
+) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/worksheets/get`, {
+
+  const worksheetPromise = fetch(`${baseUrl}/api/worksheets/get`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id }),
     cache: 'no-store',
   });
 
-  if (!res.ok) {
-    return null;
-  }
-
-  const data: WorksheetFormTypes =
-    (await res.json()) as unknown as WorksheetFormTypes;
-  return data;
-}
-
-async function fetchPartnerData(
-  partnerId: string
-): Promise<PartnerFormTypes | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/partners/get`, {
+  const partnerPromise = fetch(`${baseUrl}/api/partners/get`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id: partnerId }),
     cache: 'no-store',
   });
 
-  if (!res.ok) {
-    return null;
-  }
+  const sitePromise =
+    siteId !== 'noid'
+      ? fetch(`${baseUrl}/api/sites/get`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: siteId }),
+          cache: 'no-store',
+        })
+      : Promise.resolve(null);
 
-  const data: PartnerFormTypes = (await res.json()) as PartnerFormTypes;
-  return data;
-}
-
-async function fetchSiteData(siteId: string): Promise<any | null> {
-  if (siteId === 'noid') {
-    return undefined;
-  }
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/sites/get`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ id: siteId }),
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    return null;
-  }
-
-  const data = await res.json();
-  return data;
-}
-
-async function fetchCompanyData(): Promise<any | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/company`, {
+  const companyPromise = fetch(`${baseUrl}/api/company`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     cache: 'no-store',
   });
 
-  if (!res.ok) {
-    return null;
-  }
+  const [worksheetRes, partnerRes, siteRes, companyRes] = await Promise.all([
+    worksheetPromise,
+    partnerPromise,
+    sitePromise,
+    companyPromise,
+  ]);
 
-  const data = await res.json();
-  return data;
+  const worksheetData = worksheetRes.ok ? await worksheetRes.json() : null;
+  const partnerData = partnerRes.ok
+    ? ((await partnerRes.json()) as PartnerFormTypes)
+    : null;
+
+  if (!partnerData) {
+    throw new Error('Partner data is required but was not found.');
+  }
+  const siteData = siteRes && siteRes.ok ? await siteRes.json() : null;
+  const companyData = companyRes.ok ? await companyRes.json() : null;
+
+  return { worksheetData, partnerData, siteData, companyData };
 }
 
 async function generatePDF(htmlContent: string): Promise<Buffer> {
-  console.log('connect');
   const browser = await puppeteer.connect({
     browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BLESS_TOKEN}`,
   });
-  console.log('newPage');
+
   const page = await browser.newPage();
-  await page.setJavaScriptEnabled(false); // Disable JavaScript
-  console.log('waiting for new page to initialize');
-  console.log('setContent');
-  await page.setContent(htmlContent, {
-    waitUntil: 'networkidle2',
-  });
-  console.log('pdf');
+  await page.setJavaScriptEnabled(false); // Disable JavaScript for faster rendering
+  await page.setContent(htmlContent, { waitUntil: 'networkidle2' });
+
   const pdfBuffer = await page.pdf({ printBackground: true });
-  console.log('close');
   await browser.close();
   return Buffer.from(pdfBuffer);
 }
@@ -130,12 +99,13 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
+    // Update worksheet in the database
     const query = `
-    UPDATE worksheets
-    SET signage = $1, signage_date = $2, signing_person = $3, status = 'closed'
-    WHERE id = $4
-    RETURNING *;
-  `;
+      UPDATE worksheets
+      SET signage = $1, signage_date = $2, signing_person = $3, status = 'closed'
+      WHERE id = $4
+      RETURNING *;
+    `;
 
     const res = await executeQuery(query, [
       signage,
@@ -153,33 +123,17 @@ export async function PATCH(req: NextRequest) {
 
     const worksheet = res.rows[0];
 
-    // Fetch additional data
-    const worksheetData = await fetchWorksheetData(id);
-    if (!worksheetData) {
-      return NextResponse.json(
-        { error: 'Failed to fetch worksheet data' },
-        { status: 500 }
+    // Fetch additional data in parallel
+    const { worksheetData, partnerData, siteData, companyData } =
+      await fetchDataInParallel(
+        id,
+        worksheet.partner_id.toString(),
+        worksheet.site_id ? worksheet.site_id.toString() : 'noid'
       );
-    }
 
-    const partnerData = await fetchPartnerData(
-      worksheetData.partner_id.toString()
-    );
-    if (!partnerData) {
+    if (!worksheetData || !partnerData || !companyData) {
       return NextResponse.json(
-        { error: 'Failed to fetch partner data' },
-        { status: 500 }
-      );
-    }
-
-    const siteData = await fetchSiteData(
-      worksheetData.site_id ? worksheetData.site_id.toString() : 'noid'
-    );
-
-    const companyData = await fetchCompanyData();
-    if (!companyData) {
-      return NextResponse.json(
-        { error: 'Failed to fetch company data' },
+        { error: 'Failed to fetch required data' },
         { status: 500 }
       );
     }
@@ -192,6 +146,7 @@ export async function PATCH(req: NextRequest) {
       siteData
     );
 
+    // Generate PDF
     let pdfBuffer;
     try {
       pdfBuffer = await generatePDF(htmlContent);
@@ -209,7 +164,6 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    console.log('Email sent to: ' + email || partnerData.email);
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email || partnerData.email,
