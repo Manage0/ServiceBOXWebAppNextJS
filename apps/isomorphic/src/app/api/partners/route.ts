@@ -330,22 +330,25 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Delete emails for the partners
-    await executeQuery(
-      'DELETE FROM partner_email WHERE partner_id = ANY($1::int[])',
-      [partner_ids]
-    );
+    // Single query to delete emails, sites, and partners
+    const query = `
+      WITH deleted_emails AS (
+        DELETE FROM partner_email
+        WHERE partner_id = ANY($1::int[])
+      ),
+      deleted_sites AS (
+        DELETE FROM sites
+        WHERE partner_id = ANY($1::int[])
+      ),
+      deleted_partners AS (
+        DELETE FROM partners
+        WHERE id = ANY($1::int[])
+        RETURNING id
+      )
+      SELECT id FROM deleted_partners;
+    `;
 
-    // Delete site data for the partners
-    await executeQuery('DELETE FROM sites WHERE partner_id = ANY($1::int[])', [
-      partner_ids,
-    ]);
-
-    // Delete partner data from the database
-    const res = await executeQuery(
-      'DELETE FROM partners WHERE id = ANY($1::int[]) RETURNING id',
-      [partner_ids]
-    );
+    const res = await executeQuery(query, [partner_ids]);
 
     if (res.rows.length === 0) {
       return NextResponse.json(
