@@ -49,24 +49,6 @@ async function fetchPartnerData(
   return data;
 }
 
-async function fetchLogo(): Promise<string | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/worksheets/logo`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    return null;
-  }
-
-  const data = (await res.json()) as { image: string };
-  return data.image;
-}
-
 async function fetchSiteData(siteId: string): Promise<any | null> {
   if (siteId === 'noid') {
     return undefined;
@@ -202,21 +184,12 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const BBOXLOGO = await fetchLogo();
-    if (!BBOXLOGO) {
-      return NextResponse.json(
-        { error: 'Failed to fetch logo' },
-        { status: 500 }
-      );
-    }
-
     // Generate HTML content for the PDF
     const htmlContent = generateHTML(
       worksheetData,
       companyData,
       partnerData,
-      siteData,
-      BBOXLOGO
+      siteData
     );
 
     let pdfBuffer;

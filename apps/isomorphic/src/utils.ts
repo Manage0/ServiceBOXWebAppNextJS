@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import { CompanyFormTypes } from './validators/company-info.schema';
 import { PartnerOption } from './types';
+import BBOXLogo from './BBOXLogo.ts';
 
 // Fetch company data
 export const fetchCompanyData = async (
@@ -400,8 +401,7 @@ export function generateHTML(
   worksheetData: any,
   companyData: any,
   partnerData: any,
-  siteData: any,
-  BBOXLOGO: string
+  siteData: any
 ) {
   console.log(worksheetData.devices);
   return `
@@ -659,7 +659,7 @@ export function generateHTML(
 <body>
   <div class="container">
     <div class="header">
-      <img alt="BBOX logo" src="${BBOXLOGO}">
+      <img alt="BBOX logo" src="${BBOXLogo}">
       <div class="header-title">Munkalap</div>
       <div class="header-info">
         <h6>${worksheetData.worksheet_id}</h6>
