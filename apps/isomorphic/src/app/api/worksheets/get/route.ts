@@ -12,74 +12,82 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Fetch worksheet details
-    const worksheetRes = await executeQuery(
-      `SELECT * FROM worksheets WHERE id = $1`,
-      [id]
-    );
+    // Single query to fetch all required data
+    const query = `
+      WITH worksheet_data AS (
+        SELECT * FROM worksheets WHERE id = $1
+      ),
+      assignees_data AS (
+        SELECT json_agg(user_id) AS assignees
+        FROM ws_assignees WHERE wsid = $1
+      ),
+      devices_data AS (
+        SELECT json_agg(json_build_object('id', id, 'wsid', wsid, 'device_id', device_id, 'name', device_name)) AS devices
+        FROM ws_device WHERE wsid = $1
+      ),
+      products_data AS (
+        SELECT json_agg(json_build_object(
+          'id', products.id,
+          'wsid', ws_product.wsid,
+          'product_name', ws_product.product_name,
+          'amount', ws_product.amount,
+          'measure', ws_product.measure,
+          'public_comment', ws_product.public_comment,
+          'private_comment', ws_product.private_comment
+        )) AS products
+        FROM ws_product
+        JOIN products ON ws_product.product_name = products.name
+        WHERE ws_product.wsid = $1
+      ),
+      connected_ws_data AS (
+        SELECT 
+          json_agg(
+            CASE 
+              WHEN wsid1 = $1 THEN wsid2
+              WHEN wsid2 = $1 THEN wsid1
+            END
+          ) AS connected_worksheets
+        FROM ws_ws 
+        WHERE wsid1 = $1 OR wsid2 = $1
+      ),
+      site_data AS (
+        SELECT row_to_json(sites) AS site
+        FROM sites
+        WHERE site_id = (SELECT site_id FROM worksheet_data)
+      ),
+      partner_data AS (
+        SELECT row_to_json(partners) AS partner
+        FROM partners
+        WHERE id = (SELECT partner_id FROM worksheet_data)
+      )
+      SELECT 
+        (SELECT row_to_json(w) FROM worksheet_data w) AS worksheet,
+        (SELECT assignees FROM assignees_data) AS assignees,
+        (SELECT devices FROM devices_data) AS devices,
+        (SELECT products FROM products_data) AS products,
+        (SELECT connected_worksheets FROM connected_ws_data) AS connected_worksheets,
+        (SELECT site FROM site_data) AS site,
+        (SELECT partner FROM partner_data) AS partner;
+    `;
 
-    if (worksheetRes.rows.length === 0) {
+    const worksheetRes = await executeQuery(query, [id]);
+
+    if (worksheetRes.rows.length === 0 || !worksheetRes.rows[0].worksheet) {
       return NextResponse.json(
         { error: 'Worksheet not found' },
         { status: 404 }
       );
     }
 
-    const worksheet = worksheetRes.rows[0];
-
-    // Fetch assignees
-    const assigneesRes = await executeQuery(
-      `SELECT ws_assignees.user_id FROM ws_assignees WHERE ws_assignees.wsid = $1`,
-      [id]
-    );
-    worksheet.assignees = assigneesRes.rows.map((row) => row.user_id);
-
-    // Fetch related worksite
-    const siteRes = await executeQuery(
-      `SELECT * FROM sites WHERE site_id = $1`,
-      [worksheet.site_id]
-    );
-    worksheet.site = siteRes.rows[0] || null;
-
-    // Fetch related partner
-    const partnerRes = await executeQuery(
-      `SELECT * FROM partners WHERE id = $1`,
-      [worksheet.partner_id]
-    );
-    worksheet.partner = partnerRes.rows[0] || null;
-
-    // Fetch connected worksheet ID
-    const connectionRes = await executeQuery(
-      `SELECT 
-          CASE 
-            WHEN wsid1 = $1 THEN wsid2
-            WHEN wsid2 = $1 THEN wsid1
-          END AS connected_worksheet
-       FROM ws_ws 
-       WHERE wsid1 = $1 OR wsid2 = $1`,
-      [id]
-    );
-
-    worksheet.connected_worksheet_id = connectionRes.rows.length
-      ? connectionRes.rows[0].connected_worksheet
-      : null;
-
-    // Fetch devices
-    const devicesRes = await executeQuery(
-      `SELECT id, wsid, device_id, device_name AS name FROM ws_device WHERE wsid = $1`,
-      [id]
-    );
-    worksheet.devices = devicesRes.rows;
-
-    // Fetch products
-    const productsRes = await executeQuery(
-      `SELECT ws_product.*, products.id AS id
-       FROM ws_product
-       JOIN products ON ws_product.product_name = products.name
-       WHERE ws_product.wsid = $1`,
-      [id]
-    );
-    worksheet.products = productsRes.rows;
+    // Combine all data into a single response object
+    const worksheet = worksheetRes.rows[0].worksheet;
+    worksheet.assignees = worksheetRes.rows[0].assignees || [];
+    worksheet.devices = worksheetRes.rows[0].devices || [];
+    worksheet.products = worksheetRes.rows[0].products || [];
+    worksheet.connected_worksheet_id =
+      worksheetRes.rows[0].connected_worksheet || null;
+    worksheet.site = worksheetRes.rows[0].site || null;
+    worksheet.partner = worksheetRes.rows[0].partner || null;
 
     return NextResponse.json(worksheet, { status: 200 });
   } catch (error) {
