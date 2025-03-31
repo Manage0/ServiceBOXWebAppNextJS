@@ -12,10 +12,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const res = await executeQuery(
-      'DELETE FROM worksheets WHERE id = ANY($1::int[]) RETURNING id',
-      [ids]
-    );
+    // Query to delete related data and worksheets
+    const query = `
+      WITH deleted_devices AS (
+        DELETE FROM ws_device WHERE wsid = ANY($1::int[])
+      ),
+      deleted_products AS (
+        DELETE FROM ws_product WHERE wsid = ANY($1::int[])
+      ),
+      deleted_assignees AS (
+        DELETE FROM ws_assignees WHERE wsid = ANY($1::int[])
+      ),
+      deleted_worksheets AS (
+        DELETE FROM worksheets WHERE id = ANY($1::int[]) RETURNING id
+      )
+      SELECT id FROM deleted_worksheets;
+    `;
+
+    const res = await executeQuery(query, [ids]);
 
     if (res.rows.length === 0) {
       return NextResponse.json(

@@ -188,38 +188,3 @@ export async function PUT(
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
-
-// DELETE: Remove a worksheet by ID
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const { id } = params;
-
-    // Delete worksheet and associated assignees
-    await executeQuery('DELETE FROM ws_assignees WHERE wsid = $1;', [id]);
-    const res = await executeQuery(
-      'DELETE FROM worksheets WHERE id = $1 RETURNING *;',
-      [id]
-    );
-
-    if (res.rows.length === 0) {
-      return NextResponse.json(
-        { error: 'Worksheet not found' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(
-      { message: 'Worksheet deleted successfully' },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Error deleting worksheet:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
-  }
-}
