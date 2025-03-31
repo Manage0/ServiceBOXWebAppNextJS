@@ -448,7 +448,9 @@ export default function CreateWorksheet({
                       <b>Összekapcsolás munkalappal</b>
                     </Label>
                     <ControlledSelect
-                      options={worksheetOptions}
+                      options={worksheetOptions.filter(
+                        (option) => option.value !== Number(record?.id)
+                      )}
                       name="connected_worksheet_ids"
                       control={control}
                       isMulti={true}

@@ -17,28 +17,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Delete existing connections for wsid1 or where wsid1 is wsid2
-    const deleteQuery = `
-      DELETE FROM ws_ws WHERE wsid1 = $1 OR wsid2 = $1;
+    // Single query to delete existing connections and insert new ones
+    const query = `
+      WITH deleted_connections AS (
+        DELETE FROM ws_ws
+        WHERE wsid1 = $1 OR wsid2 = $1
+      ),
+      inserted_connections AS (
+        INSERT INTO ws_ws (wsid1, wsid2)
+        SELECT $1, unnest($2::int[])
+        RETURNING id
+      )
+      SELECT 'Connections updated' AS message, COUNT(*) AS inserted_count
+      FROM inserted_connections;
     `;
-    await executeQuery(deleteQuery, [wsid1]);
+
+    const result = await executeQuery(query, [wsid1, wsid2 || []]);
 
     if (wsid2 && wsid2.length > 0) {
-      // Insert new connections
-      const insertQuery = `
-        INSERT INTO ws_ws (wsid1, wsid2)
-        VALUES ($1, $2)
-        RETURNING id;
-      `;
-
-      const insertPromises = wsid2.map((id) =>
-        executeQuery(insertQuery, [wsid1, id])
-      );
-
-      const insertResults = await Promise.all(insertPromises);
-
       return NextResponse.json(
-        insertResults.map((res) => res.rows[0]),
+        {
+          message: result.rows[0].message,
+          inserted_count: result.rows[0].inserted_count,
+        },
         { status: 201 }
       );
     } else {
