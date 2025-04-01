@@ -138,7 +138,7 @@ export function AddInvoiceItems({
                       searchPlaceHolder="Keresés..."
                       searchType="text"
                       searchByKey="label"
-                      dropdownClassName="!z-10 h-auto"
+                      dropdownClassName="!z-10 h-auto min-w-[300px]"
                       inPortal={false}
                       options={productOptions}
                       value={productOptions.find(
