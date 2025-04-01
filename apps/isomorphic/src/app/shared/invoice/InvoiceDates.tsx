@@ -11,7 +11,7 @@ interface InvoiceDatesProps {
 
 const InvoiceDates: React.FC<InvoiceDatesProps> = ({ dates }) => {
   return (
-    <div className="mb-8 grid grid-cols-4 rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-800">
+    <div className="mb-8 grid grid-cols-2 rounded-md border border-gray-200 bg-gray-100 text-sm text-gray-800 sm:grid-cols-4">
       {dates.map(({ label, value }, index) => (
         <div
           key={index}
