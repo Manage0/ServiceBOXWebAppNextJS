@@ -20,7 +20,7 @@ import AddBtn from '../add-btn';
 import { FileInput } from '../file-upload';
 import ControlledDatePicker from './ControlledDatePicker';
 import ControlledSelect from './ControlledSelect';
-import { statusOptions, priorityOptions, timeOptions } from '../options';
+import { statusOptions, priorityOptions } from '../options';
 import { CompanyFormTypes } from '@/validators/company-info.schema';
 import {
   fetchInitialData,
@@ -419,28 +419,28 @@ export default function CreateWorksheet({
                   }
                   className="pt-5"
                 >
-                  <ControlledSelect
-                    options={timeOptions}
-                    name="start_time"
-                    control={control}
+                  <Input
+                    type="time"
+                    step="60" // Csak percre pontosan lehessen választani
+                    {...register('start_time')}
                     label="Indulás"
                   />
-                  <ControlledSelect
-                    options={timeOptions}
-                    name="arrival_time"
-                    control={control}
+                  <Input
+                    type="time"
+                    step="60"
+                    {...register('arrival_time')}
                     label="Érkezés"
                   />
-                  <ControlledSelect
-                    options={timeOptions}
-                    name="departure_time"
-                    control={control}
+                  <Input
+                    type="time"
+                    step="60"
+                    {...register('departure_time')}
                     label="Távozás"
                   />
-                  <ControlledSelect
-                    options={timeOptions}
-                    name="rearrival_time"
-                    control={control}
+                  <Input
+                    type="time"
+                    step="60"
+                    {...register('rearrival_time')}
                     label="Visszaérkezés"
                   />
                   <LabeledInput>
