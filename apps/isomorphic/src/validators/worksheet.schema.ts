@@ -87,27 +87,37 @@ export type WorksheetFormTypes = z.infer<typeof WorksheetFormSchema> & {
   signing_person: string;
 };
 
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+const tomorrow2 = new Date();
+tomorrow2.setDate(tomorrow.getDate() + 2);
+
+const tomorrow3 = new Date();
+tomorrow3.setDate(tomorrow.getDate() + 3);
+
 export const defaultValues: WorksheetFormTypes = {
-  completion_date: undefined,
-  start_time: '',
-  arrival_time: '',
-  departure_time: '',
-  rearrival_time: '',
-  handover_date: undefined,
+  completion_date: tomorrow2,
+  start_time: '13:00',
+  arrival_time: '14:00',
+  departure_time: '16:00',
+  rearrival_time: '17:00',
+  handover_date: tomorrow2,
   priority: 'normal',
   site_id: undefined,
   partner_id: 1,
   status: 'new',
   invoice_date: new Date(),
   signage: undefined,
-  deadline_date: undefined,
+  deadline_date: tomorrow3,
   creation_date: new Date(),
   signange_date: new Date(),
   id: '',
   signing_person: '',
-  received_accessories: '',
+  received_accessories:
+    'A mérőórához tartozó kiegészítőket, mint például a csavarok és a kábelek, átadtuk.',
   jira_ticket_num: '',
-  invoice_number: '',
+  invoice_number: 'SZ-1234',
   procurement_po: '',
   partner_name: '',
   country: '',
@@ -116,10 +126,10 @@ export const defaultValues: WorksheetFormTypes = {
   address: '',
   tax_num: '',
   email: '',
-  issue_description: '',
-  work_description: '',
-  public_comment: '',
-  private_comment: '',
+  issue_description: 'A mérőóra nem működik',
+  work_description: 'Kicseréltük a mérőórát',
+  public_comment: 'Nagyon nehéz volt kicserélni a mérőórát',
+  private_comment: 'Az eredeti mérőóra javítható',
   company_name: '',
   company_address: '',
   company_tax_num: '',
