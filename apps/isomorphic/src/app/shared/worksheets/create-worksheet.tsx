@@ -331,10 +331,6 @@ export default function CreateWorksheet({
                     error="A prioritás megadása kötelező."
                   />
                   <Input
-                    label="JIRA Ticket száma"
-                    {...register('jira_ticket_num')}
-                  />
-                  <Input
                     label="Munkalap sorszám"
                     {...register('worksheet_id')}
                     disabled={true}
@@ -342,10 +338,6 @@ export default function CreateWorksheet({
                   <Input
                     label="Számla sorszám"
                     {...register('invoice_number')}
-                  />
-                  <Input
-                    label="Beszerzési PO szám"
-                    {...register('procurement_po')}
                   />
                   <ControlledDatePicker
                     name="invoice_date"

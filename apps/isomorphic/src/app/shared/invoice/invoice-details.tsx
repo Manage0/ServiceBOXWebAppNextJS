@@ -28,7 +28,7 @@ const columns = [
     render: (product_name: string, record: any) => (
       <>
         <Title as="h6" className="mb-0.5 text-sm font-medium">
-          {product_name}
+          {'Javító alkatrész'}
         </Title>
         <Text
           as="p"
@@ -122,7 +122,7 @@ const InvoiceDetails: React.FC<{
         <Image
           src={'/BBOXLogo.png'}
           alt={'BBOX logo'}
-          className="dark:invert"
+          className="hidden dark:invert"
           width={120}
           height={40}
           priority
@@ -139,28 +139,28 @@ const InvoiceDetails: React.FC<{
       <div className="mb-12 grid gap-4 xs:grid-cols-2 sm:grid-cols-4 sm:grid-rows-1">
         <div className="">
           <Title as="h6" className="mb-3.5 font-semibold">
-            Kiállító
+            Készítő
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            {record.company_name}
+            {'Nagy vállalat'}
           </Text>
-          <Text className="mb-1.5">{record.company_address}</Text>
-          <Text className="mb-1.5">{record.company.city}</Text>
-          <Text className="mb-1.5">{record.company.postal_code}</Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">{record.company_tax_num}</Text>
+          <Text className="mb-1.5">{'Petőfi S. utca 1'}</Text>
+          <Text className="mb-1.5">{'Budapest'}</Text>
+          <Text className="mb-1.5">{'1000'}</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">{'12345678-1-12'}</Text>
         </div>
 
         <div className="mt-4 xs:mt-0">
           <Title as="h6" className="mb-3.5 font-semibold">
-            Partner
+            Ügyfél
           </Title>
           <Text className="mb-1.5 text-sm font-semibold uppercase">
-            {record.partner_name}
+            {'Kis vállalat'}
           </Text>
-          <Text className="mb-1.5">{record.partner_address}</Text>
-          <Text className="mb-1.5">{record.partner_city}</Text>
-          <Text className="mb-1.5">{record.partner_postal_code}</Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">{record.partner_tax_num}</Text>
+          <Text className="mb-1.5">{'Petőfi S. utca 2'}</Text>
+          <Text className="mb-1.5">{'Budapest'}</Text>
+          <Text className="mb-1.5">{'1001'}</Text>
+          <Text className="mb-4 sm:mb-6 md:mb-8">{'12345678-1-13'}</Text>
         </div>
         {record.site ? (
           <div className="mt-4 xs:mt-0">
@@ -168,17 +168,12 @@ const InvoiceDetails: React.FC<{
               Telephely
             </Title>
             <Text className="mb-1.5 text-sm font-semibold uppercase">
-              {record.site ? record.site.name : 'Nincs adat'}
+              {'Kis vállalat telephelye'}
             </Text>
-            <Text className="mb-1.5">
-              {record.site ? record.site.address : 'Nincs adat'}
-            </Text>
-            <Text className="mb-1.5">
-              {record.site ? record.site.city : 'Nincs adat'}
-            </Text>
-            <Text className="mb-1.5">
-              {record.site ? record.site.postal_code : 'Nincs adat'}
-            </Text>
+            <Text className="mb-1.5">{'Petőfi S. utca 3'}</Text>
+            <Text className="mb-1.5">{'Budapest'}</Text>
+            <Text className="mb-1.5">{'1002'}</Text>
+            <Text className="mb-4 sm:mb-6 md:mb-8">{'12345678-1-14'}</Text>
           </div>
         ) : (
           <div className="mt-4 xs:mt-0"></div>
@@ -213,7 +208,6 @@ const InvoiceDetails: React.FC<{
             : []),
           { label: 'Munka megnevezése', value: record.work_description },
           { label: 'Szerelő', value: record.creator_name },
-          { label: 'JIRA Ticket', value: record.jira_ticket_num },
           {
             label: 'Hiba / Munka leírása',
             value: record.issue_description,

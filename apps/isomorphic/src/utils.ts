@@ -416,6 +416,7 @@ export function generateHTML(
   <style>
     * {
       font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
     }
     .font-medium {
         font-weight: 500;
@@ -425,7 +426,7 @@ export function generateHTML(
               border-radius: 1rem;
         border: 1px solid #d1d5db;
       padding: 1.25rem;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin-bottom: 1rem;
     }
     .header {
@@ -442,7 +443,7 @@ export function generateHTML(
     .header-title {
       font-family: 'Lexend', sans-serif;
       text-align: center;
-      font-size: 1.875rem;
+      font-size: 1.625rem;
       font-weight: bold;
       color: #25282B;
     }
@@ -453,12 +454,12 @@ export function generateHTML(
       margin-bottom: 0;
     }
     .header-info h6 {
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: bold;
       margin: 0;
     }
     .header-info p {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       color: #6b7280;
       margin: 0;
     }
@@ -472,12 +473,12 @@ export function generateHTML(
       margin-top: 1rem;
     }
     .grid-item h6 {
-      font-size: 1rem;
+      font-size: 0.875rem;
       margin-bottom: 0.875rem;
       font-weight: 600;
     }
     .grid-item p {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin-bottom: 0.375rem;
     }
     .grid-item p.uppercase {
@@ -507,6 +508,7 @@ export function generateHTML(
       border-right: none;
     }
     .dates span {
+      font-size: 0.75rem;
       font-weight: 500;
     }
     .section-title {
@@ -514,7 +516,7 @@ export function generateHTML(
       margin-left: 4rem;
       text-align: left;
       font-family: 'Lexend', sans-serif;
-      font-size: 1.875rem;
+      font-size: 1.625rem;
       font-weight: bold;
       color: #333333;
     }
@@ -522,13 +524,15 @@ export function generateHTML(
       display: grid;
       grid-template-columns: 30% 70%;
       gap: 1rem;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin-bottom: 1rem;
     }
     .work-details span {
+      font-size: 0.75rem;
       font-weight: 500;
     }
     .work-details b {
+      font-size: 0.75rem;
       font-weight: bold;
     }
     .times {
@@ -573,13 +577,13 @@ export function generateHTML(
     }
     .table th {
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.625rem;
       font-weight: 600;
       color: #6b7280;
       background-color: #f3f4f6;
     }
     .table td {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
     }
     .table td h6 {
       margin-bottom: 0.125rem;
@@ -608,7 +612,7 @@ export function generateHTML(
       font-weight: 600;
     }
     .notes p {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin-left: 4rem;
       line-height: 1.7;
     }
@@ -641,6 +645,7 @@ export function generateHTML(
       color: #6b7280;
     }
     .signature-info p {
+      font-size: 0.75rem;
       margin: 0;
     }
     .signature-info span {

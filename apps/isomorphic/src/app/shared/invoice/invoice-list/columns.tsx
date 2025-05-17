@@ -45,7 +45,7 @@ export const invoiceListColumns = [
       return (
         <AvatarCard
           name={row.original.worksheet_id}
-          description={assigneeNames || row.original.creator_name} // Show assignees if available, otherwise creator_name
+          description="John Doe" // Show assignees if available, otherwise creator_name
           badge={row.original.badge}
         />
       );
@@ -55,7 +55,7 @@ export const invoiceListColumns = [
     id: 'partner_name',
     size: 280,
     header: 'VEVŐ',
-    cell: ({ row }) => row.original.partner_name,
+    cell: ({ row }) => 'Partner XYZ',
   }),
   columnHelper.accessor('creation_date', {
     id: 'creation_date',
